@@ -1,2 +1,2 @@
-# Kakkoi
-Kakkoï is de nieuwste rage
+# Kakoï
+Kakoï is de nieuwste rage
