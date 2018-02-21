@@ -44,3 +44,6 @@
 /processorParam:TextureFormat=Color
 /build:transparant.png
 
+#begin chips.xml
+/copy:chips.xml
+

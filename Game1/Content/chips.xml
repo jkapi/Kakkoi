@@ -1,0 +1,10 @@
+<TextureAtlas imagePath="chips.png">
+	<SubTexture name="red" x="0" y="0" width="128" height="128"/>
+	<SubTexture name="blue" x="150" y="0" width="128" height="128"/>
+	<SubTexture name="green" x="300" y="0" width="128" height="128"/>
+	<SubTexture name="black" x="450" y="0" width="128" height="128"/>
+	<SubTexture name="whitered" x="0" y="150" width="128" height="128"/>
+	<SubTexture name="whiteblue" x="150" y="150" width="128" height="128"/>
+	<SubTexture name="whitegreen" x="300" y="150" width="128" height="128"/>
+	<SubTexture name="whiteblack" x="450" y="150" width="128" height="128"/>
+</TextureAtlas>
