@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using StrangerCade.Framework.GameObjects;
 using StrangerCade.Framework;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -15,8 +14,7 @@ namespace Game1
     {
         Sprite chips;
 
-        public MainBoard(Vector2 position) : base(position)
-        {}
+        public MainBoard(Vector2 position) : base(position){}
 
         int[,] board = new int[8, 8];
 

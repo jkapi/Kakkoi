@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using StrangerCade.Framework.GameObjects;
+using StrangerCade.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,14 +8,14 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Input;
 
-namespace StrangerCade.Framework.GameObjects.UI
+namespace StrangerCade.Framework.UI
 {
     /*
      *      It's dangerous to go alone. 
      *      Take this ASCII sword.  
      *      o()xxxx[{::::::::::::::::::::::::::::::::::>
      */
-    class TextBox : GameObjects.GameObject
+    class TextBox : GameObject
     {
         public static string Clipboard = "";
         string Text { get { return _text; } set { _text = value; UpdateTextSize(); } }

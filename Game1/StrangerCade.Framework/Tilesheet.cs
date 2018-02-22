@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 
-namespace StrangerCade.Framework.GameObjects
+namespace StrangerCade.Framework
 {
     class Tilesheet
     {

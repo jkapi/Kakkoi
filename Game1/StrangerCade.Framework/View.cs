@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace StrangerCade.Framework.GameObjects
+namespace StrangerCade.Framework
 {
     class View
     {

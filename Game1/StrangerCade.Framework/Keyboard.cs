@@ -6,98 +6,124 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace StrangerCade.Framework.GameObjects
+namespace StrangerCade.Framework
 {
+    /// <summary>
+    /// Huge extension of Monogame Drawing.
+    /// </summary>
+    /// <remarks>
+    /// Not really an extension, more like a wrapper that adds a lot of features</remarks>
     class GMKeyboard
     {
-        private List<Keys> lastPressed;
-        private List<Keys> pressed;
-        private List<Keys> simulated;
-        private List<Keys> triggered;
-        private Dictionary<Keys, double> pressTime;
+        /// <summary>
+        /// List of keys pressed last frame
+        /// </summary>
+        public List<Keys> LastPressedKeys { get; private set; }
+        /// <summary>
+        /// List of keys pressed current frame
+        /// </summary>
+        public List<Keys> PressedKeys { get; private set; }
+        /// <summary>
+        /// Simulated keypresses
+        /// </summary>
+        public List<Keys> SimulatedKeys { get; private set; }
+        /// <summary>
+        /// Keys that got triggered
+        /// </summary>
+        public List<Keys> TriggeredKeys { get; private set; }
+        /// <summary>
+        /// The length each key has been pressed
+        /// </summary>
+        public Dictionary<Keys, double> PressTime { get; private set; }
 
+        /// <summary>
+        /// The typed text. Can be cleared or even changed.
+        /// </summary>
         public string String;
-
+        
         public KeyboardSettings Settings;
 
         public GMKeyboard()
         {
-            lastPressed = new List<Keys>();
-            pressed = new List<Keys>();
-            simulated = new List<Keys>();
-            triggered = new List<Keys>();
-            pressTime = new Dictionary<Keys, double>();
+            LastPressedKeys = new List<Keys>();
+            PressedKeys = new List<Keys>();
+            SimulatedKeys = new List<Keys>();
+            TriggeredKeys = new List<Keys>();
+            PressTime = new Dictionary<Keys, double>();
             String = "";
             Settings = new KeyboardSettings();
         }
 
+        /// <summary>
+        /// Has to be called every Update to ensure correct calling
+        /// </summary>
         public void Update(GameTime gameTime)
         {
             // Shift pressed to lastPressed
-            lastPressed = new List<Keys>(pressed);
-            pressed.Clear();
+            LastPressedKeys = new List<Keys>(PressedKeys);
+            PressedKeys.Clear();
 
             KeyboardState state = Keyboard.GetState();
-            pressed.AddRange(state.GetPressedKeys());
+            PressedKeys.AddRange(state.GetPressedKeys());
 
             // Add simulated keys
-            foreach (Keys key in simulated)
+            foreach (Keys key in SimulatedKeys)
             {
-                if (!pressed.Contains(key))
+                if (!PressedKeys.Contains(key))
                 {
-                    pressed.Add(key);
+                    PressedKeys.Add(key);
                 }
             }
 
             // Get pressed time for gmkeyboard.string
             // Remove released keys
-            foreach (Keys key in pressTime.Keys.ToList())
+            foreach (Keys key in PressTime.Keys.ToList())
             {
-                if (!pressed.Contains(key))
+                if (!PressedKeys.Contains(key))
                 {
-                    pressTime.Remove(key);
+                    PressTime.Remove(key);
                 }
             }
             // Add newly pressed keys to pressTime
-            foreach (Keys key in pressed)
+            foreach (Keys key in PressedKeys)
             {
-                if (!pressTime.ContainsKey(key))
+                if (!PressTime.ContainsKey(key))
                 {
-                    pressTime.Add(key, -gameTime.ElapsedGameTime.TotalMilliseconds);
+                    PressTime.Add(key, -gameTime.ElapsedGameTime.TotalMilliseconds);
                 }
             }
 
-            Dictionary<Keys, double> lastPressTime = new Dictionary<Keys, double>(pressTime);
+            Dictionary<Keys, double> lastPressTime = new Dictionary<Keys, double>(PressTime);
 
-            triggered.Clear();
+            TriggeredKeys.Clear();
             // Handle KeyboardString
-            foreach (Keys key in pressTime.Keys.ToList())
+            foreach (Keys key in PressTime.Keys.ToList())
             {
                 // Don't add key to string if it isn't allowed to
                 if (Settings.AddSimulatedKeysToKeyboardString == false)
-                { if (simulated.Contains(key)) { break; } }
+                { if (SimulatedKeys.Contains(key)) { break; } }
 
-                pressTime[key] += gameTime.ElapsedGameTime.TotalMilliseconds;
+                PressTime[key] += gameTime.ElapsedGameTime.TotalMilliseconds;
                 bool shouldFire = false;
 
                 // Fire if key is just pressed
-                if (pressTime[key] == 0)
+                if (PressTime[key] == 0)
                 {
                     shouldFire = true;
                 }
 
                 // Check if it should refire because key is hold
-                if (pressTime[key] >= Settings.ReFireDelay)
+                if (PressTime[key] >= Settings.ReFireDelay)
                 {
                     int maxTime = Settings.ReFireDelay + Settings.ReFireInterval * 20;
-                    if (pressTime[key] > maxTime)
+                    if (PressTime[key] > maxTime)
                     {
-                        pressTime[key] -= Settings.ReFireInterval * 20;
+                        PressTime[key] -= Settings.ReFireInterval * 20;
                         lastPressTime[key] -= Settings.ReFireInterval * 20;
                     }
                     for (int t = Settings.ReFireDelay; t < maxTime; t += Settings.ReFireInterval)
                     {
-                        if (pressTime[key] > t && lastPressTime[key] < t)
+                        if (PressTime[key] > t && lastPressTime[key] < t)
                         {
                             shouldFire = true;
                         }
@@ -106,7 +132,7 @@ namespace StrangerCade.Framework.GameObjects
 
                 if (shouldFire)
                 {
-                    triggered.Add(key);
+                    TriggeredKeys.Add(key);
                     // s = shift pressed?
                     bool s = Check(Keys.LeftShift) | Check(Keys.RightShift);
                     string keyString = key.ToString();
@@ -173,61 +199,88 @@ namespace StrangerCade.Framework.GameObjects
             }
         }
 
+        /// <summary>
+        /// Checks if a key is pressed
+        /// </summary>
         public bool Check(Keys key)
         {
-            return pressed.Contains(key);
+            return PressedKeys.Contains(key);
         }
 
+        /// <summary>
+        /// Returns true on the frame that the key was pressed. Triggered once per keystroke
+        /// </summary>
         public bool CheckPressed(Keys key)
         {
-            return (pressed.Contains(key) && !lastPressed.Contains(key));
+            return (PressedKeys.Contains(key) && !LastPressedKeys.Contains(key));
         }
 
+        /// <summary>
+        /// Check if a key got released. Triggered once per keystroke
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
         public bool CheckReleased(Keys key)
         {
-            return (!pressed.Contains(key) && lastPressed.Contains(key));
+            return (!PressedKeys.Contains(key) && LastPressedKeys.Contains(key));
         }
 
+        /// <summary>
+        /// Check if a key got pressed or released. Triggered on the falling and rising edge of a keystroke.
+        /// </summary>
         public bool CheckEdge(Keys key)
         {
-            return (pressed.Contains(key) ^ lastPressed.Contains(key));
+            return (PressedKeys.Contains(key) ^ LastPressedKeys.Contains(key));
         }
 
+        /// <summary>
+        /// Checks if a key is triggered.
+        /// </summary>
+        /// <remarks>You know when you hold a key and after a short delay you type multiple characters? Well, this returns true when an this happens</remarks>
         public bool CheckTriggered(Keys key)
         {
-            return triggered.Contains(key); 
+            return TriggeredKeys.Contains(key); 
         }
 
+        /// <summary>
+        /// Simulate key press
+        /// </summary>
         public void KeyPress(Keys key)
         {
-            if (!pressed.Contains(key))
+            if (!PressedKeys.Contains(key))
             {
-                pressed.Add(key);
+                PressedKeys.Add(key);
             }
-            if (!simulated.Contains(key))
+            if (!SimulatedKeys.Contains(key))
             {
-                simulated.Add(key);
+                SimulatedKeys.Add(key);
             }
         }
 
+        /// <summary>
+        /// Simulate key release
+        /// </summary>
         public void KeyRelease(Keys key)
         {
-            if (pressed.Contains(key))
+            if (PressedKeys.Contains(key))
             {
-                pressed.Remove(key);
+                PressedKeys.Remove(key);
             }
-            if (simulated.Contains(key))
+            if (SimulatedKeys.Contains(key))
             {
-                simulated.Remove(key);
+                SimulatedKeys.Remove(key);
             }
         }
 
+        /// <summary>
+        /// Clears state of the keyboard.
+        /// </summary>
         public void Clear()
         {
-            pressed.Clear();
-            lastPressed.Clear();
-            simulated.Clear();
-            pressTime.Clear();
+            PressedKeys.Clear();
+            LastPressedKeys.Clear();
+            SimulatedKeys.Clear();
+            PressTime.Clear();
             String = "";
         }
 
@@ -236,13 +289,34 @@ namespace StrangerCade.Framework.GameObjects
                                                Keys.P, Keys.B, Keys.V, Keys.K, Keys.J, Keys.X, Keys.Q, Keys.Z };
     }
 
+    /// <summary>
+    /// All changable settings for the <see cref="GMKeyboard">GMKeyboard</see>
+    /// </summary>
     public class KeyboardSettings
     {
+        /// <summary>
+        /// The amount of characters stored in keyboard string.
+        /// </summary>
         public int StoreLength = 1024;
+        /// <summary>
+        /// If enters should be added to keyboard string.
+        /// </summary>
         public bool ParseEnter = false;
+        /// <summary>
+        /// If tabs should be added to keyboard string
+        /// </summary>
         public bool ParseTab = false;
+        /// <summary>
+        /// If simulated key presses should be added to keyboard string
+        /// </summary>
         public bool AddSimulatedKeysToKeyboardString = false;
+        /// <summary>
+        /// The delay in ms between the initial key press and the characters that should be added after a short delay
+        /// </summary>
         public int ReFireDelay = 500;
+        /// <summary>
+        /// The delay in ms between the keys after the ReFireDelay
+        /// </summary>
         public int ReFireInterval = 50;
     }
 }

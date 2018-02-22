@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using StrangerCade.Framework.GameObjects.UI;
+using StrangerCade.Framework.UI;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
-using StrangerCade.Framework.GameObjects;
+using StrangerCade.Framework;
 using Microsoft.Xna.Framework.Input;
 
 namespace Game1
@@ -34,6 +34,7 @@ namespace Game1
 
         public override void Draw()
         {
+
         }
     }
 }

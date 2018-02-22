@@ -6,9 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace StrangerCade.Framework.GameObjects.UI
+namespace StrangerCade.Framework.UI
 {
-    class Button : GameObjects.GameObject
+    class Button : GameObject
     {
         public SpriteFont Font;
         public string Text;

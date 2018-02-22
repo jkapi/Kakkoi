@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace StrangerCade.Framework.GameObjects
+namespace StrangerCade.Framework
 {
     class GMMouse
     {
@@ -47,6 +47,10 @@ namespace StrangerCade.Framework.GameObjects
             }
         }
 
+        /// <summary>
+        /// Redraws the cursor.
+        /// </summary>
+        /// <remarks>Only does this when the cursor has changed to reduce lag.</remarks>
         public void Draw()
         {
             if (cursor != lastCursor)
@@ -89,6 +93,10 @@ namespace StrangerCade.Framework.GameObjects
             }
         }
 
+        /// <summary>
+        /// Average movement vector in the last 10 frames
+        /// </summary>
+        /// <returns></returns>
         public Vector2 AverageMovement()
         {
             Vector2 ret = new Vector2(0);
@@ -96,11 +104,18 @@ namespace StrangerCade.Framework.GameObjects
             {
                 ret += position;
             }
-            ret /= 10;
+            ret /= movementHistoryLength;
             return ret;
         }
     }
 
+    /// <summary>
+    /// Mouse buttons
+    /// </summary>
+    /// <remarks>
+    /// - XButton1: mouse page forward
+    /// - XButton2: mouse page backward
+    /// </remarks>
     enum MouseButtons
     {
         Left, Right, Middle, XButton1, XButton2

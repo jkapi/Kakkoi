@@ -1,0 +1,37 @@
+/*! \mainpage StrangerCade.Framework - Small easy game framework for Kakoï
+\section intro StrangerCade.Framework
+Het StrangerCade Framework is gebouwd om een hoop Monogame functies een stuk makkelijker te maken. 
+Deze documentatie bevat informatie en een aantal voorbeelden om makkelijk vooruit te kunnen.
+
+Begin hier:
+- StrangerCade.Framework.Room
+- StrangerCade.Framework.GameObject
+
+Zie <see cref="Examples">Examples</see> voor voorbeelden.
+
+Deze documentatie is in het Engels geschreven omdat ik dat uit automatisme heb gedaan.
+
+Het kan zijn dat er taalfouten zijn.
+*/
+/** @defgroup Examples Examples
+ *
+ * This module does yada yada yada
+ *
+ */
+
+
+/*@{*/
+/*! @addtogroup Examples
+@{\page ExampleRoom Room
+    
+This example builds on the idea that you have made the <see cref="ExampleGameObject">Example GameObject</see>
+@}
+*/
+
+
+/*@{*/
+/*! @addtogroup Examples
+@{\page ExampleGameObject GameObject
+
+@}
+*/

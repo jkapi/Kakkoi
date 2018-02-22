@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 
-namespace StrangerCade.Framework.GameObjects
+namespace StrangerCade.Framework
 {
     class Sprite
     {
