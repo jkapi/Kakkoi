@@ -35,7 +35,7 @@ namespace Game1
         {
             base.Initialize();
             IsMouseVisible = true;
-            Window.Title = "TestGame Build " + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
+            Window.Title = "Kakoi Build " + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
         }
 
         /// <summary>
