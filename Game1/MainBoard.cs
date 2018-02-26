@@ -25,6 +25,7 @@ namespace Game1
             chips = new Sprite(Room.Content.Load<Texture2D>("chips"));
             Sprite = chips;
             SpriteOrigin = chips.Center;
+            View.Scale = new Vector2(1.0f);
             for (int i = 0; i < 64; i++)
             {
                 board[i % 8, i / 8] = -1;
@@ -51,8 +52,8 @@ namespace Game1
                     if (CanPlace(x,y))
                     {
                         board[x, y] = currentplayer;
-                        currentplayer++;
                         DoMove(x, y, currentplayer);
+                        currentplayer++;
                     }
                 }
                 else
@@ -85,14 +86,10 @@ namespace Game1
             View.DrawLine(new Vector2(0, 1024) + new Vector2(32), new Vector2(1024, 1024) + new Vector2(32));
             View.DrawLine(new Vector2(1024, 0) + new Vector2(32), new Vector2(1024, 1024) + new Vector2(32));
         }
-
+        
         void DoMove(int px, int py, int pc)
         {
-            // Check horizontal
-            for (int b = 0; b < 8; b++)
-            {
 
-            }
         }
 
         bool CanPlace(int x, int y)
