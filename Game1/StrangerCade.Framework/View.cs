@@ -109,7 +109,7 @@ namespace StrangerCade.Framework
             Vector2 edge = end - start;
             float angle = (float)Math.Atan2(edge.Y, edge.X);
             
-            _spriteBatch.Draw(whitePixel, new Rectangle((int)(start.X * Scale.X - Location.X), (int)(start.Y * Scale.Y - Location.Y), (int)edge.Length(), width), null, _color, angle, new Vector2(0, 0.5f), SpriteEffects.None, depth);
+            _spriteBatch.Draw(whitePixel, new Rectangle((int)(start.X - Location.X), (int)(start.Y - Location.Y), (int)edge.Length(), width), null, _color, angle, new Vector2(0, 0.5f), SpriteEffects.None, depth);
 
         }
 
