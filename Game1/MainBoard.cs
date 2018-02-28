@@ -14,7 +14,7 @@ namespace Game1
     {
         Sprite chips;
 
-        public MainBoard(Vector2 position) : base(position){}
+        public MainBoard() : base(Vector2.Zero){}
 
         int[,] board = new int[8, 8];
 
@@ -89,7 +89,45 @@ namespace Game1
         
         void DoMove(int px, int py, int pc)
         {
+            List<Point> directions = new List<Point>() {
+                new Point(-1,-1), new Point(0,-1), new Point(1,-1),
+                new Point(-1, 0), /*   niets    */ new Point(1, 0),
+                new Point(-1, 1), new Point(0, 1), new Point(1, 1)
+            };
+            foreach (Point direction in directions)
+            {
+                int length = CheckDirection(new Point(px, py), direction, pc);
+                if (length > 0)
+                {
+                    for (int i = 1; i <= length; i++)
+                    {
+                        board[px + (direction.X * i), py + (direction.Y * i)] = pc;
+                    }
+                }
+            }
 
+        }
+
+        int CheckDirection(Point lc, Point direction, int pc)
+        {
+            int i = 1;
+            int steps = 0;
+            lc += direction;
+            while (lc.X >= 0 && lc.Y >= 0 && lc.X < 8 && lc.Y < 8 && i > 0)
+            {
+                if (board[lc.X, lc.Y] == pc || board[lc.X, lc.Y] == pc + 4)
+                {
+                    steps = i;
+                    i = -1;
+                }
+                if (board[lc.X, lc.Y] == -1)
+                {
+                    i = -1;
+                }
+                i++;
+                lc += direction;
+            }
+            return steps;
         }
 
         bool CanPlace(int x, int y)

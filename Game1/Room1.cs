@@ -16,15 +16,15 @@ namespace Game1
         SpriteFont Arial;
         public override void Initialize()
         {
-            //Graphics.IsFullScreen = false;
-            //Graphics.PreferredBackBufferHeight = 540;
-            //Graphics.PreferredBackBufferWidth = 960;
-            //View.Scale = new Vector2(0.5f);
-            //Graphics.ApplyChanges();
+            /*Graphics.IsFullScreen = false;
+            Graphics.PreferredBackBufferHeight = 540;
+            Graphics.PreferredBackBufferWidth = 960;
+            View.Scale = new Vector2(0.5f);
+            Graphics.ApplyChanges();//*/
             Mouse.Cursor = MouseCursor.FromTexture2D(Content.Load<Texture2D>("transparant"),0,0);
             View.RotationMode = View.RotationType.Degrees;
             Arial = Content.Load<SpriteFont>("arial");
-            Objects.Add(new MainBoard(Vector2.Zero));
+            Objects.Add(new MainBoard());
         }
 
         public override void Update()
