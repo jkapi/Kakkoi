@@ -25,7 +25,6 @@ namespace Game1
             chips = new Sprite(Room.Content.Load<Texture2D>("chips"));
             Sprite = chips;
             SpriteOrigin = chips.Center;
-            View.Scale = new Vector2(1.0f);
             for (int i = 0; i < 64; i++)
             {
                 board[i % 8, i / 8] = -1;
