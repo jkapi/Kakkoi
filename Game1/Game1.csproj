@@ -59,9 +59,12 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Game1.cs" />
+    <Compile Include="Minigames\FlySwat\Fly.cs" />
+    <Compile Include="Minigames\FlySwat\FlySwat.cs" />
     <Compile Include="StrangerCade.Framework\Keyboard.cs" />
     <Compile Include="StrangerCade.Framework\Mouse.cs" />
     <Compile Include="StrangerCade.Framework\GameObject.cs" />
+    <Compile Include="StrangerCade.Framework\Multiplayer\Socket.cs" />
     <Compile Include="StrangerCade.Framework\Room.cs" />
     <Compile Include="StrangerCade.Framework\Sprite.cs" />
     <Compile Include="StrangerCade.Framework\Tilesheet.cs" />
@@ -141,10 +144,7 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Minigames\" />
-    <Folder Include="StrangerCade.Framework\Multiplayer\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

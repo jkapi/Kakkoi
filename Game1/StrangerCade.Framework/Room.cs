@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Reflection;
 
 namespace StrangerCade.Framework
 {
@@ -233,5 +234,22 @@ namespace StrangerCade.Framework
         /// </summary>
         public virtual void DrawGui()
         { }
+
+        public static Room CurrentRoom;
+
+        public static void GotoRoom(Type room)
+        {
+            var oldContent = CurrentRoom.Content;
+            var oldGraphics = CurrentRoom.Graphics;
+            var oldSpriteBatch = CurrentRoom.sb;
+            CurrentRoom = (Room)Activator.CreateInstance(room);
+            CurrentRoom.Initialize(oldContent, oldGraphics, oldSpriteBatch);
+        }
+
+        public static void LoadRoom(Type room, ContentManager content, GraphicsDeviceManager graphics, SpriteBatch spritebatch)
+        {
+            CurrentRoom = (Room)Activator.CreateInstance(room);
+            CurrentRoom.Initialize(content, graphics, spritebatch);
+        }
     }
 }

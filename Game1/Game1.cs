@@ -10,10 +10,10 @@ namespace Game1
     /// </summary>
     public class Game1 : Game
     {
+        public static bool stopping = false;
+
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-
-        Room1 room;
         
         public Game1()
         {
@@ -46,8 +46,7 @@ namespace Game1
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            room = new Room1();
-            room.Initialize(Content, graphics, spriteBatch);
+            Room.LoadRoom(typeof(Testminigame), Content, graphics, spriteBatch);
         }
 
         /// <summary>
@@ -67,11 +66,17 @@ namespace Game1
         protected override void Update(GameTime gameTime)
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
+            {
+                if (stopping)
+                {
+                    Exit();
+                }
+                stopping = true;
+            }
 
             float dTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
             // TODO: Add your update logic here
-            room.Update(gameTime);
+            Room.CurrentRoom.Update(gameTime);
 
             base.Update(gameTime);
         }
@@ -82,11 +87,11 @@ namespace Game1
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(room.DrawClearColor);
+            GraphicsDevice.Clear(Room.CurrentRoom.DrawClearColor);
 
             spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp);
 
-            room.Draw(gameTime);
+            Room.CurrentRoom.Draw(gameTime);
 
             spriteBatch.End();
 
