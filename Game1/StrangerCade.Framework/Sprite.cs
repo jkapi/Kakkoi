@@ -60,6 +60,7 @@ namespace StrangerCade.Framework
                 }
             }
             SubImageByName.Add("0", texture.Bounds);
+            SubImages.Add(texture.Bounds);
         }
 
         /// <summary>
