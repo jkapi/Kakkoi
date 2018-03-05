@@ -15,7 +15,9 @@ namespace Game1.Minigames.FlySwat
         private Vector2 speed;
         private int waitframes;
         private Rectangle bounds;
+        public bool Destroyed = false;
         bool flying = true;
+
         public Fly(Vector2 position, Vector2 startDirection, int randomSeed, Rectangle bounds) : base(position)
         {
             random = new Random(randomSeed);
@@ -30,12 +32,29 @@ namespace Game1.Minigames.FlySwat
 
         public override void Update()
         {
+            if (waitframes == 0)
+            {
+                flying = (random.Next(0, 6) > 1);
+                speed = new Vector2(random.Next(-1, 1) * 8, random.Next(-1, 1) * 8);
+                if (!flying)
+                {
+                    Position += new Vector2(0, 16);
+                }
+            }
             if (flying)
             {
-                if (waitframes == 0)
+                Position += speed;
+            }
+            else
+            {
+                SpriteIndex = 2;
+            }
+            if (Mouse.Check(MouseButtons.Left))
+            {
+                // If clicked on the fly
+                if ((new Rectangle((Position * Room.View.Scale).ToPoint(), new Point((int)(20 * Room.View.Scale.X), (int)(10 * Room.View.Scale.Y))).Contains(Mouse.Position)))
                 {
-                    flying = (random.Next(0,6) > 1);
-                    speed = new Vector2(random.Next(0, 1) * 8, random.Next(0, 1) * 8);
+                    Destroyed = true;
                 }
             }
         }

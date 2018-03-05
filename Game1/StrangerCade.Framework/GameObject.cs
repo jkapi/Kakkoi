@@ -142,8 +142,11 @@ namespace StrangerCade.Framework
             if (Sprite != null)
             {
                 view.DrawSprite(Sprite, spriteIndex, Position, SpriteScale, SpriteRotation, SpriteOrigin);
+                if (Sprite.SubImages.Count > 1)
+                {
+                    spriteIndex = (int)(SpriteSpeed * gameTime.TotalGameTime.TotalSeconds % (Sprite.SubImages.Count - 1));
+                }
             }
-            spriteIndex = (int)(SpriteSpeed * gameTime.TotalGameTime.TotalSeconds % (Sprite.SubImages.Count - 1));
         }
 
 

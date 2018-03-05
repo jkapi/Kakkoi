@@ -10,11 +10,17 @@ namespace Game1
     /// </summary>
     public class Game1 : Game
     {
+        public static bool stopping = false;
+
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+<<<<<<< HEAD
 
         Room1 room;
+
+=======
         
+>>>>>>> 995faa0252db585ae23c5f4036c411e92ba7a02c
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -46,8 +52,13 @@ namespace Game1
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
+<<<<<<< HEAD
             room = new Room1();
             room.Initialize(Content, graphics, spriteBatch);
+
+=======
+            Room.LoadRoom(typeof(Testminigame), Content, graphics, spriteBatch);
+>>>>>>> 995faa0252db585ae23c5f4036c411e92ba7a02c
         }
 
         /// <summary>
@@ -67,11 +78,18 @@ namespace Game1
         protected override void Update(GameTime gameTime)
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
+            {
+                if (stopping)
+                {
+                    Exit();
+                }
+                stopping = true;
+            }
 
             float dTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
             // TODO: Add your update logic here
-            room.Update(gameTime);
+            Room.CurrentRoom.Update(gameTime);
+
 
             base.Update(gameTime);
         }
@@ -82,11 +100,11 @@ namespace Game1
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(room.DrawClearColor);
+            GraphicsDevice.Clear(Room.CurrentRoom.DrawClearColor);
 
             spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp);
 
-            room.Draw(gameTime);
+            Room.CurrentRoom.Draw(gameTime);
 
             spriteBatch.End();
 

@@ -8,23 +8,31 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using StrangerCade.Framework;
 using Microsoft.Xna.Framework.Input;
+using StrangerCade.Framework.Multiplayer;
+using System.Threading;
 
 namespace Game1
 {
     class Room1 : Room
     {
         SpriteFont Arial;
+
         public override void Initialize()
         {
-            /*Graphics.IsFullScreen = false;
+            Graphics.IsFullScreen = false;
             Graphics.PreferredBackBufferHeight = 540;
             Graphics.PreferredBackBufferWidth = 960;
-            View.Scale = new Vector2(0.5f);
+            //View.Scale = new Vector2(.5f);
             Graphics.ApplyChanges();//*/
             Mouse.Cursor = MouseCursor.FromTexture2D(Content.Load<Texture2D>("transparant"),0,0);
             View.RotationMode = View.RotationType.Degrees;
             Arial = Content.Load<SpriteFont>("arial");
             Objects.Add(new MainBoard());
+<<<<<<< HEAD
+
+=======
+            //new Thread(Client.StartClient).Start();
+>>>>>>> 995faa0252db585ae23c5f4036c411e92ba7a02c
         }
 
         public override void Update()
