@@ -60,7 +60,10 @@
   <ItemGroup>
     <Compile Include="Game1.cs" />
 <<<<<<< HEAD
+<<<<<<< HEAD
     <Compile Include="Minigames\DontTapWhite\Donttapwhite.cs" />
+=======
+>>>>>>> 995faa0252db585ae23c5f4036c411e92ba7a02c
 =======
 >>>>>>> 995faa0252db585ae23c5f4036c411e92ba7a02c
     <Compile Include="Minigames\FlySwat\Fly.cs" />
@@ -149,9 +152,13 @@
     </BootstrapperPackage>
   </ItemGroup>
 <<<<<<< HEAD
+<<<<<<< HEAD
   <ItemGroup>
     <Folder Include="StrangerCade.Framework\Multiplayer\" />
   </ItemGroup>
+=======
+  <ItemGroup />
+>>>>>>> 995faa0252db585ae23c5f4036c411e92ba7a02c
 =======
   <ItemGroup />
 >>>>>>> 995faa0252db585ae23c5f4036c411e92ba7a02c

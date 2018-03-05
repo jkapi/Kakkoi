@@ -29,7 +29,11 @@ namespace Game1
             Arial = Content.Load<SpriteFont>("arial");
             Objects.Add(new MainBoard());
 <<<<<<< HEAD
+<<<<<<< HEAD
 
+=======
+            //new Thread(Client.StartClient).Start();
+>>>>>>> 995faa0252db585ae23c5f4036c411e92ba7a02c
 =======
             //new Thread(Client.StartClient).Start();
 >>>>>>> 995faa0252db585ae23c5f4036c411e92ba7a02c

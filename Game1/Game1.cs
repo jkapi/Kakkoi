@@ -15,10 +15,13 @@ namespace Game1
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 <<<<<<< HEAD
+<<<<<<< HEAD
 
         Room1 room;
 
 =======
+=======
+>>>>>>> 995faa0252db585ae23c5f4036c411e92ba7a02c
         
 >>>>>>> 995faa0252db585ae23c5f4036c411e92ba7a02c
         public Game1()
@@ -53,9 +56,13 @@ namespace Game1
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 <<<<<<< HEAD
+<<<<<<< HEAD
             room = new Room1();
             room.Initialize(Content, graphics, spriteBatch);
 
+=======
+            Room.LoadRoom(typeof(Testminigame), Content, graphics, spriteBatch);
+>>>>>>> 995faa0252db585ae23c5f4036c411e92ba7a02c
 =======
             Room.LoadRoom(typeof(Testminigame), Content, graphics, spriteBatch);
 >>>>>>> 995faa0252db585ae23c5f4036c411e92ba7a02c
@@ -89,7 +96,10 @@ namespace Game1
             float dTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
             // TODO: Add your update logic here
             Room.CurrentRoom.Update(gameTime);
+<<<<<<< HEAD
 
+=======
+>>>>>>> 995faa0252db585ae23c5f4036c411e92ba7a02c
 
             base.Update(gameTime);
         }
