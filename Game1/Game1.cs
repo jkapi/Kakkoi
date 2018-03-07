@@ -18,7 +18,7 @@ namespace Game1
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
-            graphics.IsFullScreen = true;
+            graphics.IsFullScreen = false;
             graphics.PreferredBackBufferHeight = 1080;
             graphics.PreferredBackBufferWidth = 1920;
             IsMouseVisible = false;
@@ -46,7 +46,7 @@ namespace Game1
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            Room.LoadRoom(typeof(Testminigame), Content, graphics, spriteBatch);
+            Room.LoadRoom(typeof(Minigames.QuizAfvalRace.Quiz_Room), Content, graphics, spriteBatch);
         }
 
         /// <summary>
