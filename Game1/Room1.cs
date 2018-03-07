@@ -28,7 +28,6 @@ namespace Game1
             View.RotationMode = View.RotationType.Degrees;
             Arial = Content.Load<SpriteFont>("arial");
             Objects.Add(new MainBoard());
-            //new Thread(Client.StartClient).Start();
         }
 
         public override void Update()

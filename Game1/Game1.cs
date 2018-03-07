@@ -46,7 +46,11 @@ namespace Game1
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
+<<<<<<< HEAD
             Room.LoadRoom(typeof(Minigames.QuizAfvalRace.Quiz_Room), Content, graphics, spriteBatch);
+=======
+            Room.LoadRoom(typeof(Minigames.FlySwat.FlySwat), Content, graphics, spriteBatch);
+>>>>>>> ef36277cdf14f110e28c93d030ae6aa20f016817
         }
 
         /// <summary>
