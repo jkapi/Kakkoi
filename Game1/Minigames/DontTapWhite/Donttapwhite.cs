@@ -12,10 +12,9 @@ namespace Game1.Minigames.DontTapWhite
 {
     class Donttapwhite : Room 
     {
-
-        public override void Initialize()
+        public Donttapwhite()
         {
-            Objects.Add(new Game());
+                
         }
 
         public override void Update()

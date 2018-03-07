@@ -60,6 +60,8 @@
   <ItemGroup>
     <Compile Include="Game1.cs" />
     <Compile Include="Minigames\DontTapWhite\Donttapwhite.cs" />
+    <Compile Include="Minigames\DontTapWhite\Game.cs" />
+    <Compile Include="Minigames\DontTapWhite\System.cs" />
     <Compile Include="Minigames\FlySwat\Fly.cs" />
     <Compile Include="Minigames\FlySwat\FlySwat.cs" />
     <Compile Include="StrangerCade.Framework\Keyboard.cs" />
@@ -145,9 +147,7 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="StrangerCade.Framework\Multiplayer\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup />
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
