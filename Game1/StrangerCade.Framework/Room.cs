@@ -136,7 +136,7 @@ namespace StrangerCade.Framework
             int roomWidth = Graphics.PreferredBackBufferWidth;
             int roomHeight = Graphics.PreferredBackBufferHeight;
 
-            foreach (GameObject obj in Objects)
+            foreach (GameObject obj in Objects.ToList())
             {
                 if (DeActivateOutsideWindow)
                 {
