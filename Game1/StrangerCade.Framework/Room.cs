@@ -53,7 +53,7 @@ namespace StrangerCade.Framework
         /// <summary>
         /// List of GameObjects. All the Initialize, Update and Draw functions in this list will be called by the room.
         /// </summary>
-        public List<GameObject> Objects;
+        public GameObjectList Objects;
         /// <summary>
         /// Set to true to disable calling Update and Draw on objects that are not visible on the screen.
         /// </summary>
@@ -80,7 +80,7 @@ namespace StrangerCade.Framework
             Graphics = graphics;
             GraphicsDevice = graphics.GraphicsDevice;
             sb = spriteBatch;
-            Objects = new List<GameObject>();
+            Objects = new GameObjectList(this);
             View = new View();
             View.Initialize(sb, GraphicsDevice);
             Keyboard = new GMKeyboard();
@@ -250,6 +250,35 @@ namespace StrangerCade.Framework
         {
             CurrentRoom = (Room)Activator.CreateInstance(room);
             CurrentRoom.Initialize(content, graphics, spritebatch);
+        }
+    }
+
+    class GameObjectList : List<GameObject>
+    {
+        private Room room = new Room();
+
+
+        public GameObjectList(Room room)
+        {
+            this.room = room;
+        }
+
+
+        public new void Add(GameObject obj)
+        {
+            base.Add(obj);
+            obj.PreInitialize(room);
+            obj.Initialize();
+        }
+
+        public new void AddRange(IEnumerable<GameObject> objects)
+        {
+            base.AddRange(objects);
+            foreach (GameObject obj in objects)
+            {
+                obj.PreInitialize(room);
+                obj.Initialize();
+            }
         }
     }
 }
