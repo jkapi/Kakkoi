@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,7 @@ namespace StrangerCade.Framework.UI
         public SpriteFont Font;
         public string Text;
 
-        public Color ColorBackground = Color.WhiteSmoke;
+        public Color ColorBackground = Color.LightSteelBlue;
         public Color ColorBorder = Color.Black;
         public Color ColorText = Color.Black;
         public Color ColorPlaceholder = Color.Gray;
@@ -45,6 +46,13 @@ namespace StrangerCade.Framework.UI
             Size = size;
         }
 
+        public Button(Rectangle bounds, SpriteFont font, string text) : base(bounds.Location.ToVector2())
+        {
+            Font = font;
+            Text = text;
+            Size = bounds.Size.ToVector2();
+        }
+
         public override void Update()
         {
             if (Clicked)
@@ -67,13 +75,18 @@ namespace StrangerCade.Framework.UI
             if (Bounds.Contains(Mouse.Position))
             {
                 Hover = true;
-                if (Mouse.CheckPressed(MouseButtons.Left))
+                if (Mouse.CheckReleased(MouseButtons.Left))
                 {
                     Clicked = true;
                 }
+                Mouse.Cursor = MouseCursor.Hand;
             }
             else
             {
+                if (Hover == true)
+                {
+                    Mouse.Cursor = Mouse.DefaultCursor;
+                }
                 Hover = false;
             }
         }

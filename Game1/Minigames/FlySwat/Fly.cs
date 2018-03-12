@@ -14,20 +14,18 @@ namespace Game1.Minigames.FlySwat
         private Random random;
         private Vector2 speed;
         private int waitframes;
-        private Rectangle bounds;
-        public bool Destroyed = false;
         bool flying = true;
+        private Rectangle Bounds { get { return new Rectangle((int)Position.X - 5, (int)Position.Y - 11, Sprite.Width + 10, Sprite.Height + 22); } }
 
-        public Fly(Vector2 position, Vector2 startDirection, int randomSeed, Rectangle bounds) : base(position)
+        public Fly(Vector2 position, Vector2 startDirection, int randomSeed) : base(position)
         {
             random = new Random(randomSeed);
-            this.bounds = bounds;
         }
 
         public override void Initialize()
         {
             Sprite = new Sprite(Room.Content.Load<Texture2D>("minigame/flyswat/fly"), 2);
-            SpriteSpeed = 10;
+            SpriteSpeed = 5;
         }
 
         public override void Update()
@@ -35,11 +33,12 @@ namespace Game1.Minigames.FlySwat
             if (waitframes == 0)
             {
                 flying = (random.Next(0, 6) > 1);
-                speed = new Vector2(random.Next(-1, 1) * 8, random.Next(-1, 1) * 8);
+                speed = new Vector2(random.Next(-8, 8), random.Next(-8, 8));
                 if (!flying)
                 {
                     Position += new Vector2(0, 16);
                 }
+                waitframes = random.Next(10, 30) * (flying ? 1: 2);
             }
             if (flying)
             {
@@ -47,14 +46,15 @@ namespace Game1.Minigames.FlySwat
             }
             else
             {
-                SpriteIndex = 2;
+                SpriteIndex = 0;
             }
-            if (Mouse.Check(MouseButtons.Left))
+            waitframes--;
+            if (Mouse.CheckPressed(MouseButtons.Left))
             {
                 // If clicked on the fly
-                if ((new Rectangle((Position * Room.View.Scale).ToPoint(), new Point((int)(20 * Room.View.Scale.X), (int)(10 * Room.View.Scale.Y))).Contains(Mouse.Position)))
+                if (Bounds.Contains(Mouse.Position))
                 {
-                    Destroyed = true;
+                    Room.Objects.Remove(this);
                 }
             }
         }

@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Game1.StrangerCade.Framework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using StrangerCade.Framework;
@@ -17,6 +18,8 @@ namespace Game1
         
         public Game1()
         {
+            Logger.WriteLine("Started Kakoi");
+            Logger.WriteLine("Starting GraphicsDevice");
             graphics = new GraphicsDeviceManager(this);
             graphics.IsFullScreen = false;
             graphics.PreferredBackBufferHeight = 1080;
@@ -44,13 +47,11 @@ namespace Game1
         /// </summary>
         protected override void LoadContent()
         {
+            Logger.WriteLine("Creating SpriteBatch");
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-<<<<<<< HEAD
-            Room.LoadRoom(typeof(Minigames.QuizAfvalRace.Quiz_Room), Content, graphics, spriteBatch);
-=======
-            Room.LoadRoom(typeof(Minigames.FlySwat.FlySwat), Content, graphics, spriteBatch);
->>>>>>> ef36277cdf14f110e28c93d030ae6aa20f016817
+            Logger.WriteLine("Loading room: DebugRoom");
+            Room.LoadRoom(typeof(Rooms.DebugRoom), Content, graphics, spriteBatch);
         }
 
         /// <summary>
@@ -69,21 +70,24 @@ namespace Game1
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+            var kb = Keyboard.GetState();
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || kb.IsKeyDown(Keys.Escape))
             {
-                if (stopping)
-                {
-                    Exit();
-                }
-                stopping = true;
+                Logger.WriteLine("Exiting");
+                Exit();
             }
-
+            if (kb.IsKeyDown(Keys.OemTilde))
+            {
+                Logger.WriteLine("Going to Debug Room");
+                Room.GotoRoom(typeof(Rooms.DebugRoom));
+            }
             float dTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
             // TODO: Add your update logic here
             Room.CurrentRoom.Update(gameTime);
 
             base.Update(gameTime);
         }
+
 
         /// <summary>
         /// This is called when the game should draw itself.
