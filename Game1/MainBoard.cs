@@ -7,9 +7,8 @@ using StrangerCade.Framework;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using System.Diagnostics;
 
-namespace Game1.Rooms
+namespace Game1
 {
     class MainBoard : GameObject
     {

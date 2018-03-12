@@ -54,7 +54,7 @@ namespace StrangerCade.Framework
                 rotation = Deg2Rad(rotation);
             }
             Vector2 _origin = origin ?? Vector2.Zero;
-            subimg = Math.Min(Math.Max(subimg, 0), sprite.SubImages.Count - 1);
+            subimg = Math.Min(Math.Max(subimg, sprite.SubImages.Count - 1), 0);
             _spriteBatch.Draw(sprite.Texture, (position * Scale) - Location, sprite.SubImages[subimg], _color, rotation, _origin, _scale, spriteEffect, depth);
         }
 

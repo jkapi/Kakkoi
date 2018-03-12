@@ -10,12 +10,8 @@ using System.Threading.Tasks;
 
 namespace StrangerCade.Framework.Multiplayer
 {
-    /// <summary>
-    /// The client networking handler
-    /// </summary>
     public class Client
     {
-        public static bool Connected = false;
         public static void StartClient()
         {
             IPAddress ip = IPAddress.Parse("127.0.0.1");
