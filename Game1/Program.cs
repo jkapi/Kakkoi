@@ -1,4 +1,5 @@
-﻿using System;
+﻿using StrangerCade.Framework.Multiplayer;
+using System;
 
 namespace Game1
 {
@@ -16,6 +17,7 @@ namespace Game1
             //AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(StrangerCade.Framework.Logger.Exception);
             using (var game = new Game1())
                 game.Run();
+            MultiplayerClient.Disconnect();
         }
     }
 }
