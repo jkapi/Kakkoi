@@ -14,7 +14,8 @@ namespace Game1.Minigames.DontTapWhite
     {
         public Donttapwhite()
         {
-                
+
+            Objects.Add(new Game());
         }
 
         public override void Update()
