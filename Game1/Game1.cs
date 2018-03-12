@@ -76,7 +76,7 @@ namespace Game1
                 Logger.WriteLine("Exiting");
                 Exit();
             }
-            if (kb.IsKeyDown(Keys.F7) && kb.IsKeyDown(Keys.LeftAlt))
+            if (kb.IsKeyDown(Keys.OemTilde))
             {
                 Logger.WriteLine("Going to Debug Room");
                 Room.GotoRoom(typeof(DebugRoom));
