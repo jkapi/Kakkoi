@@ -21,7 +21,7 @@ namespace Game1
             Logger.WriteLine("Started Kakoi");
             Logger.WriteLine("Starting GraphicsDevice");
             graphics = new GraphicsDeviceManager(this);
-            graphics.IsFullScreen = true;
+            graphics.IsFullScreen = false;
             graphics.PreferredBackBufferHeight = 1080;
             graphics.PreferredBackBufferWidth = 1920;
             IsMouseVisible = false;
