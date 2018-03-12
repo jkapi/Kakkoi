@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
@@ -106,6 +107,28 @@ namespace StrangerCade.Framework
             }
             ret /= movementHistoryLength;
             return ret;
+        }
+
+        public void SetCursor(Texture2D texture, Point origin)
+        {
+            Cursor = MouseCursor.FromTexture2D(texture, origin.X, origin.Y);
+        }
+        public void SetCursor(Sprite sprite, int subimg, Point origin)
+        {
+            Color[] imageData = new Color[sprite.Texture.Width * sprite.Texture.Height];
+            sprite.Texture.GetData<Color>(imageData);
+            Texture2D texture = new Texture2D(sprite.Texture.GraphicsDevice, sprite.Width, sprite.Height);
+            texture.SetData<Color>(GetImageData(imageData, sprite.Texture.Width, sprite.SubImages[subimg]));
+            Cursor = MouseCursor.FromTexture2D(texture, origin.X, origin.Y);
+        }
+
+        private Color[] GetImageData(Color[] colorData, int width, Rectangle rectangle)
+        {
+            Color[] color = new Color[rectangle.Width * rectangle.Height];
+            for (int x = 0; x < rectangle.Width; x++)
+                for (int y = 0; y < rectangle.Height; y++)
+                    color[x + y * rectangle.Width] = colorData[x + rectangle.X + (y + rectangle.Y) * width];
+            return color;
         }
     }
 
