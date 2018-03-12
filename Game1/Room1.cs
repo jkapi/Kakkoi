@@ -22,7 +22,7 @@ namespace Game1
             Graphics.IsFullScreen = false;
             Graphics.PreferredBackBufferHeight = 540;
             Graphics.PreferredBackBufferWidth = 960;
-            //View.Scale = new Vector2(.5f);
+            View.Scale = new Vector2(.5f);
             Graphics.ApplyChanges();//*/
             Mouse.Cursor = MouseCursor.FromTexture2D(Content.Load<Texture2D>("transparant"),0,0);
             View.RotationMode = View.RotationType.Degrees;
