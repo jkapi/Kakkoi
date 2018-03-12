@@ -11,12 +11,7 @@ using Microsoft.Xna.Framework.Input;
 using StrangerCade.Framework.Multiplayer;
 using System.Threading;
 
-<<<<<<< HEAD:Game1/Room1.cs
-
-namespace Game1
-=======
 namespace Game1.Rooms
->>>>>>> 531dac4a5dc8eb6c51ff3c87db1ba19ea9418d6a:Game1/Rooms/Room1.cs
 {
     class Room1 : Room
     {
