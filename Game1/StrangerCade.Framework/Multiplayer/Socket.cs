@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
@@ -13,34 +14,47 @@ namespace StrangerCade.Framework.Multiplayer
     /// <summary>
     /// The client networking handler
     /// </summary>
-    public class Client
+    public class MultiplayerClient
     {
         public static bool Connected = false;
+        private static TcpClient client;
+        private static Thread RecieveThread;
+        public static string RecieveString = "";
         public static void StartClient()
         {
             IPAddress ip = IPAddress.Parse("127.0.0.1");
             int port = 5000;
-            TcpClient client = new TcpClient();
+            client = new TcpClient();
             client.Connect(ip, port);
             Debug.WriteLine("client connected!!");
+            Connected = true;
             NetworkStream ns = client.GetStream();
-            Thread thread = new Thread(o => ReceiveData((TcpClient)o));
+            RecieveThread = new Thread(o => ReceiveData((TcpClient)o));
 
-            thread.Start(client);
+            RecieveThread.Start(client);
+        }
 
-            string s;
-            while (Game1.Game1.stopping == false)
+        public static void SendData(string message)
+        {
+            if (Connected)
             {
-                byte[] buffer = Encoding.ASCII.GetBytes("Hallo ");
+                NetworkStream ns = client.GetStream();
+                byte[] buffer = Encoding.ASCII.GetBytes(message);
                 ns.Write(buffer, 0, buffer.Length);
-                Thread.Sleep(2000);
             }
+        }
 
-            client.Client.Shutdown(SocketShutdown.Send);
-            thread.Join();
-            ns.Close();
-            client.Close();
-            Debug.WriteLine("disconnect from server!!");
+        public static void Disconnect()
+        {
+            if (Connected)
+            {
+                client.Client.Shutdown(SocketShutdown.Send);
+                Connected = false;
+                RecieveThread.Join();
+                client.GetStream().Close();
+                client.Close();
+                Debug.WriteLine("disconnect from server!!");
+            }
         }
 
         static void ReceiveData(TcpClient client)
@@ -51,7 +65,7 @@ namespace StrangerCade.Framework.Multiplayer
 
             while ((byte_count = ns.Read(receivedBytes, 0, receivedBytes.Length)) > 0)
             {
-                Debug.WriteLine(Encoding.ASCII.GetString(receivedBytes, 0, byte_count));
+                RecieveString += Encoding.ASCII.GetString(receivedBytes, 0, byte_count);
             }
         }
     }
