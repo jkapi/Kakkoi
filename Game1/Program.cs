@@ -13,7 +13,7 @@ namespace Game1
         [STAThread]
         static void Main()
         {
-            AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(StrangerCade.Framework.Logger.Exception);
+            //AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(StrangerCade.Framework.Logger.Exception);
             using (var game = new Game1())
                 game.Run();
         }
