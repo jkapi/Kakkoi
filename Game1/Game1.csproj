@@ -58,7 +58,7 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="DebugRoom.cs" />
+    <Compile Include="Rooms\DebugRoom.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="Minigames\DontTapWhite\Donttapwhite.cs" />
     <Compile Include="Minigames\FlySwat\Fly.cs" />
@@ -76,12 +76,12 @@
     <Compile Include="StrangerCade.Framework\UI\Button.cs" />
     <Compile Include="StrangerCade.Framework\View.cs" />
     <Compile Include="StrangerCade.Framework\UI\TextBox.cs" />
-    <Compile Include="MainBoard.cs" />
+    <Compile Include="Rooms\MainBoard.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Room1.cs" />
-    <Compile Include="testminigame.cs" />
+    <Compile Include="Rooms\Room1.cs" />
+    <Compile Include="Rooms\testminigame.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework">

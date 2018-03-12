@@ -4,12 +4,13 @@ using StrangerCade.Framework;
 using StrangerCade.Framework.UI;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Game1
+namespace Game1.Rooms
 {
     class DebugRoom : Room
     {

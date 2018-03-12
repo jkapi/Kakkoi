@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Diagnostics;
 
-namespace Game1
+namespace Game1.Rooms
 {
     class MainBoard : GameObject
     {

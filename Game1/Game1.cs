@@ -51,7 +51,7 @@ namespace Game1
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             Logger.WriteLine("Loading room: DebugRoom");
-            Room.LoadRoom(typeof(DebugRoom), Content, graphics, spriteBatch);
+            Room.LoadRoom(typeof(Rooms.DebugRoom), Content, graphics, spriteBatch);
         }
 
         /// <summary>
@@ -79,7 +79,7 @@ namespace Game1
             if (kb.IsKeyDown(Keys.OemTilde))
             {
                 Logger.WriteLine("Going to Debug Room");
-                Room.GotoRoom(typeof(DebugRoom));
+                Room.GotoRoom(typeof(Rooms.DebugRoom));
             }
             float dTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
             // TODO: Add your update logic here
@@ -87,6 +87,7 @@ namespace Game1
 
             base.Update(gameTime);
         }
+
 
         /// <summary>
         /// This is called when the game should draw itself.

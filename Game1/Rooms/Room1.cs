@@ -11,7 +11,7 @@ using Microsoft.Xna.Framework.Input;
 using StrangerCade.Framework.Multiplayer;
 using System.Threading;
 
-namespace Game1
+namespace Game1.Rooms
 {
     class Room1 : Room
     {
@@ -19,10 +19,6 @@ namespace Game1
 
         public override void Initialize()
         {
-            Graphics.IsFullScreen = false;
-            Graphics.PreferredBackBufferHeight = 540;
-            Graphics.PreferredBackBufferWidth = 960;
-            View.Scale = new Vector2(.5f);
             Graphics.ApplyChanges();//*/
             Mouse.Cursor = MouseCursor.FromTexture2D(Content.Load<Texture2D>("transparant"),0,0);
             View.RotationMode = View.RotationType.Degrees;
