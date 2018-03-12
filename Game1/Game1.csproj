@@ -58,11 +58,13 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="DebugRoom.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="Minigames\DontTapWhite\Donttapwhite.cs" />
     <Compile Include="Minigames\FlySwat\Fly.cs" />
     <Compile Include="Minigames\FlySwat\FlySwat.cs" />
     <Compile Include="StrangerCade.Framework\Keyboard.cs" />
+    <Compile Include="StrangerCade.Framework\Logger.cs" />
     <Compile Include="StrangerCade.Framework\Mouse.cs" />
     <Compile Include="StrangerCade.Framework\GameObject.cs" />
     <Compile Include="StrangerCade.Framework\Multiplayer\Socket.cs" />
@@ -145,9 +147,7 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="StrangerCade.Framework\Multiplayer\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup />
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

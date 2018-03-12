@@ -208,11 +208,19 @@ namespace StrangerCade.Framework.UI
         /// </summary>
         private void HandleMouse()
         {
+            bool wasHovered = Hover;
             Hover = bounds.Contains(Mouse.Position);
 
             if (Hover)
             {
                 Mouse.Cursor = MouseCursor.IBeam;
+            }
+            else
+            {
+                if (wasHovered)
+                {
+                    Mouse.Cursor = Mouse.DefaultCursor;
+                }
             }
 
             if (Mouse.CheckPressed(MouseButtons.Left))
