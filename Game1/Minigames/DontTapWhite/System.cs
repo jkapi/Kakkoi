@@ -7,7 +7,12 @@ using System.Threading.Tasks;
 
 namespace Game1.Minigames.DontTapWhite
 {
-    //class System : GameObject
-    //{
-    //}
+    class System
+    {
+        public int time { get; set; }
+        public int score { get; set; }
+        public int stateOfGame { get; set; }
+        public int life { get; set; }
+
+    }
 }
