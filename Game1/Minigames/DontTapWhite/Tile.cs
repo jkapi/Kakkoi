@@ -56,26 +56,39 @@ namespace Game1.Minigames.DontTapWhite
             totalTiles[positionTile] = this;
         }
 
+        //Init the totalTiles.
+        static public void InitTotalTiles(int TilesCount)
+        {
+            totalTiles = new Tile[TilesCount];
+        }
+
+        //Draws the tile on the screen
         public void DrawTile(Tile aTile)
         {
             View.DrawRectangle(aTile.tile, aTile.outline, aTile.color);
         }
-
+        //Generate a random number between 0 and totalTiles.Count
         static public int GetRandomTilePos()
         {
             Random tileNum = new Random();
             return tileNum.Next(0, totalTiles.GetLength(0));
         }
-
+        //Generate a random number between the given numbers.
         static public int GetRandomTilePos(int start, int end)
         {
             Random tileNum = new Random();
             return tileNum.Next(start, end);
         }
 
-        static public void InitTotalTiles(int TilesCount)
+        public void ChangeTilePosition(Tile Tile, int NewPosition)
         {
-            totalTiles = new Tile[TilesCount];
+            foreach (Tile aTile in totalTiles)
+            {
+                if (aTile.positionTile == Tile.positionTile)
+                {
+                    aTile.positionTile = NewPosition;
+                }
+            }
         }
     }
 }

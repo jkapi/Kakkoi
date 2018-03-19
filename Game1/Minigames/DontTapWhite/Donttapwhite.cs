@@ -7,43 +7,60 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using StrangerCade.Framework;
 using Microsoft.Xna.Framework.Input;
+using StrangerCade.Framework.UI;
 
 namespace Game1.Minigames.DontTapWhite
 {
     class Donttapwhite : Room 
     {
+        //----DESIGN RELATED----//
         int[,] grid;
         public int gridDimensionLengthX { get; private set; }
         public int gridDimensionLengthY { get; private set; }
-
-        List<Tile> whiteTiles = new List<Tile>();
-
-
         //Field
         public Rectangle rec { get; private set; }
 
-        //Properties of the tile
+        //Available tiles to change to click tiles.
+        List<Tile> whiteTiles = new List<Tile>();
+
+        //Properties of the tile.
         public int widthLengthTile { get; private set; }
         public int heightLengthTile { get; private set; }
 
-        //Spawn delay Click tile
-        int delay;
+        //Spawn delay Click tile.
+        public int delay { get; private set; }
 
-        Vector2 mousePos;
+        //----GAME SYSTEM RELATED----//
+        public int stateOfGame { get; private set; }
+        public List<Player> currentPlayerList { get; private set; }
 
+        SpriteFont Arial;
+
+        Button testBtn;
+
+        //----CONSTRUCTORS+METHODS----//
         public override void Initialize()
         {
-            grid = getRandomGrid();
-            gridDimensionLengthX = grid.GetLength(0);
-            gridDimensionLengthY = grid.GetLength(1);
-            rec = new Rectangle(Graphics.PreferredBackBufferWidth / 2 - Graphics.PreferredBackBufferWidth / 4, 0, Graphics.PreferredBackBufferWidth / 2, Graphics.PreferredBackBufferHeight);
-            widthLengthTile = rec.Width / gridDimensionLengthX;
-            heightLengthTile = rec.Height / gridDimensionLengthY;
-            Tile.InitTotalTiles(grid.GetLength(0) * grid.GetLength(1));
-            InitPlayground();
-            delay = 20;
+            stateOfGame = 0;
+            if (stateOfGame == 0)
+            {
+                Arial = Content.Load<SpriteFont>("Arial");
+                testBtn = new Button(new Vector2(20, 80), new Vector2(200, 30), Arial, "Start");
+                testBtn.OnClick += startGame;
+                Objects.Add(testBtn);
+                //
+                grid = getRandomGrid();
+                gridDimensionLengthX = grid.GetLength(0);
+                gridDimensionLengthY = grid.GetLength(1);
+                rec = new Rectangle(Graphics.PreferredBackBufferWidth / 2 - Graphics.PreferredBackBufferWidth / 4, 0, Graphics.PreferredBackBufferWidth / 2, Graphics.PreferredBackBufferHeight);
+                widthLengthTile = rec.Width / gridDimensionLengthX;
+                heightLengthTile = rec.Height / gridDimensionLengthY;
+                Tile.InitTotalTiles(grid.GetLength(0) * grid.GetLength(1));
+                InitPlayground();
+                delay = 20;
+            }
         }
-
+        // returns a random grid(4x4,6x6,8x8)
         public int[,] getRandomGrid()
         {
             List<int[,]> listGrids = new List<int[,]>();
@@ -62,81 +79,96 @@ namespace Game1.Minigames.DontTapWhite
 
         public override void Update()
         {
-            if (Mouse.CheckPressed(MouseButtons.Left))
+            if (stateOfGame == 1)
             {
-                mousePos = Mouse.Position;
-            }
-            foreach (Tile aTile in Tile.totalTiles)
-            {
-                if (mousePos.X > aTile.position.X & mousePos.X < aTile.position.X + aTile.tile.Width & mousePos.Y > aTile.position.Y & mousePos.Y < aTile.position.Y + aTile.tile.Height)
+                foreach (Tile aTile in Tile.totalTiles)
                 {
-                    aTile.color = Color.Gray;
-                    aTile.outline = true;
+                    if (GetMouseLeftClickedPos().X > aTile.position.X & GetMouseLeftClickedPos().X < aTile.position.X + aTile.tile.Width & GetMouseLeftClickedPos().Y > aTile.position.Y & GetMouseLeftClickedPos().Y < aTile.position.Y + aTile.tile.Height)
+                    {
+                        if (aTile.color == Color.Gray)
+                        {
+                            stateOfGame++;
+                            //yet to make player life = 0;
+                        }
+                        if (aTile.color == Color.Black)
+                        {
+                            aTile.color = Color.Gray;
+                            aTile.outline = true;
+                        }
+                    }
 
                 }
             }
         }
         public override void Draw()
         {
-            //draw the grid
+            View.DrawText(Arial, "Waiting for players", new Vector2(20, 40));
+            //draw the tiles on the field.
             foreach (Tile aTile in Tile.totalTiles)
             {
                 View.DrawRectangle(aTile.tile, aTile.outline, aTile.color);
             }
-            //spawn the click tiles.
-            if (delay < 0)
+            if (stateOfGame == 1)
             {
-                foreach (Tile aTile in Tile.totalTiles)
+                //spawn the click tiles.
+                if (delay < 0)
                 {
-                    if (aTile.color == Color.Gray)
-                    {
-                        whiteTiles.Add(aTile);
-                    }
-                }
-
-                if (whiteTiles.Count > 0)
-                {
-                    Tile currentTile = whiteTiles[Tile.GetRandomTilePos(0, whiteTiles.Count)];
                     foreach (Tile aTile in Tile.totalTiles)
                     {
-                        if (aTile.positionTile == currentTile.positionTile)
+                        if (aTile.color == Color.Gray)
                         {
-                            aTile.outline = false;
-                            aTile.color = Color.Black;
+                            whiteTiles.Add(aTile);
                         }
                     }
+
+                    if (whiteTiles.Count > 0)
+                    {
+                        Tile currentTile = whiteTiles[Tile.GetRandomTilePos(0, whiteTiles.Count)];
+                        foreach (Tile aTile in Tile.totalTiles)
+                        {
+                            if (aTile.positionTile == currentTile.positionTile)
+                            {
+                                aTile.outline = false;
+                                aTile.color = Color.Black;
+                            }
+                        }
+                    }
+                    whiteTiles.Clear();
+                    delay = 20;
                 }
-                whiteTiles.Clear();
-                delay = 20;
-            }
-            else
-            {
-                delay--;
+                else
+                {
+                    delay--;
+                }
             }
         }
 
+        private void startGame(object sender, EventArgs e)
+        {
+            stateOfGame++;
+            if (stateOfGame > 2)
+            {
+                stateOfGame = 0;
+                return;
+            }
+        }
+
+        //Return mouse click position
+        public Vector2 GetMouseLeftClickedPos()
+        {
+            if (Mouse.CheckPressed(MouseButtons.Left))
+            {
+                 return Mouse.Position;
+            }
+            return new Vector2(-1, -1);
+        }
+        //Init the tiles, but isnt drawn yet
         public void InitPlayground()
         {
-            //The main grid
-            //View.DrawColor = Color.Black;
-            //new Point(rec.X + rec.Width / 2, rec.Bottom);
-            //View.DrawRectangle(rec, true);
+            //Width and height of the tile.
             int widthLengthTile = rec.Width / gridDimensionLengthX;
             int heightLengthTile = rec.Height / gridDimensionLengthY;
-            //Fill the grid with rectangles
-            //for (int y = 1; y < gridDimensionLength + 1; y++)
-            //{
-            //    for (int x = 1; x < gridDimensionLength + 1; x++)
-            //    {
-            //        float startX = (widthLengthTile * x) + rec.X;
-            //        float startY = (heightLengthTile * y) + rec.Y;
-            //        Rectangle tileRec = new Rectangle(Convert.ToInt32(startX), Convert.ToInt32(startY), widthLengthTile, heightLengthTile);
-            //        //Tile currentTile = new Tile(tileRec, Color.Yellow, true, grid.GetLength(0));
-            //        //currentTile.DrawTile();
-
-            //        View.DrawRectangle(tileRec, true, Color.Yellow);
-            //    }
-            //}
+            //Fill the field with rectangles.
             int countX = 0;
             int countY = 0;
             for (int i = 0; i < grid.GetLength(0) * grid.GetLength(1); i++)
@@ -164,12 +196,5 @@ namespace Game1.Minigames.DontTapWhite
                 }
             }
         }
-
-        //public void DrawClickTile(Tile Tile)
-        //{
-        //    View.DrawRectangle(Tile.tile, false, Color.Black);
-        //    Tile.color = Color.Black;
-        //    Tile.outline = false;
-        //}
     }
 }

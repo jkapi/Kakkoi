@@ -62,7 +62,7 @@
     <Compile Include="Rooms\DebugRoom.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="Minigames\DontTapWhite\Donttapwhite.cs" />
-    <Compile Include="Minigames\DontTapWhite\System.cs" />
+    <Compile Include="Minigames\DontTapWhite\Player.cs" />
     <Compile Include="Minigames\FlySwat\Fly.cs" />
     <Compile Include="Minigames\FlySwat\FlySwat.cs" />
     <Compile Include="Minigames\QuizAfvalRace\Quiz_Room.cs" />
