@@ -1,5 +1,6 @@
 ﻿using StrangerCade.Framework.Multiplayer;
 using System;
+using System.Windows.Forms;
 
 namespace Game1
 {
@@ -15,8 +16,9 @@ namespace Game1
         static void Main()
         {
             //AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(StrangerCade.Framework.Logger.Exception);
-            using (var game = new Game1())
-                game.Run();
+            //using (var game = new Game1())
+            //    game.Run();
+            Application.Run(new Minigames.QuizAfvalRace.Form1());
             MultiplayerClient.Disconnect();
         }
     }
