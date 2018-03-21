@@ -11,11 +11,16 @@ namespace Game1
     /// </summary>
     public class Game1 : Game
     {
+        /// <summary>
+        /// 
+        /// </summary>
         public static bool stopping = false;
 
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        
+        /// <summary>
+        /// 
+        /// </summary>
         public Game1()
         {
             Logger.WriteLine("Started Kakoi");

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StrangerCade.Framework;
+using StrangerCade.Framework.Multiplayer;
 using StrangerCade.Framework.UI;
 using System;
 using System.Collections.Generic;
@@ -19,7 +20,8 @@ namespace Game1.Rooms
         {
             Graphics.PreferredBackBufferWidth = 1920;
             Graphics.PreferredBackBufferHeight = 1080;
-            Graphics.IsFullScreen = true;
+            Graphics.IsFullScreen = false;
+            Graphics.ApplyChanges();
             Mouse.Cursor = Mouse.DefaultCursor;
             var rooms = GetAllRooms();
             for (int i = 0; i < rooms.Count; i++)
@@ -37,7 +39,7 @@ namespace Game1.Rooms
 
         private void LoginButton_OnClick(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            MultiplayerClient.StartClient();
         }
 
         private void RoomButtonHandler(object sender, EventArgs e)
@@ -58,6 +60,7 @@ namespace Game1.Rooms
             View.DrawText(Arial, "Rooms: ", new Vector2(12, 10));
             View.DrawText(Arial, "Multiplayer", new Vector2(1290, 10), null, 0, null, 0, new Vector2(2));
             View.DrawText(Arial, "Login: ", new Vector2(1290, 50));
+            View.DrawText(Arial, String.Join("\n",MultiplayerClient.RecieveString.Split('\n').Reverse().Take(Math.Min(MultiplayerClient.RecieveString.Split('\n').Length, 40)).Reverse()), new Vector2(1290, 120));
         }
 
         public List<Type> GetAllRooms()

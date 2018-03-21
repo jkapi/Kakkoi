@@ -14,16 +14,16 @@ namespace Game1.Minigames.QuizAfvalRace
     {
         private SpriteFont arial;
 
-        private Sprite sprite;
-        
+        //private Sprite sprite;
+        public Sprite sprite { get; private set; }
 
-        
+
         public override void Initialize()
         {
             sprite = new Sprite(Content.Load<Texture2D>("Muur"));
-            Objects.Add(new Test_object(new Vector2(2000,2000)));
-
+            Objects.Add(new Test_object(new Vector2(0,0)));
             arial = Content.Load<SpriteFont>("Jokerman");
+
             //var button = new Button(new Vector2(400,200), new Vector2(2000,4), arial, "Klik");
             //Objects.Add(button);
            // button.OnClick += Button_OnClick;
@@ -40,7 +40,7 @@ namespace Game1.Minigames.QuizAfvalRace
         }
         public override void Draw()
         {
-            View.DrawSprite(sprite, 0, new Vector2(0, 0));
+            View.DrawSprite(sprite, 0, new Vector2(0, 0), new Vector2(7,5));
             View.DrawSetColor(Color.DeepSkyBlue);
             View.DrawText(arial, "blablabla", new Vector2(10, 200));
         }

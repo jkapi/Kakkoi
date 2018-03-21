@@ -58,10 +58,36 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+<<<<<<< HEAD
     <Compile Include="Minigames\DinoCollectStuff\MarioCollectCoins.cs" />
+=======
+    <Compile Include="Minigames\ClimbTheMountain\Block.cs" />
+    <Compile Include="Minigames\ClimbTheMountain\ClimbTheMountain.cs" />
+    <Compile Include="Minigames\DontTapWhite\Tile.cs" />
+    <Compile Include="Minigames\QuizAfvalRace\form1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Minigames\QuizAfvalRace\Form1.Designer.cs">
+      <DependentUpon>form1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Minigames\QuizAfvalRace\Message.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Minigames\QuizAfvalRace\Message.Designer.cs">
+      <DependentUpon>Message.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Minigames\QuizAfvalRace\Sounds.cs" />
+    <Compile Include="Minigames\QuizAfvalRace\Vraag.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+>>>>>>> fed18db46a2c548f0660a9e2dc1e8a4e897c7b9f
     <Compile Include="Rooms\DebugRoom.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="Minigames\DontTapWhite\Donttapwhite.cs" />
+    <Compile Include="Minigames\DontTapWhite\Player.cs" />
     <Compile Include="Minigames\FlySwat\Fly.cs" />
     <Compile Include="Minigames\FlySwat\FlySwat.cs" />
     <Compile Include="Minigames\QuizAfvalRace\Quiz_Room.cs" />
@@ -89,11 +115,24 @@
       <HintPath>$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\DesktopGL\MonoGame.Framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Icon.ico" />
     <EmbeddedResource Include="Icon.bmp" />
+    <EmbeddedResource Include="Minigames\QuizAfvalRace\Form1.resx">
+      <DependentUpon>form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Minigames\QuizAfvalRace\Message.resx">
+      <DependentUpon>Message.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <MonoGameContentReference Include="Content\Content.mgcb" />
@@ -150,9 +189,17 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
-  <ItemGroup />
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Resources\93407604_a0e4ae527d_m.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\deur.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Minigames\QuizAfvalRace\Quiz_File.txt" />
+    <None Include="Resources\Deur3.png" />
+    <None Include="Resources\deur1.jpg" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
