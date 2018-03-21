@@ -16,9 +16,9 @@ namespace Game1
         static void Main()
         {
             //AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(StrangerCade.Framework.Logger.Exception);
-            //using (var game = new Game1())
-            //    game.Run();
-            Application.Run(new Minigames.QuizAfvalRace.Form1());
+            using (var game = new Game1())
+                game.Run();
+            //Application.Run(new Minigames.QuizAfvalRace.Form1());
             MultiplayerClient.Disconnect();
         }
     }

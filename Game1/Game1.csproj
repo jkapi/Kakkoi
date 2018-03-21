@@ -58,6 +58,8 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Minigames\ClimbTheMountain\Block.cs" />
+    <Compile Include="Minigames\ClimbTheMountain\ClimbTheMountain.cs" />
     <Compile Include="Minigames\DontTapWhite\Tile.cs" />
     <Compile Include="Minigames\QuizAfvalRace\Form1.cs">
       <SubType>Form</SubType>
