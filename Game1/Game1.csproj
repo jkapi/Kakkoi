@@ -61,12 +61,20 @@
     <Compile Include="Minigames\ClimbTheMountain\Block.cs" />
     <Compile Include="Minigames\ClimbTheMountain\ClimbTheMountain.cs" />
     <Compile Include="Minigames\DontTapWhite\Tile.cs" />
-    <Compile Include="Minigames\QuizAfvalRace\Form1.cs">
+    <Compile Include="Minigames\QuizAfvalRace\form1.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Minigames\QuizAfvalRace\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+      <DependentUpon>form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Minigames\QuizAfvalRace\Message.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Minigames\QuizAfvalRace\Message.Designer.cs">
+      <DependentUpon>Message.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Minigames\QuizAfvalRace\Sounds.cs" />
+    <Compile Include="Minigames\QuizAfvalRace\Vraag.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -112,7 +120,10 @@
     <EmbeddedResource Include="Icon.ico" />
     <EmbeddedResource Include="Icon.bmp" />
     <EmbeddedResource Include="Minigames\QuizAfvalRace\Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
+      <DependentUpon>form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Minigames\QuizAfvalRace\Message.resx">
+      <DependentUpon>Message.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -180,7 +191,11 @@
   <ItemGroup>
     <None Include="Resources\deur.jpg" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Minigames\QuizAfvalRace\Quiz_File.txt" />
+    <None Include="Resources\Deur3.png" />
+    <None Include="Resources\deur1.jpg" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -28,8 +28,15 @@ namespace StrangerCade.Framework
         /// Create sprite from texture
         /// </summary>
         /// <param name="texture"></param>
+        ///   /// <summary>
+        /// 
+        /// </summary>
+        ///   /// <summary>
+        /// 
+        /// </summary>
         public Sprite(Texture2D texture, bool searchSpritesheet = true)
         {
+  
             Texture = texture;
             if (searchSpritesheet && File.Exists("Content/" + texture.Name + ".xml"))
             {
