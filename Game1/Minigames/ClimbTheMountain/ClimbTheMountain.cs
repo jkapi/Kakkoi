@@ -1,4 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using StrangerCade.Framework;
 using System;
 using System.Collections.Generic;
@@ -17,18 +19,14 @@ namespace Game1.Minigames.ClimbTheMountain
         public int heightLengthBlock { get; private set; }
 
         //--GAME--//
-        public List<string> queueOfLetters { get; private set; }
-        public List<string> listOfLetters { get; private set; }
+        //public List<string> queueOfLetters { get; private set; }
 
         public override void Initialize()
         {
-            listOfLetters = new List<string>
-            {
-                "a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z",
-                "A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z",
-                "0","1","2","3","4","5","6","7","8","9"
-            };
-            queueOfLetters = new List<string>();
+            //queueOfLetters = new List<string>();
+
+            Block.Arial = Content.Load<SpriteFont>("Arial"); 
+
             Vector2 field = new Vector2(Graphics.PreferredBackBufferWidth / 4, Graphics.PreferredBackBufferHeight);
             playField = new Rectangle((Graphics.PreferredBackBufferWidth / 2) - ((int)field.X / 2), 0, (int)field.X, (int)field.Y);
 
@@ -36,49 +34,142 @@ namespace Game1.Minigames.ClimbTheMountain
             letterField = new Rectangle(Graphics.PreferredBackBufferWidth / 2 - ((int)field2.X / 2), 0, (int)field2.X, (int)field2.Y);
             widthLengthBlock = letterField.Width / 2;
             heightLengthBlock = letterField.Height / 10;
+
             InitPlayground();
         }
         public override void Update()
         {
-            if (queueOfLetters.Count <= 0 | queueOfLetters.Count < 21)
+            //if (queueOfLetters.Count <= 0 | queueOfLetters.Count < 21)
+            //{
+            //    queueOfLetters.Add(GetNextRandomLetter());
+            //}
+            //if(Block.totalBlocks.Count > 0)
+            //{
+            //    foreach (Block block in Block.totalBlocks)
+            //    {
+            //        block
+            //    }
+            //}
+            //List<Block> updatedTotalBlocks = new List<Block>();
+
+            //foreach (Block block in Block.totalBlocks)
+            //{
+            //    if (block.letter != " ")
+            //    {
+            //        updatedTotalBlocks.Add(block);
+            //    }
+            //}
+
+            //foreach (Keys key in Keyboard.PressedKeys)
+            //{
+            //    if (Keyboard.Check(key))
+            //    {
+            //        if (Block.totalBlocks[0].letter == key.ToString())
+            //        {
+            //            Block.totalBlocks[0].letter = "";
+            //            if (Block.totalBlocks[0].letter == "")
+            //            {
+            //                for (int prevPos = 1; prevPos < Block.totalBlocks.Count(); prevPos++)
+            //                {
+            //                    Block.totalBlocks[prevPos - 1].letter = Block.totalBlocks[prevPos].letter;
+            //                }
+            //                //***This line of code can be a problem***
+            //                Block.totalBlocks[Block.totalBlocks.Length-1].letter = Block.listOfLetters[Block.randomNum.Next(0, Block.listOfLetters.Count - 1)];
+            //            }
+            //        }
+            //    }
+            //}
+            if (Keyboard.String.Length > 0)
             {
-                queueOfLetters.Add(GetNextRandomLetter());
+                if (Keyboard.String[0] == Convert.ToChar(Block.totalBlocks[0].letter))
+                {
+                    Block.totalBlocks[0].letter = "";
+                    if (Block.totalBlocks[0].letter == "")
+                    {
+                        for (int prevPos = 1; prevPos < Block.totalBlocks.Count(); prevPos++)
+                        {
+                            Block.totalBlocks[prevPos - 1].letter = Block.totalBlocks[prevPos].letter;
+                        }
+                        //***This line of code can be a problem***
+                        Block.totalBlocks[Block.totalBlocks.Length - 1].letter = Block.listOfLetters[Block.randomNum.Next(0, Block.listOfLetters.Count - 1)];
+                        Keyboard.String = "";
+                    }
+                }
+                else
+                {
+                    Keyboard.String = "";
+                }
             }
+               
+
+
+            //foreach (Block block in Block.totalBlocks)
+            // {
+            //     if(Keyboard.PressedKeys)
+            //     block.letter
+            // }
         }
         public override void Draw()
         {
             View.DrawRectangle(playField, true, Color.Black);
             View.DrawRectangle(letterField, true, Color.Black);
-            foreach (Block block in Block.totalBlocks)
+            //foreach (Block block in Block.totalBlocks)
+            //{
+            //    View.DrawRectangle(block.rectangle, true, Color.Yellow);
+            //    View.DrawText(Block.Arial, block.letter, new Vector2(block.rectangle.X+block.rectangle.Width/2, block.rectangle.Y+ block.rectangle.Height/2));
+
+            //   // Block.Arial2.DrawString(Arial, "A", new Vector2(block.rectangle.X + block.rectangle.Width / 2, block.rectangle.Y + block.rectangle.Height / 2), Color.Black);
+            //}
+            for (int i = 0; i < Block.totalBlocks.Length; i++)
             {
-                View.DrawRectangle(block.rectangle, true, Color.Yellow);
+                View.DrawRectangle(Block.totalBlocks[i].rectangle, true, Color.Yellow);
+                View.DrawText(Block.Arial, Block.totalBlocks[i].letter, new Vector2(Block.totalBlocks[i].rectangle.X + Block.totalBlocks[i].rectangle.Width / 2, Block.totalBlocks[i].rectangle.Y + Block.totalBlocks[i].rectangle.Height / 2));
             }
-            
-        }
-        private string GetNextRandomLetter()
-        {
-            Random randomNum = new Random();
-            string letter = listOfLetters[randomNum.Next(0, listOfLetters.Count-1)];
-            return letter;
+            //View.DrawText(Block.Arial,Keyboard.String, new Vector2(100,500))
         }
 
         public void InitPlayground()
         {
-
-            int even = (letterField.Height / 10);
-            int oneven = (letterField.Height / 10) * 2;
-            int value = 0;
-            for (int X = letterField.X; X < (letterField.X+letterField.Width); X = X + letterField.Width/2)
+            int arrayPos = 0;
+            int InitializeY_value(int value)
             {
-                value = (X == letterField.X / 2) ? even : oneven;
-                for (int Y = letterField.Y; Y < (letterField.Y+letterField.Height); Y = Y + value)
-                {   
-                    Vector2 startPos = new Vector2(X, Y);
-                    Rectangle blockRec = new Rectangle(X,Y,widthLengthBlock,heightLengthBlock);
-                    Block currentBlock = new Block(blockRec);
-                    Block.totalBlocks.Add(currentBlock);
+                int even = letterField.Y;
+                int oneven = letterField.Height / 10;
+
+                //return (value == letterField.X) ? even : oneven;
+                if (value == letterField.X)
+                {
+                    return even;
+                }
+                else
+                {
+                    arrayPos = 1;
+                    return oneven;
                 }
             }
+
+            for (int X = letterField.X; X < (letterField.X + letterField.Width); X = X + letterField.Width / 2)
+            {
+                for (int Y = InitializeY_value(X); Y < (letterField.Y + letterField.Height); Y = Y + (letterField.Height / 10) * 2)
+                {
+                    Vector2 startPos = new Vector2(X, Y);
+                    Rectangle blockRec = new Rectangle(X, Y, widthLengthBlock, heightLengthBlock);
+                    Block currentBlock = new Block(blockRec);
+
+                    if (arrayPos <= 9)
+                    {
+                        Block.totalBlocks[arrayPos] = currentBlock;
+                        arrayPos += 2;
+                    }
+                }
+            }
+
+            Block.ReverseArray();
+        }
+
+        public void changeValue(ref int reference, int value)
+        {
+            reference = value;
         }
     }
 }
