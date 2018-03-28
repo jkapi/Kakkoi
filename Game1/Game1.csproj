@@ -62,6 +62,9 @@
     <Compile Include="Minigames\ClimbTheMountain\Block.cs" />
     <Compile Include="Minigames\ClimbTheMountain\ClimbTheMountain.cs" />
     <Compile Include="Minigames\DontTapWhite\Tile.cs" />
+    <Compile Include="Minigames\FollowTheLeader\AI.cs" />
+    <Compile Include="Minigames\FollowTheLeader\FollowTheLeader.cs" />
+    <Compile Include="Minigames\FollowTheLeader\Player.cs" />
     <Compile Include="Minigames\QuizAfvalRace\form1.cs">
       <SubType>Form</SubType>
     </Compile>
