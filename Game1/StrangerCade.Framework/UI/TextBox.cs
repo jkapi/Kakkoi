@@ -18,7 +18,7 @@ namespace StrangerCade.Framework.UI
     class TextBox : GameObject
     {
         public static string Clipboard = "";
-        string Text { get { return _text; } set { _text = value; UpdateTextSize(); } }
+        public string Text { get { return _text; } set { _text = value; UpdateTextSize(); } }
         string _text = "";
         string PlaceholderText = "";
 

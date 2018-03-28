@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Game1.StrangerCade.Framework.Multiplayer;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StrangerCade.Framework;
 using StrangerCade.Framework.UI;
