@@ -8,7 +8,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using StrangerCade.Framework;
 using Microsoft.Xna.Framework.Input;
-using StrangerCade.Framework.Multiplayer;
 using System.Threading;
 
 namespace Game1.Rooms

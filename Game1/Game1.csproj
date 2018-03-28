@@ -96,7 +96,8 @@
     <Compile Include="StrangerCade.Framework\Logger.cs" />
     <Compile Include="StrangerCade.Framework\Mouse.cs" />
     <Compile Include="StrangerCade.Framework\GameObject.cs" />
-    <Compile Include="StrangerCade.Framework\Multiplayer\Socket.cs" />
+    <Compile Include="StrangerCade.Framework\Multiplayer\Player.cs" />
+    <Compile Include="StrangerCade.Framework\Multiplayer\SocketIOHandler.cs" />
     <Compile Include="StrangerCade.Framework\Room.cs" />
     <Compile Include="StrangerCade.Framework\Sprite.cs" />
     <Compile Include="StrangerCade.Framework\Tilesheet.cs" />
@@ -104,27 +105,18 @@
     <Compile Include="StrangerCade.Framework\View.cs" />
     <Compile Include="StrangerCade.Framework\UI\TextBox.cs" />
     <Compile Include="Rooms\MainBoard.cs" />
-    <Compile Include="Player.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Rooms\Room1.cs" />
     <Compile Include="Rooms\testminigame.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="EngineIoClientDotNet, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\EngineIoClientDotNet.1.0.5\lib\net45\EngineIoClientDotNet.dll</HintPath>
+    <Reference Include="Lidgren.Network, Version=3.6.0.1625, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Visual Studio 2017\Projects\KakoiLGServer\KakoiLGServer\bin\Debug\Lidgren.Network.dll</HintPath>
     </Reference>
     <Reference Include="MonoGame.Framework">
       <HintPath>$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\DesktopGL\MonoGame.Framework.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="SocketIoClientDotNet, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\SocketIoClientDotNet.1.0.5\lib\net45\SocketIoClientDotNet.dll</HintPath>
-    </Reference>
-    <Reference Include="SuperSocket.ClientEngine, Version=0.9.0.0, Culture=neutral, PublicKeyToken=ee9af13f57f00acc, processorArchitecture=MSIL">
-      <HintPath>..\packages\SuperSocket.ClientEngine.Core.0.9.0\lib\net45\SuperSocket.ClientEngine.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Collections.Immutable, Version=1.2.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
@@ -134,9 +126,6 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
-    <Reference Include="WebSocket4Net, Version=0.15.1.10, Culture=neutral, PublicKeyToken=eb4e154b696bf72a, processorArchitecture=MSIL">
-      <HintPath>..\packages\WebSocket4Net.0.15.1\lib\net45\WebSocket4Net.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Icon.ico" />
