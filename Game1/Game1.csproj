@@ -58,9 +58,7 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
-<<<<<<< HEAD
     <Compile Include="Minigames\DinoCollectStuff\MarioCollectCoins.cs" />
-=======
     <Compile Include="Minigames\ClimbTheMountain\Block.cs" />
     <Compile Include="Minigames\ClimbTheMountain\ClimbTheMountain.cs" />
     <Compile Include="Minigames\DontTapWhite\Tile.cs" />
@@ -83,7 +81,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
->>>>>>> fed18db46a2c548f0660a9e2dc1e8a4e897c7b9f
     <Compile Include="Rooms\DebugRoom.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="Minigames\DontTapWhite\Donttapwhite.cs" />
