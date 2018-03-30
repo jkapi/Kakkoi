@@ -15,6 +15,7 @@ namespace StrangerCade.Framework
         private MouseState oldState;
         public Vector2 Position { get { return state.Position.ToVector2(); } set { Mouse.SetPosition((int)value.X, (int)value.Y); } }
         public MouseCursor DefaultCursor = MouseCursor.Arrow;
+        public int ScrollWheelValue { get; private set; }
 
         private List<Vector2> movementHistory = new List<Vector2>();
         private int movementHistoryLength = 10;
@@ -46,6 +47,7 @@ namespace StrangerCade.Framework
             {
                 movementHistory.RemoveAt(0);
             }
+            ScrollWheelValue = state.ScrollWheelValue;
         }
 
         /// <summary>
