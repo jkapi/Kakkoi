@@ -18,8 +18,8 @@ namespace StrangerCade.Framework.Multiplayer
         static List<Player> GameStateList;
         static MemoryStream GameData = null;
         public static bool Connected { get {
-                                        if (client != null) return (client.ConnectionStatus == NetConnectionStatus.Connected);
-                                        else return false; } }
+                if (client != null) return (client.ConnectionStatus == NetConnectionStatus.Connected);
+                else return false; } }
         static string sessid = "";
         public static string PlayerName;
         static Dictionary<PacketTypes, Action<NetIncomingMessage>> handlers = new Dictionary<PacketTypes, Action<NetIncomingMessage>>();
@@ -57,7 +57,7 @@ namespace StrangerCade.Framework.Multiplayer
 
         internal static List<Player> GetPlayers()
         {
-            lock(StateLock)
+            lock (StateLock)
             {
                 return new List<Player>(GameStateList);
             }
@@ -156,6 +156,18 @@ namespace StrangerCade.Framework.Multiplayer
                             {
                                 UpdateRoom(incoming);
                             }
+                            if (val == PacketTypes.MINIGAME)
+                            {
+                                MinigameTypes minigame = (MinigameTypes)incoming.ReadInt16();
+                                switch (minigame)
+                                {
+                                    case MinigameTypes.FlySwat: Room.GotoRoom(typeof(Game1.Minigames.FlySwat.FlySwat)); break;
+                                    case MinigameTypes.MainGame: Room.GotoRoom(typeof(Game1.Rooms.MainBoard)); break;
+                                    case MinigameTypes.FollowTheLeader: Room.GotoRoom(typeof(Game1.Minigames.FollowTheLeader.FollowTheLeader)); break;
+                                    case MinigameTypes.ClimbTheMountain: Room.GotoRoom(typeof(Game1.Minigames.ClimbTheMountain.ClimbTheMountain)); break;
+                                    default: Room.GotoRoom(typeof(Game1.Rooms.DebugRoom)); break;
+                                }
+                            }
                             if (handlers.ContainsKey(val))
                             {
                                 handlers[val].Invoke(incoming);
@@ -185,7 +197,7 @@ namespace StrangerCade.Framework.Multiplayer
                                                  inc.ReadFloat(), i));
                 }
             }
-            lock(DataLock)
+            lock (DataLock)
             {
                 if (GameData != null)
                 {
@@ -223,5 +235,10 @@ namespace StrangerCade.Framework.Multiplayer
     enum DataTypes
     {
         BYTE, FLOAT, STRING, INT, EMPTY
+    }
+
+    enum MinigameTypes
+    {
+        None, MainGame, FlySwat, ClimbTheMountain, DinoCollectStuff, FollowTheLeader
     }
 }

@@ -222,7 +222,6 @@ namespace Game1.Rooms
             if (Mouse.CheckReleased(MouseButtons.Left) && bounds.Contains(Mouse.Position) && Mouse.Position.Y > 140)
             {
                 SocketHandler.SendMessage(PacketTypes.JOINROOM, id);
-                StrangerCade.Framework.Room.GotoRoom(typeof(Minigames.FlySwat.FlySwat));
             }
         }
 

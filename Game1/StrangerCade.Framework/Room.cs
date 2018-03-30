@@ -63,7 +63,12 @@ namespace StrangerCade.Framework
         /// Room background.
         /// </summary>
         public Texture2D Background;
+
         public GameTime GameTime;
+
+        private bool Initialized = false;
+
+        private static bool Reinitialize = false;
 
         /// <summary>
         /// Initialize all <see cref="GameObject">GameObjects</see> in <c>Objects</c>.
@@ -91,6 +96,8 @@ namespace StrangerCade.Framework
                 obj.PreInitialize(this);
                 obj.Initialize();
             }
+
+            Initialized = true;
         }
 
         /// <summary>
@@ -125,38 +132,41 @@ namespace StrangerCade.Framework
         /// <param name="gameTime">Current GameTime object</param>
         public void Update(GameTime gameTime)
         {
-            GameTime = gameTime;
-
-            PreUpdate();
-            Keyboard.Update(gameTime);
-            Mouse.Update();
-
-            Update();
-
-            int roomWidth = Graphics.PreferredBackBufferWidth;
-            int roomHeight = Graphics.PreferredBackBufferHeight;
-
-            foreach (GameObject obj in Objects.ToList())
+            if (Initialized)
             {
-                if (DeActivateOutsideWindow)
+                GameTime = gameTime;
+
+                PreUpdate();
+                Keyboard.Update(gameTime);
+                Mouse.Update();
+
+                Update();
+
+                int roomWidth = Graphics.PreferredBackBufferWidth;
+                int roomHeight = Graphics.PreferredBackBufferHeight;
+
+                foreach (GameObject obj in Objects.ToList())
                 {
-                    if (obj.Position.X < -obj.Sprite.Width | obj.Position.Y < -obj.Sprite.Height | obj.Position.X >= roomWidth | obj.Position.Y >= roomHeight)
+                    if (DeActivateOutsideWindow)
                     {
-                        obj.Activated = false;
+                        if (obj.Position.X < -obj.Sprite.Width | obj.Position.Y < -obj.Sprite.Height | obj.Position.X >= roomWidth | obj.Position.Y >= roomHeight)
+                        {
+                            obj.Activated = false;
+                        }
+                        else
+                        {
+                            obj.Activated = true;
+                        }
                     }
-                    else
+
+                    if (obj.Activated)
                     {
-                        obj.Activated = true;
+                        obj.Update(gameTime);
                     }
                 }
 
-                if (obj.Activated)
-                {
-                    obj.Update(gameTime);
-                }
+                PostUpdate();
             }
-
-            PostUpdate();
         }
 
         /// <summary>
@@ -199,34 +209,37 @@ namespace StrangerCade.Framework
         /// <param name="gameTime">Updated GameTime Object</param>
         public void Draw(GameTime gameTime)
         {
-            GameTime = gameTime;
-
-            Mouse.Draw();
-
-            if (Background != null)
+            if (Initialized)
             {
-                for (int x = 0; x < (int)Math.Ceiling((float)Graphics.PreferredBackBufferWidth / (float)Background.Width); x++)
+                GameTime = gameTime;
+
+                Mouse.Draw();
+
+                if (Background != null)
                 {
-                    for (int y = 0; y < (int)Math.Ceiling((float)Graphics.PreferredBackBufferHeight / (float)Background.Width); y++)
+                    for (int x = 0; x < (int)Math.Ceiling((float)Graphics.PreferredBackBufferWidth / (float)Background.Width); x++)
                     {
-                        View.DrawTexture(Background, new Vector2(Background.Width * x, Background.Height * y));
+                        for (int y = 0; y < (int)Math.Ceiling((float)Graphics.PreferredBackBufferHeight / (float)Background.Width); y++)
+                        {
+                            View.DrawTexture(Background, new Vector2(Background.Width * x, Background.Height * y));
+                        }
                     }
                 }
-            }
 
-            Viewport oldViewport = GraphicsDevice.Viewport;
-            GraphicsDevice.Viewport = View.Viewport;
-            Draw();
-            foreach (GameObject obj in Objects)
-            {
-                if (obj.Activated)
+                Viewport oldViewport = GraphicsDevice.Viewport;
+                GraphicsDevice.Viewport = View.Viewport;
+                Draw();
+                foreach (GameObject obj in Objects)
                 {
-                    obj.Draw(View, gameTime);
+                    if (obj.Activated)
+                    {
+                        obj.Draw(View, gameTime);
+                    }
                 }
+                PostDraw();
+                GraphicsDevice.Viewport = oldViewport;
+                DrawGui();
             }
-            PostDraw();
-            GraphicsDevice.Viewport = oldViewport;
-            DrawGui();
         }
 
         /// <summary>
@@ -251,11 +264,27 @@ namespace StrangerCade.Framework
 
         public static void GotoRoom(Type room)
         {
-            var oldContent = CurrentRoom.Content;
-            var oldGraphics = CurrentRoom.Graphics;
-            var oldSpriteBatch = CurrentRoom.sb;
-            CurrentRoom = (Room)Activator.CreateInstance(room);
-            CurrentRoom.Initialize(oldContent, oldGraphics, oldSpriteBatch);
+            oldContent = CurrentRoom.Content;
+            oldGraphics = CurrentRoom.Graphics;
+            oldSpriteBatch = CurrentRoom.sb;
+            newRoom = room;
+            Reinitialize = true;
+        }
+
+        private static ContentManager oldContent;
+        private static GraphicsDeviceManager oldGraphics;
+        private static SpriteBatch oldSpriteBatch;
+        private static Type newRoom;
+
+        public static void TryReinitializeIfNecessary()
+        {
+            if (Reinitialize == true)
+            {
+                CurrentRoom = null;
+                CurrentRoom = (Room)Activator.CreateInstance(newRoom);
+                CurrentRoom.Initialize(oldContent, oldGraphics, oldSpriteBatch);
+                Reinitialize = false;
+            }
         }
 
         public static void LoadRoom(Type room, ContentManager content, GraphicsDeviceManager graphics, SpriteBatch spritebatch)

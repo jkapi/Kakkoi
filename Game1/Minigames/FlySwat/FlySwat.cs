@@ -16,13 +16,14 @@ namespace Game1.Minigames.FlySwat
     {
         int sendNewLocationDelay = 2;
         int tick = 0;
+        int Timer = 0;
         SpriteFont Arial;
         Sprite meppers;
         Sprite fly;
         Dictionary<int, Vector2> positions;
         public override void Initialize()
         {
-            Arial = Content.Load<SpriteFont>("arial16");
+            Arial = Content.Load<SpriteFont>("arial24");
             meppers = new Sprite(Content.Load<Texture2D>("minigame/flyswat/vliegennmepper"), 4);
             fly = new Sprite(Content.Load<Texture2D>("minigame/flyswat/fly"), 2);
             Mouse.SetCursor(Content.Load<Texture2D>("transparant"),Point.Zero);
@@ -42,6 +43,7 @@ namespace Game1.Minigames.FlySwat
                 {
                     data.BaseStream.Position = 0;
                     positions.Clear();
+                    Timer = data.ReadInt32();
                     int numflies = data.ReadInt32();
                     for (int i = 0; i < numflies; i++)
                     {
@@ -92,7 +94,10 @@ namespace Game1.Minigames.FlySwat
                 }
             }
             View.DrawSprite(meppers, mynum, Mouse.Position);
-            View.DrawText(Arial, GameTime.ElapsedGameTime.TotalMilliseconds, Vector2.Zero);
+            if (Timer < 5000)
+            {
+                View.DrawText(Arial, 5 - Timer / 1000, new Vector2(960, 540) - Arial.MeasureString((5 - Timer / 10000).ToString()) * 0.5f);
+            }
         }
     }
 }

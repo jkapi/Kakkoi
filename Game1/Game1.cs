@@ -78,6 +78,7 @@ namespace Game1
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+            Room.TryReinitializeIfNecessary();
             var kb = Keyboard.GetState();
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || kb.IsKeyDown(Keys.Escape))
             {
@@ -92,6 +93,7 @@ namespace Game1
             }
             float dTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
             // TODO: Add your update logic here
+
             Room.CurrentRoom.Update(gameTime);
 
             base.Update(gameTime);
@@ -106,7 +108,7 @@ namespace Game1
         {
             GraphicsDevice.Clear(Room.CurrentRoom.DrawClearColor);
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp);
-
+            
             Room.CurrentRoom.Draw(gameTime);
 
             spriteBatch.End();
