@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Lidgren.Network;
 using System.Threading;
+using Microsoft.Xna.Framework.Input;
 
 namespace Game1.Rooms
 {
@@ -36,6 +37,12 @@ namespace Game1.Rooms
 
         double lastRefresh = 0;
 
+        float ListYOffsetTarget = 0;
+        float ListYOffset = 0;
+        int ScrollWheelOffset = 0;
+
+        RenderTarget2D roomListRenderTarget;
+
         public override void Initialize()
         {
             BackBlur = Content.Load<Texture2D>("RoomSelect/back");
@@ -48,6 +55,8 @@ namespace Game1.Rooms
             Arial24 = Content.Load<SpriteFont>("arial24");
 
             rand = new Random();
+
+            roomListRenderTarget = new RenderTarget2D(GraphicsDevice, 1920, 1080);
 
             BackTrianglesPosition = new Vector2(rand.Next(0, 1280), rand.Next(0, 720));
             BackTrianglesSpeed = new Vector2(((float)rand.Next(-200, 200)) / 200, ((float)rand.Next(-200, 200)) / 200);
@@ -107,8 +116,11 @@ namespace Game1.Rooms
             if (BackTrianglesPosition.Y < 0) { BackTrianglesPosition.Y += 720; }
 
 
-            // Can't get gametime in Initialize :/
-            if (lastRefresh == 0) { lastRefresh = GameTime.TotalGameTime.TotalSeconds; }
+            // Can't get gametime or mouse in Initialize :/
+            if (lastRefresh == 0) {
+                lastRefresh = GameTime.TotalGameTime.TotalSeconds;
+                ScrollWheelOffset = Mouse.ScrollWheelValue;
+            }
 
             // Refresh list every 5 seconds
             if (lastRefresh > 5)
@@ -119,10 +131,47 @@ namespace Game1.Rooms
                 }
                 lastRefresh = GameTime.TotalGameTime.TotalSeconds;
             }
+
+            ListYOffsetTarget = (Mouse.ScrollWheelValue - ScrollWheelOffset)/120 * 112;
+            if (ListYOffsetTarget > 0)
+            {
+                ScrollWheelOffset += (int)ListYOffsetTarget;
+                ListYOffsetTarget = 0;
+            }
+
+            int listScrollHeight = Math.Max(0, Rooms.Count * 112 - 800);
+            if (ListYOffsetTarget < -listScrollHeight)
+            {
+                // Todo: Set scrollwheeloffset to stop "Scrolling any further"
+                ListYOffsetTarget = -listScrollHeight;
+            }
+
+            // Slowly scroll to right position
+            ListYOffset += (ListYOffsetTarget - ListYOffset) / 7;
         }
 
         public override void Draw()
         {
+            View.SwitchToRenderTarget(roomListRenderTarget, true, Color.Transparent);
+            if (SocketHandler.Connected)
+            {
+                lock (ListLock)
+                {
+                    int i = 0;
+                    foreach (Room room in Rooms)
+                    {
+                        string owner = room.Players.Count > 0 ? room.Players[0] : "Server";
+                        DrawRoom(new Vector2(255, ListYOffset + 60 + i * 112), room.Name, room.Players.Count, owner, room.Locked, room.ID);
+                        i++;
+                    }
+                }
+            }
+            else
+            {
+                View.DrawText(Arial24, "You are not connected to the server.", new Vector2(960 - Arial24.MeasureString("You are not connected to the server.").X / 2, 200), Color.LightGray);
+            }
+            View.SwitchToRenderTarget(null);
+
             View.DrawTexture(BackBlur, new Vector2(-(Mouse.Position.X / 20), -Mouse.Position.Y / 20));
 
             Vector2 mouseOffset = new Vector2(-(Mouse.Position.X / 1000), -Mouse.Position.Y / 100);
@@ -139,24 +188,8 @@ namespace Game1.Rooms
             DrawPlaceholderRadioBox(new Vector2(600, 90), "Show Friends");
             DrawPlaceholderRadioBox(new Vector2(800, 90), "Show Private");
             DrawPlaceholderRadioBox(new Vector2(1000, 90), "Show Full");
+            View.DrawRenderTarget(roomListRenderTarget, new Vector2(0, 140));
 
-            if (SocketHandler.Connected)
-            {
-                lock (ListLock)
-                {
-                    int i = 0;
-                    foreach (Room room in Rooms)
-                    {
-                        string owner = room.Players.Count > 0 ? room.Players[0] : "Server";
-                        DrawRoom(new Vector2(255, 200 + i * 112), room.Name, room.Players.Count, owner, room.Locked, room.ID);
-                        i++;
-                    }
-                }
-            }
-            else
-            {
-                View.DrawText(Arial24, "You are not connected to the server.", new Vector2(960 - Arial24.MeasureString("You are not connected to the server.").X / 2, 200), Color.LightGray);
-            }
         }
 
         public void DrawPlaceholderRadioBox(Vector2 position, string text)
@@ -168,13 +201,14 @@ namespace Game1.Rooms
 
         public void DrawRoom(Vector2 position, string name, int players, string owner, bool locked, int id)
         {
-            Rectangle bounds = new Rectangle(position.ToPoint(), new Point(1400, 100));
+            Rectangle bounds = new Rectangle(position.ToPoint() + new Point(0, 140), new Point(1400, 100));
 
             Color oldColor = View.DrawColor;
-            View.DrawColor = bounds.Contains(Mouse.Position) ? Color.White : Color.LightGray;
-            float opacity = bounds.Contains(Mouse.Position) && Mouse.Check(MouseButtons.Left) ? 0.3f: 0.2f;
+            View.DrawColor = bounds.Contains(Mouse.Position) && Mouse.Position.Y > 140 ? Color.White : Color.LightGray;
+            float opacity = bounds.Contains(Mouse.Position) && Mouse.Position.Y > 140 ? 0.25f : 0.2f;
+            opacity = bounds.Contains(Mouse.Position) && Mouse.Check(MouseButtons.Left) && Mouse.Position.Y > 140 ? 0.3f: opacity;
 
-            View.DrawRectangle(bounds, false, new Color(Color.Black, opacity));
+            View.DrawRectangle(position, new Vector2(1400, 100), false, new Color(Color.Black, opacity));
 
             View.DrawText(Arial24, name, position + new Vector2(20, 20));
             View.DrawText(Arial16, "By " + owner, position + new Vector2(20, 60));
@@ -185,7 +219,7 @@ namespace Game1.Rooms
                 View.DrawTexture(LockSmall, position + new Vector2(1359, 60));
             View.DrawColor = oldColor;
 
-            if (Mouse.CheckReleased(MouseButtons.Left) && bounds.Contains(Mouse.Position))
+            if (Mouse.CheckReleased(MouseButtons.Left) && bounds.Contains(Mouse.Position) && Mouse.Position.Y > 140)
             {
                 SocketHandler.SendMessage(PacketTypes.JOINROOM, id);
                 StrangerCade.Framework.Room.GotoRoom(typeof(Minigames.FlySwat.FlySwat));
