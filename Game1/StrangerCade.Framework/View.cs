@@ -15,6 +15,7 @@ namespace StrangerCade.Framework
         public Vector2 Scale;
         public GameObject FollowObject;
         public Viewport Viewport;
+        private GraphicsDevice graphics;
 
         public Rectangle TranslatedViewport { get { return new Rectangle((Location).ToPoint(), ((Viewport.Bounds.Size.ToVector2() * Scale)).ToPoint()); } }
 
@@ -37,6 +38,7 @@ namespace StrangerCade.Framework
             whitePixel = new Texture2D(graphicsDevice, 1, 1);
             whitePixel.SetData(new[] { Color.White });
             Viewport = graphicsDevice.Viewport;
+            graphics = graphicsDevice;
         }
 
         public void Update()
@@ -83,6 +85,19 @@ namespace StrangerCade.Framework
             }
             Vector2 _origin = origin ?? Vector2.Zero;
             _spriteBatch.Draw(texture, (position * Scale) - Location, texture.Bounds, _color, rotation, _origin, _scale, spriteEffect, depth);
+        }
+
+        public void DrawRenderTarget(RenderTarget2D renderTarget, Vector2 position, Vector2? scale = null, float rotation = 0f, Vector2? origin = null, float depth = 0f, Color? color = null, SpriteEffects spriteEffect = SpriteEffects.None)
+        {
+            Color _color = color ?? Color.White;
+            Vector2 _scale = scale ?? Vector2.One;
+            _scale *= Scale;
+            if (RotationMode == RotationType.Degrees)
+            {
+                rotation = Deg2Rad(rotation);
+            }
+            Vector2 _origin = origin ?? Vector2.Zero;
+            _spriteBatch.Draw(renderTarget, (position * Scale) - Location, renderTarget.Bounds, _color, rotation, _origin, _scale, spriteEffect, depth);
         }
 
         public void DrawTextureStretched(Texture2D texture, Vector2 position, Vector2 size, float rotation = 0f, Vector2? origin = null, float depth = 0f, Color? color = null, SpriteEffects spriteEffect = SpriteEffects.None)
@@ -178,6 +193,21 @@ namespace StrangerCade.Framework
         private float Deg2Rad(float degrees)
         {
             return degrees * (float)Math.PI / 180.0f;
+        }
+
+        public void SwitchToRenderTarget(RenderTarget2D target, bool clear = false, Color? clearColor = null)
+        {
+            _spriteBatch.End();
+            graphics.SetRenderTarget(target);
+            if (clear == true)
+            {
+                if (clearColor != null)
+                {
+                    graphics.Clear((Color)clearColor);
+                }
+            }
+
+            _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp);
         }
     }
 }
