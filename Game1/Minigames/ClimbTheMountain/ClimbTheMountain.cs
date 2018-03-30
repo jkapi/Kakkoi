@@ -25,7 +25,7 @@ namespace Game1.Minigames.ClimbTheMountain
         {
             //queueOfLetters = new List<string>();
 
-            Block.Arial = Content.Load<SpriteFont>("Arial"); 
+            Block.Arial = Content.Load<SpriteFont>("arial16"); 
 
             Vector2 field = new Vector2(Graphics.PreferredBackBufferWidth / 4, Graphics.PreferredBackBufferHeight);
             playField = new Rectangle((Graphics.PreferredBackBufferWidth / 2) - ((int)field.X / 2), 0, (int)field.X, (int)field.Y);

@@ -1,4 +1,4 @@
-﻿using Game1.StrangerCade.Framework;
+﻿using StrangerCade.Framework;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -29,7 +29,10 @@ namespace Game1
             graphics.IsFullScreen = false;
             graphics.PreferredBackBufferHeight = 1080;
             graphics.PreferredBackBufferWidth = 1920;
+            graphics.PreferMultiSampling = true;
+            graphics.GraphicsProfile = GraphicsProfile.HiDef;
             IsMouseVisible = false;
+            graphics.ApplyChanges();
             Content.RootDirectory = "Content";
         }
 
@@ -79,6 +82,7 @@ namespace Game1
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || kb.IsKeyDown(Keys.Escape))
             {
                 Logger.WriteLine("Exiting");
+                StrangerCade.Framework.Multiplayer.SocketHandler.Stop();
                 Exit();
             }
             if (kb.IsKeyDown(Keys.OemTilde))
@@ -101,8 +105,7 @@ namespace Game1
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Room.CurrentRoom.DrawClearColor);
-
-            spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp);
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp);
 
             Room.CurrentRoom.Draw(gameTime);
 

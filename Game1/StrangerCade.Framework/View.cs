@@ -58,6 +58,46 @@ namespace StrangerCade.Framework
             _spriteBatch.Draw(sprite.Texture, (position * Scale) - Location, sprite.SubImages[subimg], _color, rotation, _origin, _scale, spriteEffect, depth);
         }
 
+        public void DrawSpriteStretched(Sprite sprite, int subimg, Vector2 position, Vector2 size, float rotation = 0f, Vector2? origin = null, float depth = 0f, Color? color = null, SpriteEffects spriteEffect = SpriteEffects.None)
+        {
+            Color _color = color ?? Color.White;
+            Vector2 _scale = size / sprite.Size;
+            _scale *= Scale;
+            if (RotationMode == RotationType.Degrees)
+            {
+                rotation = Deg2Rad(rotation);
+            }
+            Vector2 _origin = origin ?? Vector2.Zero;
+            subimg = Math.Min(Math.Max(subimg, 0), sprite.SubImages.Count - 1);
+            _spriteBatch.Draw(sprite.Texture, (position * Scale) - Location, sprite.SubImages[subimg], _color, rotation, _origin, _scale, spriteEffect, depth);
+        }
+
+        public void DrawTexture(Texture2D texture, Vector2 position, Vector2? scale = null, float rotation = 0f, Vector2? origin = null, float depth = 0f, Color? color = null, SpriteEffects spriteEffect = SpriteEffects.None)
+        {
+            Color _color = color ?? Color.White;
+            Vector2 _scale = scale ?? Vector2.One;
+            _scale *= Scale;
+            if (RotationMode == RotationType.Degrees)
+            {
+                rotation = Deg2Rad(rotation);
+            }
+            Vector2 _origin = origin ?? Vector2.Zero;
+            _spriteBatch.Draw(texture, (position * Scale) - Location, texture.Bounds, _color, rotation, _origin, _scale, spriteEffect, depth);
+        }
+
+        public void DrawTextureStretched(Texture2D texture, Vector2 position, Vector2 size, float rotation = 0f, Vector2? origin = null, float depth = 0f, Color? color = null, SpriteEffects spriteEffect = SpriteEffects.None)
+        {
+            Color _color = color ?? Color.White;
+            Vector2 _scale = size / texture.Bounds.Size.ToVector2();
+            _scale *= Scale;
+            if (RotationMode == RotationType.Degrees)
+            {
+                rotation = Deg2Rad(rotation);
+            }
+            Vector2 _origin = origin ?? Vector2.Zero;
+            _spriteBatch.Draw(texture, (position * Scale) - Location, texture.Bounds, _color, rotation, _origin, _scale, spriteEffect, depth);
+        }
+
         public void DrawText(SpriteFont font, object text, Vector2 position, Color? color = null, float rotation = 0f, Vector2? origin = null, float depth = 0f, Vector2? scale = null, SpriteEffects spriteEffect = SpriteEffects.None)
         {
             Color _color = color ?? DrawColor;

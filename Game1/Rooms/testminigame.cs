@@ -1,4 +1,4 @@
-﻿using Game1.StrangerCade.Framework.Multiplayer;
+﻿using StrangerCade.Framework.Multiplayer;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StrangerCade.Framework;
@@ -17,7 +17,7 @@ namespace Game1.Rooms
         Button btn;
         public override void Initialize()
         {
-            Arial = Content.Load<SpriteFont>("Arial");
+            Arial = Content.Load<SpriteFont>("arial16");
             btn = new Button(new Vector2(20, 20), new Vector2(200, 30), Arial, "Ga naar room1");
             btn.OnClick += gomain;
             Objects.Add(btn);

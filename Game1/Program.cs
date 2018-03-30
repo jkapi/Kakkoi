@@ -1,4 +1,4 @@
-﻿using Game1.StrangerCade.Framework;
+﻿using StrangerCade.Framework;
 using System;
 using System.Windows.Forms;
 

@@ -202,6 +202,18 @@ namespace StrangerCade.Framework
             GameTime = gameTime;
 
             Mouse.Draw();
+
+            if (Background != null)
+            {
+                for (int x = 0; x < (int)Math.Ceiling((float)Graphics.PreferredBackBufferWidth / (float)Background.Width); x++)
+                {
+                    for (int y = 0; y < (int)Math.Ceiling((float)Graphics.PreferredBackBufferHeight / (float)Background.Width); y++)
+                    {
+                        View.DrawTexture(Background, new Vector2(Background.Width * x, Background.Height * y));
+                    }
+                }
+            }
+
             Viewport oldViewport = GraphicsDevice.Viewport;
             GraphicsDevice.Viewport = View.Viewport;
             Draw();

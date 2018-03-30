@@ -92,6 +92,7 @@
     <Compile Include="Minigames\FlySwat\FlySwat.cs" />
     <Compile Include="Minigames\QuizAfvalRace\Quiz_Room.cs" />
     <Compile Include="Minigames\QuizAfvalRace\Test_object.cs" />
+    <Compile Include="Rooms\RoomMenu.cs" />
     <Compile Include="StrangerCade.Framework\Keyboard.cs" />
     <Compile Include="StrangerCade.Framework\Logger.cs" />
     <Compile Include="StrangerCade.Framework\Mouse.cs" />
