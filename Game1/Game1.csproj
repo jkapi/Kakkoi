@@ -40,6 +40,7 @@
     <Prefer32Bit>false</Prefer32Bit>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\DesktopGL\AnyCPU\Debug\Game1.xml</DocumentationFile>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
     <OutputPath>bin\$(MonoGamePlatform)\$(Platform)\$(Configuration)\</OutputPath>
@@ -58,11 +59,12 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
-<<<<<<< HEAD
-    <Compile Include="Minigames\DinoCollectStuff\MarioCollectCoins.cs" />
-=======
+    <Compile Include="Minigames\DinoCollectStuff\Dino.cs" />
+    <Compile Include="Minigames\DinoCollectStuff\DinoCollectStuff.cs" />
     <Compile Include="Minigames\ClimbTheMountain\Block.cs" />
     <Compile Include="Minigames\ClimbTheMountain\ClimbTheMountain.cs" />
+    <Compile Include="Minigames\DinoCollectStuff\RozeDino.cs" />
+    <Compile Include="Minigames\DinoCollectStuff\Timer.cs" />
     <Compile Include="Minigames\DontTapWhite\Tile.cs" />
     <Compile Include="Minigames\QuizAfvalRace\form1.cs">
       <SubType>Form</SubType>
@@ -83,7 +85,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
->>>>>>> fed18db46a2c548f0660a9e2dc1e8a4e897c7b9f
     <Compile Include="Rooms\DebugRoom.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="Minigames\DontTapWhite\Donttapwhite.cs" />
