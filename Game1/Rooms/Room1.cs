@@ -8,7 +8,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using StrangerCade.Framework;
 using Microsoft.Xna.Framework.Input;
-using StrangerCade.Framework.Multiplayer;
 using System.Threading;
 
 namespace Game1.Rooms
@@ -22,7 +21,7 @@ namespace Game1.Rooms
             Graphics.ApplyChanges();//*/
             Mouse.Cursor = MouseCursor.FromTexture2D(Content.Load<Texture2D>("transparant"),0,0);
             View.RotationMode = View.RotationType.Degrees;
-            Arial = Content.Load<SpriteFont>("arial");
+            Arial = Content.Load<SpriteFont>("arial16");
             Objects.Add(new MainBoard());
         }
 

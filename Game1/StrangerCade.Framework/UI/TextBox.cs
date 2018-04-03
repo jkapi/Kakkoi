@@ -18,7 +18,7 @@ namespace StrangerCade.Framework.UI
     class TextBox : GameObject
     {
         public static string Clipboard = "";
-        string Text { get { return _text; } set { _text = value; UpdateTextSize(); } }
+        public string Text { get { return _text; } set { _text = value; UpdateTextSize(); } }
         string _text = "";
         string PlaceholderText = "";
 
@@ -175,7 +175,7 @@ namespace StrangerCade.Framework.UI
                     // Draw cursor every half second, or when forced to draw
                     if ((GameTime.TotalGameTime.TotalSeconds % 1 > 0.5 | show > 0) && textSize.Count > 0)
                     {
-                        View.DrawLine(new Vector2(textSize[cursorpos].X, 3) + Position + offset, new Vector2(textSize[cursorpos].X + 3, textSize[cursorpos].Y) + Position);
+                        View.DrawLine(new Vector2(textSize[cursorpos].X, 3) + Position + offset, new Vector2(textSize[cursorpos].X + 3, textSize[cursorpos].Y) + Position, 1, ColorText);
                     }
                 }
             }
