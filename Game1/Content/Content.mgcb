@@ -99,12 +99,10 @@
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,255,255,0
-=======
 #begin RoomSelect/back.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
->>>>>>> 020fd3452e1cf9ebf4b8c3ef04741f493d3fc36e
 /processorParam:ColorKeyEnabled=True
 /processorParam:GenerateMipmaps=False
 /processorParam:PremultiplyAlpha=True
@@ -112,7 +110,6 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:minigame/Dinozooi/clown.png
-=======
 /build:RoomSelect/back.png
 
 #begin RoomSelect/triangle.png

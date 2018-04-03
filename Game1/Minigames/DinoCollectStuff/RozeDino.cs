@@ -40,9 +40,9 @@ namespace Game1.Minigames.DinoCollectStuff
         public override void Draw()
         {
             if (xspeed > 0)
-                View.DrawSprite(DinoSprite, 0, Position);
+                View.DrawSpriteStretched(DinoSprite, 0, Position, new Vector2(200,50));
             else
-                View.DrawSprite(DinoSprite, 0, Position, null, 0, null, 0, null, SpriteEffects.FlipHorizontally);
+                View.DrawSpriteStretched(DinoSprite, 0, Position, new Vector2(200, 50), 0, null, 0, null, SpriteEffects.FlipHorizontally);
         }
     }
 }
