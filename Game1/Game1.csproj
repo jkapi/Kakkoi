@@ -57,9 +57,23 @@
   <PropertyGroup>
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Forms|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Forms\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;LINUX NICKSSHIZZLE</DefineConstants>
+    <DocumentationFile>bin\DesktopGL\AnyCPU\Debug\Game1.xml</DocumentationFile>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemGroup>
     <Compile Include="Minigames\ClimbTheMountain\Block.cs" />
     <Compile Include="Minigames\ClimbTheMountain\ClimbTheMountain.cs" />
+    <Compile Include="Minigames\DinoCollectStuff\Dino.cs" />
+    <Compile Include="Minigames\DinoCollectStuff\DinoCollectStuff.cs" />
+    <Compile Include="Minigames\DinoCollectStuff\RozeDino.cs" />
+    <Compile Include="Minigames\DinoCollectStuff\Timer.cs" />
     <Compile Include="Minigames\DontTapWhite\Tile.cs" />
     <Compile Include="Minigames\FollowTheLeader\AI.cs" />
     <Compile Include="Minigames\FollowTheLeader\FollowTheLeader.cs" />
@@ -186,6 +200,7 @@
     <None Include="Resources\Deur3.png" />
     <None Include="Resources\deur1.jpg" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

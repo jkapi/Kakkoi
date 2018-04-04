@@ -13,5 +13,15 @@ namespace Game1.Rooms
         {
 
         }
+
+        public override void Update()
+        {
+            GotoRoom(typeof(RoomMenu));
+        }
+
+        public override void Draw()
+        {
+            
+        }
     }
 }
