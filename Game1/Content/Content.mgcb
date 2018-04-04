@@ -95,6 +95,10 @@
 /processorParam:TextureFormat=Color
 /build:minigame/flyswat/vliegennmepper.png
 
+#begin minigame/Dinozooi/clown.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,255,255,0
 #begin RoomSelect/back.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -105,6 +109,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
+/build:minigame/Dinozooi/clown.png
 /build:RoomSelect/back.png
 
 #begin RoomSelect/triangle.png
@@ -163,4 +168,3 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:RoomSelect/LockSmall.png
-

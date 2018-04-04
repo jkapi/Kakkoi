@@ -224,7 +224,7 @@ namespace Game1.Minigames.QuizAfvalRace
                 Max = Max + 3;
             }
             
-            //MessageBox.Show(Convert.ToString(Pressed));
+          
 
 
        
