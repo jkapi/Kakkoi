@@ -32,7 +32,7 @@ namespace Game1.Minigames.DontTapWhite
 
         //----GAME SYSTEM RELATED----//
         public int stateOfGame { get; private set; }
-        public List<Player> currentPlayerList { get; private set; }
+        public List<PlayerDTW> currentPlayerList { get; private set; }
 
         SpriteFont Arial;
 
