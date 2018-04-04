@@ -58,25 +58,16 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Minigames\DinoCollectStuff\MarioCollectCoins.cs" />
     <Compile Include="Minigames\ClimbTheMountain\Block.cs" />
     <Compile Include="Minigames\ClimbTheMountain\ClimbTheMountain.cs" />
+    <Compile Include="Minigames\DinoCollectStuff\Dino.cs" />
+    <Compile Include="Minigames\DinoCollectStuff\DinoCollectStuff.cs" />
+    <Compile Include="Minigames\DinoCollectStuff\RozeDino.cs" />
+    <Compile Include="Minigames\DinoCollectStuff\Timer.cs" />
     <Compile Include="Minigames\DontTapWhite\Tile.cs" />
     <Compile Include="Minigames\FollowTheLeader\AI.cs" />
     <Compile Include="Minigames\FollowTheLeader\FollowTheLeader.cs" />
     <Compile Include="Minigames\FollowTheLeader\Player.cs" />
-    <Compile Include="Minigames\QuizAfvalRace\form1.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Minigames\QuizAfvalRace\Form1.Designer.cs">
-      <DependentUpon>form1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Minigames\QuizAfvalRace\Message.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Minigames\QuizAfvalRace\Message.Designer.cs">
-      <DependentUpon>Message.cs</DependentUpon>
-    </Compile>
     <Compile Include="Minigames\QuizAfvalRace\Sounds.cs" />
     <Compile Include="Minigames\QuizAfvalRace\Vraag.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -132,12 +123,6 @@
   <ItemGroup>
     <EmbeddedResource Include="Icon.ico" />
     <EmbeddedResource Include="Icon.bmp" />
-    <EmbeddedResource Include="Minigames\QuizAfvalRace\Form1.resx">
-      <DependentUpon>form1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Minigames\QuizAfvalRace\Message.resx">
-      <DependentUpon>Message.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -210,6 +195,7 @@
     <None Include="Resources\Deur3.png" />
     <None Include="Resources\deur1.jpg" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
