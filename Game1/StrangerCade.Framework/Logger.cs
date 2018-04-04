@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Game1.StrangerCade.Framework
+namespace StrangerCade.Framework
 {
     class Logger
     {

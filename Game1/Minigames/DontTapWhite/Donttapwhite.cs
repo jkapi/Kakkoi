@@ -44,7 +44,7 @@ namespace Game1.Minigames.DontTapWhite
             stateOfGame = 0;
             if (stateOfGame == 0)
             {
-                Arial = Content.Load<SpriteFont>("Arial");
+                Arial = Content.Load<SpriteFont>("arial16");
                 testBtn = new Button(new Vector2(20, 80), new Vector2(200, 30), Arial, "Start");
                 testBtn.OnClick += startGame;
                 Objects.Add(testBtn);

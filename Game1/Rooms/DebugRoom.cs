@@ -1,4 +1,4 @@
-﻿using Game1.StrangerCade.Framework.Multiplayer;
+﻿using StrangerCade.Framework.Multiplayer;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StrangerCade.Framework;
@@ -32,13 +32,13 @@ namespace Game1.Rooms
             var rooms = GetAllRooms();
             for (int i = 0; i < rooms.Count; i++)
             {
-                Arial = Content.Load<SpriteFont>("Arial");
+                Arial = Content.Load<SpriteFont>("arial16");
                 var btn = new Button(new Rectangle(15, 35 + (i * 28), 500, 25), Arial, rooms[i].FullName.Substring(6));
                 btn.OnClick += RoomButtonHandler;
                 Objects.Add(btn);
             }
             TextBoxUsername = new TextBox(new Vector2(1290, 75), 400, Arial, "Username/UUID");
-            TextBoxPassword = new TextBox(new Vector2(1290, 105), 400, Arial, "IP Address", false);
+            TextBoxPassword = new TextBox(new Vector2(1290, 105), 400, Arial, "IP Address", text: "127.0.0.1");
             Objects.Add(TextBoxUsername);
             Objects.Add(TextBoxPassword);
             LoginButton = new Button(new Rectangle(1700, 105, 150, 27), Arial, "Connect");
@@ -49,7 +49,8 @@ namespace Game1.Rooms
 
         private void LoginButton_OnClick(object sender, EventArgs e)
         {
-            SocketIOHandler.Connect(TextBoxPassword.Text, TextBoxPassword.Text);
+            LoginButton.Position.Y = (LoginButton.Position.Y == 75) ? 105 : 75;
+            new Thread(() => { SocketHandler.Connect(TextBoxUsername.Text, TextBoxPassword.Text); }).Start();
         }
 
         private void RoomButtonHandler(object sender, EventArgs e)
@@ -90,7 +91,7 @@ namespace Game1.Rooms
         public List<Type> GetAllRooms()
         {
             return AppDomain.CurrentDomain.GetAssemblies().SelectMany(x => x.GetTypes())
-                 .Where(x => (typeof(Room).IsAssignableFrom(x) | typeof(System.Windows.Forms.Form).IsAssignableFrom(x)) && !x.IsInterface && !x.IsAbstract && !x.FullName.StartsWith("Stranger"))
+                 .Where(x => (typeof(Room).IsAssignableFrom(x) | typeof(System.Windows.Forms.Form).IsAssignableFrom(x)) && !x.IsInterface && !x.IsAbstract && x.FullName.StartsWith("Game1"))
                  .Select(x => x).ToList();
         }
     }
