@@ -171,7 +171,6 @@ namespace Game1.Rooms
                 View.DrawText(Arial24, "You are not connected to the server.", new Vector2(960 - Arial24.MeasureString("You are not connected to the server.").X / 2, 200), Color.LightGray);
             }
             View.SwitchToRenderTarget(null);
-
             View.DrawTexture(BackBlur, new Vector2(-(Mouse.Position.X / 20), -Mouse.Position.Y / 20));
 
             Vector2 mouseOffset = new Vector2(-(Mouse.Position.X / 1000), -Mouse.Position.Y / 100);
