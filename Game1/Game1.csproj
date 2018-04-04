@@ -58,19 +58,21 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Minigames\BKE\Board.cs" />
+    <Compile Include="Minigames\BKE\Form1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Minigames\BKE\Form1.Designer.cs">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Minigames\DontTapWhite\Tile.cs" />
-    <Compile Include="Minigames\QuizAfvalRace\form1.cs">
+    <Compile Include="Minigames\QuizAfvalRace\QUIZ.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Minigames\QuizAfvalRace\Form1.Designer.cs">
-      <DependentUpon>form1.cs</DependentUpon>
+    <Compile Include="Minigames\QuizAfvalRace\QUIZ.Designer.cs">
+      <DependentUpon>QUIZ.cs</DependentUpon>
     </Compile>
-    <Compile Include="Minigames\QuizAfvalRace\Message.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Minigames\QuizAfvalRace\Message.Designer.cs">
-      <DependentUpon>Message.cs</DependentUpon>
-    </Compile>
+    <Compile Include="Minigames\BKE\GFX.cs" />
     <Compile Include="Minigames\QuizAfvalRace\Sounds.cs" />
     <Compile Include="Minigames\QuizAfvalRace\Vraag.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -117,11 +119,11 @@
   <ItemGroup>
     <EmbeddedResource Include="Icon.ico" />
     <EmbeddedResource Include="Icon.bmp" />
-    <EmbeddedResource Include="Minigames\QuizAfvalRace\Form1.resx">
-      <DependentUpon>form1.cs</DependentUpon>
+    <EmbeddedResource Include="Minigames\BKE\Form1.resx">
+      <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Minigames\QuizAfvalRace\Message.resx">
-      <DependentUpon>Message.cs</DependentUpon>
+    <EmbeddedResource Include="Minigames\QuizAfvalRace\QUIZ.resx">
+      <DependentUpon>QUIZ.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
