@@ -67,7 +67,19 @@
     <Compile Include="Minigames\DontTapWhite\Tile.cs" />
     <Compile Include="Minigames\FollowTheLeader\AI.cs" />
     <Compile Include="Minigames\FollowTheLeader\FollowTheLeader.cs" />
-    <Compile Include="Minigames\FollowTheLeader\Player.cs" />
+    <Compile Include="Minigames\FollowTheLeader\PlayerFTL.cs" />
+    <Compile Include="Minigames\QuizAfvalRace\form1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Minigames\QuizAfvalRace\Form1.Designer.cs">
+      <DependentUpon>form1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Minigames\QuizAfvalRace\Message.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Minigames\QuizAfvalRace\Message.Designer.cs">
+      <DependentUpon>Message.cs</DependentUpon>
+    </Compile>
     <Compile Include="Minigames\QuizAfvalRace\Sounds.cs" />
     <Compile Include="Minigames\QuizAfvalRace\Vraag.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -78,7 +90,7 @@
     <Compile Include="Rooms\DebugRoom.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="Minigames\DontTapWhite\Donttapwhite.cs" />
-    <Compile Include="Minigames\DontTapWhite\Player.cs" />
+    <Compile Include="Minigames\DontTapWhite\PlayerDTW.cs" />
     <Compile Include="Minigames\FlySwat\Fly.cs" />
     <Compile Include="Minigames\FlySwat\FlySwat.cs" />
     <Compile Include="Minigames\QuizAfvalRace\Quiz_Room.cs" />
