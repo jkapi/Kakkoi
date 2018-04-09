@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Threading;
 using Lidgren.Network;
 using System.IO;
+using System.Net.Http;
 
 namespace StrangerCade.Framework.Multiplayer
 {
@@ -20,11 +21,16 @@ namespace StrangerCade.Framework.Multiplayer
         public static bool Connected { get {
                 if (client != null) return (client.ConnectionStatus == NetConnectionStatus.Connected);
                 else return false; } }
-        static string sessid = "";
+        static string Sessid = "";
         public static string PlayerName;
+        public static int UserId;
         static Dictionary<PacketTypes, Action<NetIncomingMessage>> handlers = new Dictionary<PacketTypes, Action<NetIncomingMessage>>();
+
+        public static readonly HttpClient HttpClient = new HttpClient();
         public static void Connect(string sessid, string ip)
         {
+            Sessid = sessid;
+
             NetPeerConfiguration config = new NetPeerConfiguration("Kakoi");
             client = new NetClient(config);
             NetOutgoingMessage outmsg = client.CreateMessage();
@@ -190,11 +196,12 @@ namespace StrangerCade.Framework.Multiplayer
                 int playerCount = inc.ReadInt32();
                 for (int i = 0; i < playerCount; i++)
                 {
-                    GameStateList.Add(new Player(inc.ReadString(),
+                    GameStateList.Add(new Player(inc.ReadInt32(),
+                                                 inc.ReadString(),
                                                  inc.ReadFloat(),
                                                  inc.ReadFloat(),
                                                  inc.ReadFloat(),
-                                                 inc.ReadFloat(), i));
+                                                 inc.ReadFloat(), inc.ReadInt32()));
                 }
             }
             lock (DataLock)
