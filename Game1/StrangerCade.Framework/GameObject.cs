@@ -45,6 +45,10 @@ namespace StrangerCade.Framework
         /// <remarks>
         /// The Vector2(x,y) position in the sprite that is used for the draw(x,y) function</remarks>
         protected Vector2 SpriteOrigin = Vector2.Zero;
+        /// <summary>
+        /// The color mask for the <see cref="Sprite">Sprite</see>. Basically a multiplier of the colors of the sprite
+        /// </summary>
+        protected Color SpriteColor = Color.White;
 
         /// <summary>
         /// The position of this GameObject
@@ -141,7 +145,7 @@ namespace StrangerCade.Framework
             Draw();
             if (Sprite != null)
             {
-                view.DrawSprite(Sprite, spriteIndex, Position, SpriteScale, SpriteRotation, SpriteOrigin);
+                view.DrawSprite(Sprite, spriteIndex, Position, SpriteScale, SpriteRotation, SpriteOrigin, 0, SpriteColor);
                 if (Sprite.SubImages.Count > 1)
                 {
                     spriteIndex = (int)(SpriteSpeed * gameTime.TotalGameTime.TotalSeconds % (Sprite.SubImages.Count - 1));

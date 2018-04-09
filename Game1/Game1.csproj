@@ -58,6 +58,7 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="GameObjects\MovingBackground.cs" />
     <Compile Include="Minigames\ClimbTheMountain\Block.cs" />
     <Compile Include="Minigames\ClimbTheMountain\ClimbTheMountain.cs" />
     <Compile Include="Minigames\DinoCollectStuff\Dino.cs" />
@@ -68,18 +69,6 @@
     <Compile Include="Minigames\FollowTheLeader\AI.cs" />
     <Compile Include="Minigames\FollowTheLeader\FollowTheLeader.cs" />
     <Compile Include="Minigames\FollowTheLeader\PlayerFTL.cs" />
-    <Compile Include="Minigames\QuizAfvalRace\form1.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Minigames\QuizAfvalRace\Form1.Designer.cs">
-      <DependentUpon>form1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Minigames\QuizAfvalRace\Message.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Minigames\QuizAfvalRace\Message.Designer.cs">
-      <DependentUpon>Message.cs</DependentUpon>
-    </Compile>
     <Compile Include="Minigames\QuizAfvalRace\Sounds.cs" />
     <Compile Include="Minigames\QuizAfvalRace\Vraag.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -96,6 +85,7 @@
     <Compile Include="Minigames\QuizAfvalRace\Quiz_Room.cs" />
     <Compile Include="Minigames\QuizAfvalRace\Test_object.cs" />
     <Compile Include="Rooms\LoginMenu.cs" />
+    <Compile Include="Rooms\Menu.cs" />
     <Compile Include="Rooms\RoomMenu.cs" />
     <Compile Include="StrangerCade.Framework\Keyboard.cs" />
     <Compile Include="StrangerCade.Framework\Logger.cs" />
@@ -129,6 +119,7 @@
     </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>

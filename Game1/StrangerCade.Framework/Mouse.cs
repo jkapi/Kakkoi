@@ -111,6 +111,8 @@ namespace StrangerCade.Framework
             return ret;
         }
 
+        public Vector2 LastMovement { get { return movementHistory.Last(); } }
+
         public void SetCursor(Texture2D texture, Point origin)
         {
             Cursor = MouseCursor.FromTexture2D(texture, origin.X, origin.Y);
