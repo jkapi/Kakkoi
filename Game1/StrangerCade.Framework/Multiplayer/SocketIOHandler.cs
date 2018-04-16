@@ -171,6 +171,7 @@ namespace StrangerCade.Framework.Multiplayer
                                     case MinigameTypes.MainGame: Room.GotoRoom(typeof(Game1.Rooms.MainBoard)); break;
                                     case MinigameTypes.FollowTheLeader: Room.GotoRoom(typeof(Game1.Minigames.FollowTheLeader.FollowTheLeader)); break;
                                     case MinigameTypes.ClimbTheMountain: Room.GotoRoom(typeof(Game1.Minigames.ClimbTheMountain.ClimbTheMountain)); break;
+                                    case MinigameTypes.DinoCollectStuff: Room.GotoRoom(typeof(Game1.Minigames.DinoCollectStuff.DinoCollectStuff)); break;
                                     default: Room.GotoRoom(typeof(Game1.Rooms.DebugRoom)); break;
                                 }
                             }
@@ -179,6 +180,7 @@ namespace StrangerCade.Framework.Multiplayer
                                 handlers[val].Invoke(incoming);
                             }
                             break;
+
                         default:
                             break;
                     }

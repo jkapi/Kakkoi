@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using StrangerCade.Framework;
+using StrangerCade.Framework.Multiplayer;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -27,12 +28,16 @@ namespace Game1.Minigames.DinoCollectStuff
         int maxgravity = 16;
         int yspeed = 0;
         int xspeed = 0;
+        long tick = 0;
+        SpriteFont Arial;
+
 
         Stopwatch stopwatch;
 
        
         public override void Initialize()
         {
+            Arial = Content.Load<SpriteFont>("arial16");
             position = new Vector2(20, 20);
             playersize = new Vector2(32, 64);
             collision.Add(new Rectangle(0, 1050, 1920, 30));    //onderplatform
@@ -58,6 +63,10 @@ namespace Game1.Minigames.DinoCollectStuff
    
         public override void Update()
         {
+            if (tick % 2 == 0)
+            {
+                SocketHandler.SendMessage(PacketTypes.MOUSE, position.X, position.Y, xspeed, yspeed);
+            }
             xspeed = 0;
             xspeed += Keyboard.Check(Keys.D) ? 4 : 0;
             xspeed -= Keyboard.Check(Keys.A) ? 4 : 0;
@@ -113,13 +122,17 @@ namespace Game1.Minigames.DinoCollectStuff
             {
                 position.X = 1920 - playersize.X;
             }
-   
+            tick++;
         }
 
         public override void Draw()
         {
-            
 
+            List<Player> players = SocketHandler.GetPlayers();
+            foreach (Player player in players)
+            {
+                View.DrawText(Arial, player.Name, new Vector2(player.MouseX, player.MouseY));
+            }
 
             View.DrawSetColor(Color.Gray);
             foreach(Rectangle rect in collision)
