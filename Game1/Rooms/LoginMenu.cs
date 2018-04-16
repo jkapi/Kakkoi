@@ -37,12 +37,12 @@ namespace Game1.Rooms
 
         public override void Initialize()
         {
+            SocketHandler.SetHandler(PacketTypes.LOGINSESSID, LoggedIn);
             if (File.Exists(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/Kakoi/token"))
             {
                 try
                 {
                     sessid = File.ReadAllText(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/Kakoi/token");
-                    SocketHandler.SetHandler(PacketTypes.LOGINSESSID, LoggedIn);
                     SocketHandler.Connect(sessid, "127.0.0.1");
                 }
                 catch
