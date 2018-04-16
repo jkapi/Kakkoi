@@ -19,7 +19,7 @@ namespace Game1.Minigames.DinoCollectStuff
 
         public override void Initialize()
         {
-            Sprite = new Sprite(Room.Content.Load<Texture2D>("chips"));
+          
 
         }
     }

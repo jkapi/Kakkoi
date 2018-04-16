@@ -26,7 +26,7 @@ namespace Game1.Minigames.DinoCollectStuff
 
         public override void Initialize()
         {
-            DinoSprite = new Sprite(Room.Content.Load<Texture2D>("minigame/dinozooi/clown"));
+            DinoSprite = new Sprite(Room.Content.Load<Texture2D>("minigame/dinozooi/reptile"));
         }
         public override void Update()
         {
@@ -40,9 +40,9 @@ namespace Game1.Minigames.DinoCollectStuff
         public override void Draw()
         {
             if (xspeed > 0)
-                View.DrawSpriteStretched(DinoSprite, 0, Position, new Vector2(200,50));
+                View.DrawSpriteStretched(DinoSprite, 0, Position, new Vector2(44,70));
             else
-                View.DrawSpriteStretched(DinoSprite, 0, Position, new Vector2(200, 50), 0, null, 0, null, SpriteEffects.FlipHorizontally);
+                View.DrawSpriteStretched(DinoSprite, 0, Position, new Vector2(44, 70), 0, null, 0, null, SpriteEffects.FlipHorizontally);
         }
     }
 }

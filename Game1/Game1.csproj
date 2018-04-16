@@ -64,7 +64,6 @@
     <Compile Include="Minigames\ClimbTheMountain\Block.cs" />
     <Compile Include="Minigames\ClimbTheMountain\ClimbTheMountain.cs" />
     <Compile Include="Minigames\DinoCollectStuff\RozeDino.cs" />
-    <Compile Include="Minigames\DinoCollectStuff\Timer.cs" />
     <Compile Include="Minigames\DontTapWhite\Tile.cs" />
     <Compile Include="Minigames\FollowTheLeader\AI.cs" />
     <Compile Include="Minigames\FollowTheLeader\FollowTheLeader.cs" />
