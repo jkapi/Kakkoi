@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using Lidgren.Network;
 using System.Threading;
 using Microsoft.Xna.Framework.Input;
+using Game1.GameObjects;
 
 namespace Game1.Rooms
 {
@@ -19,8 +20,6 @@ namespace Game1.Rooms
         Object ListLock = new object();
         List<Room> Rooms = new List<Room>();
         
-        private Texture2D BackBlur;
-        private Texture2D BackTriangles;
         private Texture2D Logo;
         private Texture2D LockSmall;
 
@@ -29,11 +28,6 @@ namespace Game1.Rooms
         private SpriteFont Arial24;
 
         private TextBox SearchBox;
-
-        private Random rand;
-
-        private Vector2 BackTrianglesPosition;
-        private Vector2 BackTrianglesSpeed;
 
         double lastRefresh = 0;
 
@@ -45,21 +39,14 @@ namespace Game1.Rooms
 
         public override void Initialize()
         {
-            BackBlur = Content.Load<Texture2D>("RoomSelect/back");
-            BackTriangles = Content.Load<Texture2D>("RoomSelect/triangle");
             Logo = Content.Load<Texture2D>("LogoBeta1_0");
             LockSmall = Content.Load<Texture2D>("RoomSelect/LockSmall");
 
             Arial12 = Content.Load<SpriteFont>("arial12");
             Arial16 = Content.Load<SpriteFont>("arial16");
             Arial24 = Content.Load<SpriteFont>("arial24");
-
-            rand = new Random();
-
+            
             roomListRenderTarget = new RenderTarget2D(GraphicsDevice, 1920, 1080);
-
-            BackTrianglesPosition = new Vector2(rand.Next(0, 1280), rand.Next(0, 720));
-            BackTrianglesSpeed = new Vector2(((float)rand.Next(-200, 200)) / 200, ((float)rand.Next(-200, 200)) / 200);
 
             SearchBox = new TextBox(new Vector2(600, 56), 800, Arial16, "Search...")
             {
@@ -109,16 +96,9 @@ namespace Game1.Rooms
 
         public override void Update()
         {
-            BackTrianglesPosition += BackTrianglesSpeed;
-            if (BackTrianglesPosition.X > 1280) { BackTrianglesPosition.X -= 1280; }
-            if (BackTrianglesPosition.X < 0) { BackTrianglesPosition.X += 1280; }
-            if (BackTrianglesPosition.Y > 720) { BackTrianglesPosition.Y -= 720; }
-            if (BackTrianglesPosition.Y < 0) { BackTrianglesPosition.Y += 720; }
-
 
             // Can't get gametime or mouse in Initialize :/
             if (lastRefresh == 0) {
-                lastRefresh = GameTime.TotalGameTime.TotalSeconds;
                 ScrollWheelOffset = Mouse.ScrollWheelValue;
             }
 
@@ -129,7 +109,7 @@ namespace Game1.Rooms
                 {
                     SocketHandler.SendMessage(PacketTypes.ROOMLIST);
                 }
-                lastRefresh = GameTime.TotalGameTime.TotalSeconds;
+                lastRefresh = 0;
             }
 
             ListYOffsetTarget = (Mouse.ScrollWheelValue - ScrollWheelOffset)/120 * 112;
@@ -148,6 +128,8 @@ namespace Game1.Rooms
 
             // Slowly scroll to right position
             ListYOffset += (ListYOffsetTarget - ListYOffset) / 7;
+
+            lastRefresh += GameTime.ElapsedGameTime.TotalSeconds;
         }
 
         public override void Draw()
@@ -171,15 +153,7 @@ namespace Game1.Rooms
                 View.DrawText(Arial24, "You are not connected to the server.", new Vector2(960 - Arial24.MeasureString("You are not connected to the server.").X / 2, 200), Color.LightGray);
             }
             View.SwitchToRenderTarget(null);
-
-            View.DrawTexture(BackBlur, new Vector2(-(Mouse.Position.X / 20), -Mouse.Position.Y / 20));
-
-            Vector2 mouseOffset = new Vector2(-(Mouse.Position.X / 1000), -Mouse.Position.Y / 100);
-
-            View.DrawTexture(BackTriangles, BackTrianglesPosition + mouseOffset);
-            View.DrawTexture(BackTriangles, BackTrianglesPosition - BackTriangles.Bounds.Size.ToVector2() + mouseOffset);
-            View.DrawTexture(BackTriangles, BackTrianglesPosition - new Vector2(BackTriangles.Bounds.Size.X, 0) + mouseOffset);
-            View.DrawTexture(BackTriangles, BackTrianglesPosition - new Vector2(0, BackTriangles.Bounds.Size.Y) + mouseOffset);
+            MovingBackground.Draw(this);
 
             View.DrawRectangle(new Rectangle(0, 140, 1920, 1080), false, new Color(Color.Black, 0.1f));
 

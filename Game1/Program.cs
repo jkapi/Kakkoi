@@ -17,9 +17,12 @@ namespace Game1
         {
             //AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(StrangerCade.Framework.Logger.Exception);
             Logger.Handler = Logger.LogType.Console | Logger.LogType.File;
+#if NICKSSHIZZLE
+            Application.Run(new Minigames.QuizAfvalRace.Form1());
+#else
             using (var game = new Game1())
                 game.Run();
-            //Application.Run(new Minigames.QuizAfvalRace.Form1());
+#endif
         }
     }
 }

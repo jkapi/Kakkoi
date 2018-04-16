@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using StrangerCade.Framework;
 
 namespace Game1
 {
@@ -59,7 +58,11 @@ namespace Game1
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             Logger.WriteLine("Loading room: DebugRoom");
+#if DEBUG
             Room.LoadRoom(typeof(Rooms.DebugRoom), Content, graphics, spriteBatch);
+#else
+            Room.LoadRoom(typeof(Rooms.LoginMenu), Content, graphics, spriteBatch);
+#endif
         }
 
         /// <summary>
@@ -86,11 +89,13 @@ namespace Game1
                 StrangerCade.Framework.Multiplayer.SocketHandler.Stop();
                 Exit();
             }
+#if DEBUG
             if (kb.IsKeyDown(Keys.OemTilde))
             {
                 Logger.WriteLine("Going to Debug Room");
                 Room.GotoRoom(typeof(Rooms.DebugRoom));
             }
+#endif
             float dTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
             // TODO: Add your update logic here
 

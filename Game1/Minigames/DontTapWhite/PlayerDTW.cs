@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Game1.Minigames.DontTapWhite
 {
-    class Player : GameObject
+    class PlayerDTW : GameObject
     {
         //time left to click
         public int time { get; private set; }
@@ -21,7 +21,7 @@ namespace Game1.Minigames.DontTapWhite
         //lives of the player
         public int life { get; private set; }
 
-        public Player() : base(Vector2.Zero)
+        public PlayerDTW() : base(Vector2.Zero)
         {
             time = 10;
             score = 0;
