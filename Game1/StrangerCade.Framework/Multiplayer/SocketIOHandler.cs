@@ -26,7 +26,7 @@ namespace StrangerCade.Framework.Multiplayer
         public static int UserId;
         static Dictionary<PacketTypes, Action<NetIncomingMessage>> handlers = new Dictionary<PacketTypes, Action<NetIncomingMessage>>();
 
-        public static readonly HttpClient HttpClient = new HttpClient();
+        public static HttpClient HttpClient = new HttpClient();
         public static void Connect(string sessid, string ip)
         {
             Sessid = sessid;

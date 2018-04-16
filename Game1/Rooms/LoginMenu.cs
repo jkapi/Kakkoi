@@ -82,13 +82,9 @@ namespace Game1.Rooms
 
         private async void LoginButton_OnClick(object sender, EventArgs e)
         {
-            using (var client = SocketHandler.HttpClient)
-            {
-                var response = await client.PostAsync("https://kakoi.ml/login.php?getsessid", new FormUrlEncodedContent(new Dictionary<string, string>() { { "user", UserBox.Text }, { "pass", PassBox.Text } }));
-
-                sessid = await response.Content.ReadAsStringAsync();
-                SocketHandler.Connect(sessid, "127.0.0.1");
-            }
+            var response = await SocketHandler.HttpClient.PostAsync("https://kakoi.ml/login.php?getsessid", new FormUrlEncodedContent(new Dictionary<string, string>() { { "user", UserBox.Text }, { "pass", PassBox.Text } }));
+            sessid = await response.Content.ReadAsStringAsync();
+            SocketHandler.Connect(sessid, "127.0.0.1");
         }
 
         public override void Update()
@@ -137,7 +133,6 @@ namespace Game1.Rooms
 
             View.DrawRectangle(new Rectangle(770, 570, 190, 60), false, new Color(177, 245, 249));
             View.DrawRectangle(new Rectangle(960, 570, 190, 60), false, new Color(255, 225, 177));
-
             View.DrawText(Arial24, "Login", new Vector2(860, 600), Color.Black, 0, Arial24.MeasureString("Login") / 2);
             View.DrawText(Arial24, "Register", new Vector2(1060, 600), Color.Black, 0, Arial24.MeasureString("Register") / 2);
         }
