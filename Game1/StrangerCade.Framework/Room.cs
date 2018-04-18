@@ -91,11 +91,6 @@ namespace StrangerCade.Framework
             Keyboard = new GMKeyboard();
             Mouse = new GMMouse();
             Initialize();
-            foreach (GameObject obj in Objects)
-            {
-                obj.PreInitialize(this);
-                obj.Initialize();
-            }
 
             Initialized = true;
         }
