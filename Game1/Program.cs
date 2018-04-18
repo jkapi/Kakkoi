@@ -18,7 +18,9 @@ namespace Game1
             //AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(StrangerCade.Framework.Logger.Exception);
             Logger.Handler = Logger.LogType.Console | Logger.LogType.File;
 #if NICKSSHIZZLE
-            Application.Run(new Minigames.QuizAfvalRace.Form1());
+            //Application.Run(new Minigames.QuizAfvalRace.Form1());
+            using (var game = new Game1())
+                game.Run();
 #else
             using (var game = new Game1())
                 game.Run();

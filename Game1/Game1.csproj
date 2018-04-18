@@ -78,20 +78,21 @@
     <Compile Include="Minigames\FollowTheLeader\AI.cs" />
     <Compile Include="Minigames\FollowTheLeader\FollowTheLeader.cs" />
     <Compile Include="Minigames\FollowTheLeader\PlayerFTL.cs" />
-    <Compile Include="Minigames\QuizAfvalRace\form1.cs">
+    <Compile Include="Minigames\Afvalrace_1\form1.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Minigames\QuizAfvalRace\Form1.Designer.cs">
+    <Compile Include="Minigames\Afvalrace_1\Form1.Designer.cs">
       <DependentUpon>form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="Minigames\QuizAfvalRace\Message.cs">
+    <Compile Include="Minigames\Afvalrace_1\Message.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Minigames\QuizAfvalRace\Message.Designer.cs">
+    <Compile Include="Minigames\Afvalrace_1\Message.Designer.cs">
       <DependentUpon>Message.cs</DependentUpon>
     </Compile>
-    <Compile Include="Minigames\QuizAfvalRace\Sounds.cs" />
-    <Compile Include="Minigames\QuizAfvalRace\Vraag.cs" />
+    <Compile Include="Minigames\Afvalrace_1\Sounds.cs" />
+    <Compile Include="Minigames\Afvalrace_1\Vraag.cs" />
+    <Compile Include="Minigames\Quiz\Quiz.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -103,8 +104,8 @@
     <Compile Include="Minigames\DontTapWhite\PlayerDTW.cs" />
     <Compile Include="Minigames\FlySwat\Fly.cs" />
     <Compile Include="Minigames\FlySwat\FlySwat.cs" />
-    <Compile Include="Minigames\QuizAfvalRace\Quiz_Room.cs" />
-    <Compile Include="Minigames\QuizAfvalRace\Test_object.cs" />
+    <Compile Include="Minigames\Afvalrace_1\Quiz_Room.cs" />
+    <Compile Include="Minigames\Afvalrace_1\Test_object.cs" />
     <Compile Include="Rooms\LoginMenu.cs" />
     <Compile Include="Rooms\RoomMenu.cs" />
     <Compile Include="StrangerCade.Framework\Keyboard.cs" />
@@ -213,7 +214,8 @@
     <None Include="Resources\deur.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Minigames\QuizAfvalRace\Quiz_File.txt" />
+    <Content Include="Minigames\Afvalrace_1\Quiz_File.txt" />
+    <Content Include="Minigames\Quiz\Files\woonwijkAchtergrond.png" />
     <None Include="Resources\Deur3.png" />
     <None Include="Resources\deur1.jpg" />
   </ItemGroup>
