@@ -40,6 +40,7 @@ namespace StrangerCade.Framework.UI
 
         public Color ColorSelect = Color.DodgerBlue;
         public Color ColorTextSelect = Color.White;
+        
 
         string drawtext;
         int cursorpos = 0;
@@ -75,7 +76,7 @@ namespace StrangerCade.Framework.UI
             bounds = new Rectangle(Position.ToPoint(), new Point(Width, (int)Font.MeasureString("A").Y + 3));
             if (Password)
             {
-                drawtext = new string((char)PasswordChar, Text.Length);
+                drawtext = new string(PasswordChar, Text.Length);
             }
             else
             {

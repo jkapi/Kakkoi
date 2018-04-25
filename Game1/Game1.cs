@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using StrangerCade.Framework.Multiplayer;
 
 namespace Game1
 {
@@ -86,7 +87,7 @@ namespace Game1
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || kb.IsKeyDown(Keys.Escape))
             {
                 Logger.WriteLine("Exiting");
-                StrangerCade.Framework.Multiplayer.SocketHandler.Stop();
+                SocketHandler.Stop();
                 Exit();
             }
 #if DEBUG
@@ -112,7 +113,7 @@ namespace Game1
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Room.CurrentRoom.DrawClearColor);
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp);
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, DepthStencilState.Default);
             
             Room.CurrentRoom.Draw(gameTime);
 

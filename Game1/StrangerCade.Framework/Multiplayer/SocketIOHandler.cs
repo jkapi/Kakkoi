@@ -89,49 +89,61 @@ namespace StrangerCade.Framework.Multiplayer
 
         public static void SendMessage(PacketTypes type, params float[] data)
         {
-            NetOutgoingMessage outmsg = client.CreateMessage();
-            outmsg.Write((short)type);
-            outmsg.Write((byte)DataTypes.FLOAT);
-            outmsg.Write((int)data.Length);
-            foreach (var obj in data)
+            if (Connected)
             {
-                outmsg.Write(obj);
+                NetOutgoingMessage outmsg = client.CreateMessage();
+                outmsg.Write((short)type);
+                outmsg.Write((byte)DataTypes.FLOAT);
+                outmsg.Write((int)data.Length);
+                foreach (var obj in data)
+                {
+                    outmsg.Write(obj);
+                }
+                client.SendMessage(outmsg, NetDeliveryMethod.ReliableOrdered);
             }
-            client.SendMessage(outmsg, NetDeliveryMethod.ReliableOrdered);
         }
 
         public static void SendMessage(PacketTypes type, params string[] data)
         {
-            NetOutgoingMessage outmsg = client.CreateMessage();
-            outmsg.Write((short)type);
-            outmsg.Write((byte)DataTypes.STRING);
-            outmsg.Write((int)data.Length);
-            foreach (var obj in data)
+            if (Connected)
             {
-                outmsg.Write(obj);
+                NetOutgoingMessage outmsg = client.CreateMessage();
+                outmsg.Write((short)type);
+                outmsg.Write((byte)DataTypes.STRING);
+                outmsg.Write((int)data.Length);
+                foreach (var obj in data)
+                {
+                    outmsg.Write(obj);
+                }
+                client.SendMessage(outmsg, NetDeliveryMethod.ReliableOrdered);
             }
-            client.SendMessage(outmsg, NetDeliveryMethod.ReliableOrdered);
         }
 
         public static void SendMessage(PacketTypes type, params int[] data)
         {
-            NetOutgoingMessage outmsg = client.CreateMessage();
-            outmsg.Write((short)type);
-            outmsg.Write((byte)DataTypes.INT);
-            outmsg.Write((int)data.Length);
-            foreach (var obj in data)
+            if (Connected)
             {
-                outmsg.Write(obj);
+                NetOutgoingMessage outmsg = client.CreateMessage();
+                outmsg.Write((short)type);
+                outmsg.Write((byte)DataTypes.INT);
+                outmsg.Write((int)data.Length);
+                foreach (var obj in data)
+                {
+                    outmsg.Write(obj);
+                }
+                client.SendMessage(outmsg, NetDeliveryMethod.ReliableOrdered);
             }
-            client.SendMessage(outmsg, NetDeliveryMethod.ReliableOrdered);
         }
 
         public static void SendMessage(PacketTypes type)
         {
-            NetOutgoingMessage outmsg = client.CreateMessage();
-            outmsg.Write((short)type);
-            outmsg.Write((byte)DataTypes.EMPTY);
-            client.SendMessage(outmsg, NetDeliveryMethod.ReliableOrdered);
+            if (Connected)
+            {
+                NetOutgoingMessage outmsg = client.CreateMessage();
+                outmsg.Write((short)type);
+                outmsg.Write((byte)DataTypes.EMPTY);
+                client.SendMessage(outmsg, NetDeliveryMethod.ReliableOrdered);
+            }
         }
 
         public static void SetHandler(PacketTypes name, Action<NetIncomingMessage> callback)

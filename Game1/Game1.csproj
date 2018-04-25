@@ -68,6 +68,7 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="GameObjects\Chatbox.cs" />
     <Compile Include="GameObjects\MovingBackground.cs" />
     <Compile Include="Minigames\ClimbTheMountain\Block.cs" />
     <Compile Include="Minigames\ClimbTheMountain\ClimbTheMountain.cs" />
@@ -78,7 +79,6 @@
     <Compile Include="Minigames\FollowTheLeader\AI.cs" />
     <Compile Include="Minigames\FollowTheLeader\FollowTheLeader.cs" />
     <Compile Include="Minigames\FollowTheLeader\PlayerFTL.cs" />
-
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -93,6 +93,7 @@
     <Compile Include="Rooms\LoginMenu.cs" />
     <Compile Include="Rooms\Menu.cs" />
     <Compile Include="Rooms\RoomMenu.cs" />
+    <Compile Include="StrangerCade.Framework\Extensions.cs" />
     <Compile Include="StrangerCade.Framework\Keyboard.cs" />
     <Compile Include="StrangerCade.Framework\Logger.cs" />
     <Compile Include="StrangerCade.Framework\Mouse.cs" />
@@ -103,6 +104,7 @@
     <Compile Include="StrangerCade.Framework\Sprite.cs" />
     <Compile Include="StrangerCade.Framework\Tilesheet.cs" />
     <Compile Include="StrangerCade.Framework\UI\Button.cs" />
+    <Compile Include="StrangerCade.Framework\UI\TextBoxAdvanced.cs" />
     <Compile Include="StrangerCade.Framework\View.cs" />
     <Compile Include="StrangerCade.Framework\UI\TextBox.cs" />
     <Compile Include="Rooms\MainBoard.cs" />

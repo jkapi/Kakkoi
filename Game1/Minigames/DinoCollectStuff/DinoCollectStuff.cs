@@ -131,7 +131,7 @@ namespace Game1.Minigames.DinoCollectStuff
             List<Player> players = SocketHandler.GetPlayers();
             foreach (Player player in players)
             {
-                View.DrawText(Arial, player.Name, new Vector2(player.MouseX, player.MouseY));
+                View.DrawText(Arial, player.Name, new Vector2(player.X, player.Y));
             }
 
             View.DrawSetColor(Color.Gray);

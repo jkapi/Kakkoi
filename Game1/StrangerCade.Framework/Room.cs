@@ -208,6 +208,15 @@ namespace StrangerCade.Framework
             {
                 GameTime = gameTime;
 
+                foreach (GameObject obj in Objects)
+                {
+                    if (obj.Activated)
+                    {
+                        obj.PreDraw();
+                    }
+                }
+                View.SwitchToRenderTarget(null, true, DrawClearColor);
+
                 Mouse.Draw();
 
                 if (Background != null)
