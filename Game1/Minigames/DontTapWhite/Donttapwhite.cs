@@ -120,6 +120,7 @@ namespace Game1.Minigames.DontTapWhite
                             ThePlayer.ResetTimerLeftToClick();
                             aTile.color = Color.Gray;
                             aTile.outline = true;
+                            ThePlayer.ScoreIncrement();
                         }
                     }
 
@@ -140,6 +141,7 @@ namespace Game1.Minigames.DontTapWhite
             View.DrawText(Arial, "Time left to click: " + ThePlayer.timeLeftToClick, new Vector2(20, 70));
             // Lives
             View.DrawText(Arial, "Lives:"+ThePlayer.life, new Vector2(20, 100));
+            View.DrawText(Arial, "Score:" + ThePlayer.score, new Vector2(20, 130));
             //draw the tiles on the field.
             foreach (Tile aTile in Tile.totalTiles)
             {
