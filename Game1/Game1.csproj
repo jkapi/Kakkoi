@@ -67,6 +67,11 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'ShowDebugData|AnyCPU'">
+    <OutputPath>bin\ShowDebugData\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;SHOWDEBUG LINUX</DefineConstants>
+    <DocumentationFile>bin\ShowDebugData\Game1.xml</DocumentationFile>
+  </PropertyGroup>
   <ItemGroup>
     <Compile Include="GameObjects\Chatbox.cs" />
     <Compile Include="GameObjects\MovingBackground.cs" />

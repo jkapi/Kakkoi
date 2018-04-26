@@ -76,9 +76,10 @@ namespace StrangerCade.Framework.UI
                 tick = 0;
             }
 
-            // Handle Arrow Left/Right Keys
-            if (Keyboard.CheckTriggered(Keys.Left)){ CursorPosition--; tick = 0; }
-            if (Keyboard.CheckTriggered(Keys.Right)) { CursorPosition++; tick = 0; }
+            // Handle Arrow Keys
+            if (Keyboard.CheckTriggered(Keys.Left)){ CursorPosition--; }
+            if (Keyboard.CheckTriggered(Keys.Right)) { CursorPosition++; }
+            if (Keyboard.CheckTriggered(Keys.Up)) { CursorPosition = GetPositionUp(CursorPosition); }
 
             // Handle Draw Text
             if (isPasswordBox)
@@ -103,7 +104,47 @@ namespace StrangerCade.Framework.UI
         {
             Vector2 size = font.MeasureString(DrawText);
             View.SwitchToRenderTarget(textRenderTarget, true, Color.White);
+            string[] textLines = DrawText.Split('\n');
             // Find position on screen where the cursor line has to be drawn
+            Point cursorLinePos = Get2DCursorPosition();
+            // Get the coordinates on screen of that position in text
+            Vector2 cursorLineTop = font.MeasureString(textLines[cursorLinePos.Y].Substring(0, cursorLinePos.X));
+            cursorLineTop.Y *= cursorLinePos.Y;
+            cursorLineTop.X++;
+            Vector2 cursorLineBottom = cursorLineTop;
+            cursorLineBottom.Y += spaceSize.Y;
+
+            //Draw Text
+            View.DrawText(Font, DrawText, Vector2.Zero);
+            if (Math.Floor((double)tick / (double)CursorBlinkSpeed) % 2 == 0)
+            {
+                //Draw Line
+                View.DrawLine(cursorLineTop, cursorLineBottom);
+            }
+            View.SwitchToRenderTarget(null, true, Color.Transparent);
+        }
+
+        private int GetPositionUp(int currentChar)
+        {
+            string[] textLines = DrawText.Split('\n');
+            Point pos = Get2DCursorPosition();
+            if (pos.Y == 0) { return 0; }
+            float currentCharX = font.MeasureString(textLines[pos.Y]).X;
+            int i;
+            for (i = 0; i < textLines[pos.Y - 1].Length; i++)
+            {
+                if (font.MeasureString(textLines[pos.Y - 1].Substring(0,i)).X > currentCharX) { break; }
+            }
+            int offset = 0;
+            for (int j = 0; j < pos.Y - 1; j++)
+            {
+                offset += textLines[j].Length;
+            }
+            return offset + i;
+        }
+
+        private Point Get2DCursorPosition()
+        {
             string[] textLines = DrawText.Split('\n');
             int line;
             int lineChar = 0;
@@ -120,20 +161,7 @@ namespace StrangerCade.Framework.UI
                     cursorOffset += textLines[line].Length;
                 }
             }
-            // Get the coordinates on screen of that position in text
-            Vector2 cursorLineTop = font.MeasureString(textLines[line].Substring(0, lineChar));
-            cursorLineTop.Y *= line;
-            cursorLineTop.X++;
-            Vector2 cursorLineBottom = cursorLineTop;
-            cursorLineBottom.Y += spaceSize.Y;
-            //Draw Text
-            View.DrawText(Font, DrawText, Vector2.Zero);
-            if (Math.Floor((double)tick / (double)CursorBlinkSpeed) % 2 == 0)
-            {
-                //Draw Line
-                View.DrawLine(cursorLineTop, cursorLineBottom);
-            }
-            View.SwitchToRenderTarget(null, true, Color.Transparent);
+            return new Point(lineChar, line);
         }
     }
 }

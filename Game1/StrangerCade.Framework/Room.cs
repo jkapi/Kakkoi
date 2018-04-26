@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Reflection;
+using System.Diagnostics;
 
 namespace StrangerCade.Framework
 {
@@ -70,6 +71,8 @@ namespace StrangerCade.Framework
 
         private static bool Reinitialize = false;
 
+        private Dictionary<string, TimeSpan> DebugTimes = new Dictionary<string, TimeSpan>();
+
         /// <summary>
         /// Initialize all <see cref="GameObject">GameObjects</see> in <c>Objects</c>.
         /// </summary>
@@ -91,7 +94,6 @@ namespace StrangerCade.Framework
             Keyboard = new GMKeyboard();
             Mouse = new GMMouse();
             Initialize();
-
             Initialized = true;
         }
 
@@ -128,7 +130,7 @@ namespace StrangerCade.Framework
         public void Update(GameTime gameTime)
         {
             if (Initialized)
-            {
+            { 
                 GameTime = gameTime;
 
                 PreUpdate();

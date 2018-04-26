@@ -51,7 +51,7 @@ namespace Game1.Minigames.DontTapWhite
                 //testBtn.OnClick += startGame;
               //  Objects.Add(testBtn);
                 //
-                grid = getRandomGrid();
+                grid = new int[4,4];
                 gridDimensionLengthX = grid.GetLength(0);
                 gridDimensionLengthY = grid.GetLength(1);
                 rec = new Rectangle(Graphics.PreferredBackBufferWidth / 2 - Graphics.PreferredBackBufferWidth / 4, 0, Graphics.PreferredBackBufferWidth / 2, Graphics.PreferredBackBufferHeight);
@@ -173,7 +173,7 @@ namespace Game1.Minigames.DontTapWhite
                         }
                     }
                     whiteTiles.Clear();
-                    delay = 20;
+                    delay = Math.Max(10, ThePlayer.time);
                 }
                 else
                 {
