@@ -173,7 +173,7 @@ namespace Game1.Minigames.DontTapWhite
                         }
                     }
                     whiteTiles.Clear();
-                    delay = Math.Max(10, ThePlayer.time);
+                    delay = Math.Max(10 - ThePlayer.score / 50, ThePlayer.time);
                 }
                 else
                 {
