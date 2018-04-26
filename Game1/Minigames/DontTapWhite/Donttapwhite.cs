@@ -173,7 +173,9 @@ namespace Game1.Minigames.DontTapWhite
                         }
                     }
                     whiteTiles.Clear();
-                    delay = Math.Max(10 - ThePlayer.score / 50, ThePlayer.time);
+                    //log(31 - x) * 8  --- fine
+                    // log5(33 - x) * 11
+                    delay = (int)(Math.Log((double)ThePlayer.time + 2.5, 7) * 11.0);
                 }
                 else
                 {
@@ -195,7 +197,7 @@ namespace Game1.Minigames.DontTapWhite
         //Return mouse click position
         public Vector2 GetMouseLeftClickedPos()
         {
-            if (Mouse.CheckPressed(MouseButtons.Left))
+            if (Mouse.CheckPressed(MouseButtons.Left) || Keyboard.CheckPressed(Keys.Z))
             {
                  return Mouse.Position;
             }
