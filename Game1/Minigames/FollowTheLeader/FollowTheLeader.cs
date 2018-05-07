@@ -18,7 +18,7 @@ namespace Game1.Minigames.FollowTheLeader
             playField = new Rectangle(new Point(Graphics.PreferredBackBufferWidth/2 - (int)(Graphics.PreferredBackBufferWidth * 0.8)/2, 
                                       Graphics.PreferredBackBufferHeight / 2 - (int)(Graphics.PreferredBackBufferHeight * 0.8) / 2), 
                                       new Point((int)(Graphics.PreferredBackBufferWidth * 0.8), (int)(Graphics.PreferredBackBufferHeight * 0.8)));
-            Player = new PlayerFTL(1,playField,new Vector2(Graphics.PreferredBackBufferWidth / 2, Graphics.PreferredBackBufferHeight / 2),9);
+            Player = new PlayerFTL(1,playField,new Vector2(Graphics.PreferredBackBufferWidth / 2, Graphics.PreferredBackBufferHeight / 2),5);
             Objects.Add(Player);
 
         }

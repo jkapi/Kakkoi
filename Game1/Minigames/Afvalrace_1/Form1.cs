@@ -25,8 +25,7 @@ namespace Game1.Minigames.QuizAfvalRace
         string[] vragen;
         string Vraag1;
         int Min = 1;
-        int Max 
-            = 3;
+        int Max = 3;
     
          
         int Antwoord  = 3;

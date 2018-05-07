@@ -18,14 +18,12 @@ namespace StrangerCade.Framework.Multiplayer
         public Vector2 MouseMovement;
         
         public string Name;
-        public int Id;
 
         public int NumInRoom;
 
-        public Player(int id, string name, float mousex, float mousey, float mousedx, float mousedy, int num)
+        public Player(string name, float mousex, float mousey, float mousedx, float mousedy, int num)
         {
             Name = name;
-            Id = id;
 
             MouseX = mousex;
             MouseY = mousey;

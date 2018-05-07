@@ -83,7 +83,7 @@ namespace Game1.Minigames.FlySwat
             int mynum = 0;
             foreach (Player player in players)
             {
-                if (player.Id != SocketHandler.UserId)
+                if (player.Name != SocketHandler.PlayerName)
                 {
                     View.DrawSprite(meppers, player.NumInRoom % 4, new Vector2(player.MouseX, player.MouseY));
                     View.DrawText(Arial, player.Name, new Vector2(player.MouseX, player.MouseY));

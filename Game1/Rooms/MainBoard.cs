@@ -15,18 +15,11 @@ namespace Game1.Rooms
     {
         Sprite chips;
 
+        public MainBoard() : base(Vector2.Zero){}
+
         int[,] board = new int[8, 8];
 
-        public int CurrentPlayer = 0;
-
-        float boxSize = 80;
-
-        Vector2 boardPos;
-
-        public MainBoard(Vector2 pos) : base(Vector2.Zero)
-        {
-            boardPos = pos;
-        }
+        int currentplayer = 0;
 
         public override void Initialize()
         {
@@ -42,47 +35,37 @@ namespace Game1.Rooms
             board[3, 4] = 1;
             board[4, 3] = 2;
             board[4, 4] = 3;
-            SpriteScale = new Vector2(boxSize) / Sprite.Size;
         }
 
         public override void Update()
         {
-            Position = Mouse.Position - boardPos - new Vector2(boxSize / 2);
-            Position.X = (float)Math.Round(Math.Min(Math.Max(0,Position.X / boxSize),7)) * boxSize + boxSize * 0.5f;
-            Position.Y = (float)Math.Round(Math.Min(Math.Max(0, Position.Y / boxSize), 7)) * boxSize + boxSize * 0.5f;
-            SpriteIndex = CurrentPlayer;
-            int x = (int)(Position.X - 32) / (int)boxSize;
-            int y = (int)(Position.Y - 32 - 1) / (int)boxSize;
-            if (CanPlace(x,y))
-            {
-                SpriteColor = Color.White;
-            }
-            else
-            {
-                SpriteColor = new Color(Color.White, 0.5f);
-            }
+            Position = Mouse.Position / View.Scale;
+            Position.X = (float)Math.Round(Math.Min(Math.Max(0,Position.X / 128),7)) * 128 + 96;
+            Position.Y = (float)Math.Round(Math.Min(Math.Max(0, Position.Y / 128), 7)) * 128 + 96;
+            SpriteIndex = currentplayer;
             if (Mouse.CheckPressed(MouseButtons.Left) )
             {
+                int x = (int)(Position.X - 32) / 128;
+                int y = (int)(Position.Y - 32) / 128;
                 if (board[x, y] == -1 || board[x,y] > 3)
                 {
                     if (CanPlace(x,y))
                     {
-                        board[x, y] = CurrentPlayer;
-                        DoMove(x, y, CurrentPlayer);
-                        CurrentPlayer++;
+                        board[x, y] = currentplayer;
+                        DoMove(x, y, currentplayer);
+                        currentplayer++;
                     }
                 }
                 else
                 {
                     board[x, y] += 4;
-                    CurrentPlayer++;
+                    currentplayer++;
                 }
-                if (CurrentPlayer == 4)
+                if (currentplayer == 4)
                 {
-                    CurrentPlayer = 0;
+                    currentplayer = 0;
                 }
             }
-            Position += boardPos;
         }
 
         public override void Draw()
@@ -94,14 +77,14 @@ namespace Game1.Rooms
                 {
                     if (board[x, y] != -1)
                     {
-                        View.DrawSpriteStretched(chips, board[x, y], new Vector2(x * boxSize, y * boxSize) + boardPos, new Vector2(boxSize));
+                        View.DrawSprite(chips, board[x, y], new Vector2(x * 128, y * 128) + new Vector2(32));
                     }
                 }
-                View.DrawLine(new Vector2(0, y * boxSize) + boardPos, new Vector2(boxSize * 8, y * boxSize) + boardPos);
-                View.DrawLine(new Vector2(y * boxSize, 0) + boardPos, new Vector2(y * boxSize, boxSize * 8) + boardPos);
+                View.DrawLine(new Vector2(0, y * 128) + new Vector2(32), new Vector2(1024, y * 128) + new Vector2(32));
+                View.DrawLine(new Vector2(y * 128, 0) + new Vector2(32), new Vector2(y * 128, 1024) + new Vector2(32));
             }
-            View.DrawLine(new Vector2(0, boxSize * 8) + boardPos, new Vector2(boxSize * 8, boxSize * 8) + boardPos);
-            View.DrawLine(new Vector2(boxSize * 8, 0) + boardPos, new Vector2(boxSize * 8, boxSize * 8) + boardPos);
+            View.DrawLine(new Vector2(0, 1024) + new Vector2(32), new Vector2(1024, 1024) + new Vector2(32));
+            View.DrawLine(new Vector2(1024, 0) + new Vector2(32), new Vector2(1024, 1024) + new Vector2(32));
         }
         
         void DoMove(int px, int py, int pc)

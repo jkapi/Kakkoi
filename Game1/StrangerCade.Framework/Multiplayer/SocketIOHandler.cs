@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using System.Threading;
 using Lidgren.Network;
 using System.IO;
-using System.Net.Http;
 
 namespace StrangerCade.Framework.Multiplayer
 {
@@ -21,16 +20,11 @@ namespace StrangerCade.Framework.Multiplayer
         public static bool Connected { get {
                 if (client != null) return (client.ConnectionStatus == NetConnectionStatus.Connected);
                 else return false; } }
-        static string Sessid = "";
+        static string sessid = "";
         public static string PlayerName;
-        public static int UserId;
         static Dictionary<PacketTypes, Action<NetIncomingMessage>> handlers = new Dictionary<PacketTypes, Action<NetIncomingMessage>>();
-
-        public static HttpClient HttpClient = new HttpClient();
         public static void Connect(string sessid, string ip)
         {
-            Sessid = sessid;
-
             NetPeerConfiguration config = new NetPeerConfiguration("Kakoi");
             client = new NetClient(config);
             NetOutgoingMessage outmsg = client.CreateMessage();
@@ -171,7 +165,6 @@ namespace StrangerCade.Framework.Multiplayer
                                     case MinigameTypes.MainGame: Room.GotoRoom(typeof(Game1.Rooms.MainBoard)); break;
                                     case MinigameTypes.FollowTheLeader: Room.GotoRoom(typeof(Game1.Minigames.FollowTheLeader.FollowTheLeader)); break;
                                     case MinigameTypes.ClimbTheMountain: Room.GotoRoom(typeof(Game1.Minigames.ClimbTheMountain.ClimbTheMountain)); break;
-                                    case MinigameTypes.DinoCollectStuff: Room.GotoRoom(typeof(Game1.Minigames.DinoCollectStuff.DinoCollectStuff)); break;
                                     default: Room.GotoRoom(typeof(Game1.Rooms.DebugRoom)); break;
                                 }
                             }
@@ -180,7 +173,6 @@ namespace StrangerCade.Framework.Multiplayer
                                 handlers[val].Invoke(incoming);
                             }
                             break;
-
                         default:
                             break;
                     }
@@ -198,12 +190,11 @@ namespace StrangerCade.Framework.Multiplayer
                 int playerCount = inc.ReadInt32();
                 for (int i = 0; i < playerCount; i++)
                 {
-                    GameStateList.Add(new Player(inc.ReadInt32(),
-                                                 inc.ReadString(),
+                    GameStateList.Add(new Player(inc.ReadString(),
                                                  inc.ReadFloat(),
                                                  inc.ReadFloat(),
                                                  inc.ReadFloat(),
-                                                 inc.ReadFloat(), inc.ReadInt32()));
+                                                 inc.ReadFloat(), i));
                 }
             }
             lock (DataLock)
@@ -234,19 +225,20 @@ namespace StrangerCade.Framework.Multiplayer
             IsRunning = false;
         }
     }
+
     enum PacketTypes
     {
-        LOGINSESSID = 0, JOINROOM = 1, LEAVEROOM = 2, GETROOM = 3, ROOMLIST = 4, CREATEROOM = 5,
-        MINIGAME = 6, SETMOVE = 7, DOMOVE = 8, MOUSE = 9, PLAYER = 10, TICK = 11, SWAT = 12
+        LOGINUSERPASS, LOGINSESSID, JOINROOM, LEAVEROOM, GETROOM, ROOMLIST, CREATEROOM,
+        MINIGAME, SETMOVE, DOMOVE, MOUSE, PLAYER, TICK, SWAT
     }
 
     enum DataTypes
     {
-        BYTE = 0, FLOAT = 1, STRING = 2, INT = 3, EMPTY = 4
+        BYTE, FLOAT, STRING, INT, EMPTY
     }
 
     enum MinigameTypes
     {
-        None = 0, MainGame = 1, FlySwat = 2, ClimbTheMountain = 3, DinoCollectStuff = 4, FollowTheLeader = 5
+        None, MainGame, FlySwat, ClimbTheMountain, DinoCollectStuff, FollowTheLeader
     }
 }
