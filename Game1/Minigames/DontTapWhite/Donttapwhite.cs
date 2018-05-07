@@ -32,9 +32,7 @@ namespace Game1.Minigames.DontTapWhite
 
         //----GAME SYSTEM RELATED----//
         public int stateOfGame { get; private set; }
-        static public List<PlayerDTW> currentPlayerList { get; private set; }
-        //CURRENT PLAYER IN THE GAME
-        public PlayerDTW ThePlayer { get; private set; }
+        public List<PlayerDTW> currentPlayerList { get; private set; }
 
         SpriteFont Arial;
 
@@ -47,11 +45,11 @@ namespace Game1.Minigames.DontTapWhite
             if (stateOfGame == 0)
             {
                 Arial = Content.Load<SpriteFont>("arial16");
-               // testBtn = new Button(new Vector2(20, 80), new Vector2(200, 30), Arial, "Start");
-                //testBtn.OnClick += startGame;
-              //  Objects.Add(testBtn);
+                testBtn = new Button(new Vector2(20, 80), new Vector2(200, 30), Arial, "Start");
+                testBtn.OnClick += startGame;
+                Objects.Add(testBtn);
                 //
-                grid = new int[4,4];
+                grid = getRandomGrid();
                 gridDimensionLengthX = grid.GetLength(0);
                 gridDimensionLengthY = grid.GetLength(1);
                 rec = new Rectangle(Graphics.PreferredBackBufferWidth / 2 - Graphics.PreferredBackBufferWidth / 4, 0, Graphics.PreferredBackBufferWidth / 2, Graphics.PreferredBackBufferHeight);
@@ -60,24 +58,6 @@ namespace Game1.Minigames.DontTapWhite
                 Tile.InitTotalTiles(grid.GetLength(0) * grid.GetLength(1));
                 InitPlayground();
                 delay = 20;
-                currentPlayerList = new List<PlayerDTW>();
-                ThePlayer = null;
-            }
-            if (currentPlayerList.Count > -1 & currentPlayerList.Count < 4)
-            {
-                PlayerDTW newPlayer1 = new PlayerDTW();
-                PlayerDTW newPlayer2 = new PlayerDTW();
-                PlayerDTW newPlayer3 = new PlayerDTW();
-                PlayerDTW newPlayer4 = new PlayerDTW();
-                ThePlayer = newPlayer1;
-                currentPlayerList.Add(newPlayer1);
-                currentPlayerList.Add(newPlayer2);
-                currentPlayerList.Add(newPlayer3);
-                currentPlayerList.Add(newPlayer4);
-            }
-            else
-            {
-                //write method that with messagebox that room is full.
             }
         }
         // returns a random grid(4x4,6x6,8x8)
@@ -99,12 +79,7 @@ namespace Game1.Minigames.DontTapWhite
 
         public override void Update()
         {
-            if (ThePlayer.life < 1)
-            {
-                ThePlayer.Endscreen();
-            }
-
-            if (ThePlayer.stateOfGame == 1)
+            if (stateOfGame == 1)
             {
                 foreach (Tile aTile in Tile.totalTiles)
                 {
@@ -112,42 +87,28 @@ namespace Game1.Minigames.DontTapWhite
                     {
                         if (aTile.color == Color.Gray)
                         {
-                            ThePlayer.PlayerDead();
+                            stateOfGame++;
                             //yet to make player life = 0;
                         }
                         if (aTile.color == Color.Black)
                         {
-                            ThePlayer.ResetTimerLeftToClick();
                             aTile.color = Color.Gray;
                             aTile.outline = true;
-                            ThePlayer.ScoreIncrement();
                         }
                     }
 
                 }
             }
-            if (ThePlayer.stateOfGame == 0)
-            {
-                foreach (PlayerDTW player in currentPlayerList)
-                {
-                    player.PlayScreen();
-                }
-            }
         }
         public override void Draw()
         {
-            // Timer
-            View.DrawText(Arial, "Time left: "+ThePlayer.time, new Vector2(20, 40));
-            View.DrawText(Arial, "Time left to click: " + ThePlayer.timeLeftToClick, new Vector2(20, 70));
-            // Lives
-            View.DrawText(Arial, "Lives:"+ThePlayer.life, new Vector2(20, 100));
-            View.DrawText(Arial, "Score:" + ThePlayer.score, new Vector2(20, 130));
+            View.DrawText(Arial, "Waiting for players", new Vector2(20, 40));
             //draw the tiles on the field.
             foreach (Tile aTile in Tile.totalTiles)
             {
                 View.DrawRectangle(aTile.tile, aTile.outline, aTile.color);
             }
-            if (ThePlayer.stateOfGame == 1)
+            if (stateOfGame == 1)
             {
                 //spawn the click tiles.
                 if (delay < 0)
@@ -173,9 +134,7 @@ namespace Game1.Minigames.DontTapWhite
                         }
                     }
                     whiteTiles.Clear();
-                    //log(31 - x) * 8  --- fine
-                    // log5(33 - x) * 11
-                    delay = (int)(Math.Log((double)ThePlayer.time + 2.5, 7) * 11.0);
+                    delay = 20;
                 }
                 else
                 {
@@ -184,20 +143,20 @@ namespace Game1.Minigames.DontTapWhite
             }
         }
 
-        //private void startGame(object sender, EventArgs e)
-        //{
-        //    stateOfGame++;
-        //    if (stateOfGame > 2)
-        //    {
-        //        stateOfGame = 0;
-        //        return;
-        //    }
-        //}
+        private void startGame(object sender, EventArgs e)
+        {
+            stateOfGame++;
+            if (stateOfGame > 2)
+            {
+                stateOfGame = 0;
+                return;
+            }
+        }
 
         //Return mouse click position
         public Vector2 GetMouseLeftClickedPos()
         {
-            if (Mouse.CheckPressed(MouseButtons.Left) || Keyboard.CheckPressed(Keys.Z))
+            if (Mouse.CheckPressed(MouseButtons.Left))
             {
                  return Mouse.Position;
             }

@@ -101,6 +101,8 @@ namespace Game1.Minigames.ClimbTheMountain
                 }
             }
                
+
+
             //foreach (Block block in Block.totalBlocks)
             // {
             //     if(Keyboard.PressedKeys)

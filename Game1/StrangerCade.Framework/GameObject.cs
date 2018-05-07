@@ -160,16 +160,5 @@ namespace StrangerCade.Framework
         {
 
         }
-
-        /// <summary>
-        /// PreDraw is intended for drawing things to RenderTargets before the actual Draw Call.
-        /// </summary>
-        /// <remarks>
-        /// Make use of the GameTime. The FPS isn't always fixed.
-        /// </remarks>
-        public virtual void PreDraw()
-        {
-
-        }
     }
 }
