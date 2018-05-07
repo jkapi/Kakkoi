@@ -161,6 +161,7 @@ namespace Game1.Minigames.DinoCollectStuff
 
         public override void Draw()
         {
+
           
             GraphicsDevice.Clear(Color.CornflowerBlue);
             View.DrawTextureStretched(background, Vector2.Zero, new Vector2(1920, 1080));

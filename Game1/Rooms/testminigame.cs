@@ -21,6 +21,7 @@ namespace Game1.Rooms
             btn = new Button(new Vector2(20, 20), new Vector2(200, 30), Arial, "Ga naar room1");
             btn.OnClick += gomain;
             Objects.Add(btn);
+            Objects.Add(new TextBoxAdvanced(new Vector2(20, 80), new Vector2(300, 200), Arial, "Vul iets in", false, "", true));
         }
 
         private void gomain(object sender, EventArgs e)
@@ -30,7 +31,7 @@ namespace Game1.Rooms
 
         public override void Draw()
         {
-            View.DrawText(Arial, "Piemels", new Vector2(20, 40));
+            View.DrawText(Arial, "Boze tekst", new Vector2(20, 40));
         }
     }
 }

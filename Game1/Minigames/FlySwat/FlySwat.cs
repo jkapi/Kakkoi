@@ -85,8 +85,8 @@ namespace Game1.Minigames.FlySwat
             {
                 if (player.Id != SocketHandler.UserId)
                 {
-                    View.DrawSprite(meppers, player.NumInRoom % 4, new Vector2(player.MouseX, player.MouseY));
-                    View.DrawText(Arial, player.Name, new Vector2(player.MouseX, player.MouseY));
+                    View.DrawSprite(meppers, player.NumInRoom % 4, new Vector2(player.X, player.Y));
+                    View.DrawText(Arial, player.Name, new Vector2(player.X, player.Y));
                 }
                 else
                 {
