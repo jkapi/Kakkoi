@@ -50,7 +50,7 @@ namespace Game1.Rooms
             }
             Logo = Content.Load<Texture2D>("LogoBeta1_0");
 
-            Arial12 = Content.Load<SpriteFont>("arial12");
+            Arial12 = Content.Load<SpriteFont>("opensans13");
             Arial16 = Content.Load<SpriteFont>("arial16");
             Arial24 = Content.Load<SpriteFont>("arial24");
             

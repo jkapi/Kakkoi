@@ -34,7 +34,7 @@ namespace Game1.Rooms
             Mouse.Cursor = MouseCursor.FromTexture2D(Content.Load<Texture2D>("transparant"),0,0);
             View.RotationMode = View.RotationType.Degrees;
 
-            Arial12 = Content.Load<SpriteFont>("arial12");
+            Arial12 = Content.Load<SpriteFont>("OpenSans13");
             Arial24 = Content.Load<SpriteFont>("arial24");
             Chips = new Sprite(Content.Load<Texture2D>("chips"));
             Heads = new Sprite(Content.Load<Texture2D>("random/heads"), 4);
