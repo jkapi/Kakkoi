@@ -26,7 +26,7 @@ namespace Game1.Minigames.DinoCollectStuff
 
         public override void Initialize()
         {
-            DinoSprite = new Sprite(Room.Content.Load<Texture2D>("minigame/dinozooi/clown"));
+            DinoSprite = new Sprite(Room.Content.Load<Texture2D>("minigame/dinozooi/reptile"));
         }
         public override void Update()
         {
