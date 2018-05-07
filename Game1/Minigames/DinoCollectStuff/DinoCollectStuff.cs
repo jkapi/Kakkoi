@@ -14,13 +14,16 @@ namespace Game1.Minigames.DinoCollectStuff
 {
     class DinoCollectStuff : Room
     {
+
+        Texture2D background;
         Sprite DinoSprite;
-
-
+       
         Vector2 position;
         Vector2 playersize;
         List<Rectangle> collision = new List<Rectangle>();
-        
+        List<Drugs> listDrugs = new List<Drugs>();
+        List<int> platformInGebruik = new List<int>();
+
         bool onground = true;
 
         int jumpSpeed = 24;
@@ -34,9 +37,11 @@ namespace Game1.Minigames.DinoCollectStuff
 
         Stopwatch stopwatch;
 
+        Random random = new Random();
        
         public override void Initialize()
         {
+            background = Content.Load<Texture2D>("minigame/dinozooi/background rehab");
             Arial = Content.Load<SpriteFont>("arial16");
             position = new Vector2(20, 20);
             playersize = new Vector2(32, 64);
@@ -51,22 +56,29 @@ namespace Game1.Minigames.DinoCollectStuff
             collision.Add(new Rectangle(850, 685, 370, 20));   // midden midden
             collision.Add(new Rectangle(700, 550, 200, 20));   // midden boven
             collision.Add(new Rectangle(850, 415, 300, 20));  // midden helemaal boven
-
+   
             DinoSprite = new Sprite(Content.Load<Texture2D>("minigame/Dinozooi/Clown"));
-          //  Objects.Add(new Dino(new Vector2(20, 500), collision));  //chip placeholder atm
+       
             Objects.Add(new RozeDino(new Vector2(120, 800), 120, 410, -3));     // enemy
             Objects.Add(new RozeDino(new Vector2(0, 660), -20 , 270 , -4));
             Objects.Add(new RozeDino(new Vector2(1620, 560), 1600 , 1880, 4));
             Objects.Add(new RozeDino(new Vector2(1550, 810), 1530 , 1810 , -2 ));
             stopwatch = Stopwatch.StartNew();
+
+            for (int i = 0; i < collision.Count; i++)
+            {
+                platformInGebruik.Add(0);
+            }
+
+            //Objects.Add(new Drugs(new Vector2(850, 415-48), new Vector2(850+300, 415-48)));
         }
    
         public override void Update()
         {
-            if (tick % 2 == 0)
+         /*  if (tick % 2 == 0)
             {
                 SocketHandler.SendMessage(PacketTypes.MOUSE, position.X, position.Y, xspeed, yspeed);
-            }
+            } */
             xspeed = 0;
             xspeed += Keyboard.Check(Keys.D) ? 4 : 0;
             xspeed -= Keyboard.Check(Keys.A) ? 4 : 0;
@@ -123,16 +135,41 @@ namespace Game1.Minigames.DinoCollectStuff
                 position.X = 1920 - playersize.X;
             }
             tick++;
+
+            if (listDrugs.Count < 4)
+            {
+                bool platformHasNoCoin = true;
+                while (platformHasNoCoin)
+                { 
+                    int platformNum = random.Next(0, platformInGebruik.Count);
+                    if (platformInGebruik[platformNum] == 0)
+                    {
+                        Drugs drug = new Drugs(new Vector2(collision[platformNum].X, collision[platformNum].Y - 45), new Vector2(collision[platformNum].X + collision[platformNum].Width, collision[platformNum].Y - 45));
+                        listDrugs.Add(drug);
+                        //new Vector2(collision[platformNum].X, collision[platformNum].Y)
+                        //new Vector2(collision[platformNum].X+collision[platformNum].Width, collision[platformNum].Y)
+                        platformInGebruik[platformNum] = 1;
+                        platformHasNoCoin = false;
+                        Objects.Add(drug);
+
+                    }
+
+                }
+            }
+
         }
 
         public override void Draw()
         {
-
-            List<Player> players = SocketHandler.GetPlayers();
-            foreach (Player player in players)
-            {
-                View.DrawText(Arial, player.Name, new Vector2(player.MouseX, player.MouseY));
-            }
+          
+            GraphicsDevice.Clear(Color.CornflowerBlue);
+            View.DrawTextureStretched(background, Vector2.Zero, new Vector2(1920, 1080));
+          
+            /* List<Player> players = SocketHandler.GetPlayers();
+             foreach (Player player in players)
+             {
+                 View.DrawText(Arial, player.Name, new Vector2(player.MouseX, player.MouseY));
+             }*/
 
             View.DrawSetColor(Color.Gray);
             foreach(Rectangle rect in collision)

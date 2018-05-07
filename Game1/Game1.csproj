@@ -73,12 +73,12 @@
     <Compile Include="Minigames\ClimbTheMountain\ClimbTheMountain.cs" />
     <Compile Include="Minigames\DinoCollectStuff\Dino.cs" />
     <Compile Include="Minigames\DinoCollectStuff\DinoCollectStuff.cs" />
+    <Compile Include="Minigames\DinoCollectStuff\Drugs.cs" />
     <Compile Include="Minigames\DinoCollectStuff\RozeDino.cs" />
     <Compile Include="Minigames\DontTapWhite\Tile.cs" />
     <Compile Include="Minigames\FollowTheLeader\AI.cs" />
     <Compile Include="Minigames\FollowTheLeader\FollowTheLeader.cs" />
     <Compile Include="Minigames\FollowTheLeader\PlayerFTL.cs" />
-
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
