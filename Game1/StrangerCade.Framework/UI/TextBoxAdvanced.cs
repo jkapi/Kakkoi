@@ -15,7 +15,6 @@ namespace StrangerCade.Framework.UI
     {
         public Vector2 Size { get { return size; } set { size = value; Initialize(); } }
         private Vector2 size = new Vector2(10, 10);
-        public Rectangle Bounds { get { return new Rectangle(Position.ToPoint(), Size.ToPoint()); } set { size = value.Size.ToVector2(); Position = value.Location.ToVector2(); } }
         public SpriteFont Font { get { return font; } set { font = value; Initialize(); } } // Reinitialize when changing font
         private SpriteFont font;
         public string Text;
@@ -60,43 +59,27 @@ namespace StrangerCade.Framework.UI
 
         public override void Update()
         {
-            Hovered = Bounds.Contains(Mouse.Position);
+            Text = Text.Insert(CursorPosition, Keyboard.String);
+            CursorPosition += Keyboard.String.Length;
+            Keyboard.String = "";
 
-            if (Hovered)
+            // Handle Backspace & Delete
+            if (Keyboard.CheckTriggered(Keys.Back))
             {
-                // TODO: Change colors?
+                Text = CursorPosition > 0 ? Text.Remove(CursorPosition - 1, 1) : Text;
+                CursorPosition--;
+                tick = 0;
+            }
+            if (Keyboard.CheckTriggered(Keys.Delete))
+            {
+                Text = CursorPosition < Text.Length ? Text.Remove(CursorPosition, 1) : Text;
+                tick = 0;
             }
 
-            if (Mouse.CheckPressed(MouseButtons.Left))
-            {
-                Focussed = Mouse.CheckPressed(MouseButtons.Left) && Hovered;
-            }
-
-            if (Focussed)
-            {
-                Text = Text.Insert(CursorPosition, Keyboard.String);
-                CursorPosition += Keyboard.String.Length;
-                Keyboard.String = "";
-
-                // Handle Backspace & Delete
-                if (Keyboard.CheckTriggered(Keys.Back))
-                {
-                    Text = CursorPosition > 0 ? Text.Remove(CursorPosition - 1, 1) : Text;
-                    CursorPosition--;
-                    tick = 0;
-                }
-                if (Keyboard.CheckTriggered(Keys.Delete))
-                {
-                    Text = CursorPosition < Text.Length ? Text.Remove(CursorPosition, 1) : Text;
-                    tick = 0;
-                }
-
-                // Handle Arrow Keys
-                if (Keyboard.CheckTriggered(Keys.Left)) { CursorPosition--; }
-                if (Keyboard.CheckTriggered(Keys.Right)) { CursorPosition++; }
-                if (Keyboard.CheckTriggered(Keys.Up)) { CursorPosition = GetPositionUp(CursorPosition); }
-                if (Keyboard.CheckTriggered(Keys.Down)) { CursorPosition = GetPositionDown(CursorPosition); }
-            }
+            // Handle Arrow Keys
+            if (Keyboard.CheckTriggered(Keys.Left)){ CursorPosition--; }
+            if (Keyboard.CheckTriggered(Keys.Right)) { CursorPosition++; }
+            if (Keyboard.CheckTriggered(Keys.Up)) { CursorPosition = GetPositionUp(CursorPosition); }
 
             // Handle Draw Text
             if (isPasswordBox)
@@ -133,15 +116,14 @@ namespace StrangerCade.Framework.UI
 
             //Draw Text
             View.DrawText(Font, DrawText, Vector2.Zero);
-            if (Focussed & Math.Floor((double)tick / (double)CursorBlinkSpeed) % 2 == 0)
+            if (Math.Floor((double)tick / (double)CursorBlinkSpeed) % 2 == 0)
             {
                 //Draw Line
                 View.DrawLine(cursorLineTop, cursorLineBottom);
             }
             View.SwitchToRenderTarget(null, true, Color.Transparent);
         }
-        
-        // TODO: Fix accuracy
+
         private int GetPositionUp(int currentChar)
         {
             string[] textLines = DrawText.Split('\n');
@@ -155,26 +137,6 @@ namespace StrangerCade.Framework.UI
             }
             int offset = 0;
             for (int j = 0; j < pos.Y - 1; j++)
-            {
-                offset += textLines[j].Length;
-            }
-            return offset + i;
-        }
-
-        // TODO: Fix accuracy
-        private int GetPositionDown(int currentChar)
-        {
-            string[] textLines = DrawText.Split('\n');
-            Point pos = Get2DCursorPosition();
-            if (pos.Y == textLines.Length - 1) { return DrawText.Length; }
-            float currentCharX = font.MeasureString(textLines[pos.Y]).X;
-            int i;
-            for (i = 0; i < textLines[pos.Y + 1].Length; i++)
-            {
-                if (font.MeasureString(textLines[pos.Y + 1].Substring(0, i)).X > currentCharX) { break; }
-            }
-            int offset = 0;
-            for (int j = 0; j < pos.Y + 1; j++)
             {
                 offset += textLines[j].Length;
             }

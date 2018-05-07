@@ -26,6 +26,8 @@ namespace Game1.Minigames.FollowTheLeader
 
         public void PlayerMovePosition()
         {
+            int checkHitBoxY = HitBox.Y;
+            int checkHitBoxX = HitBox.X;
             //snaps the hitbox to the max X playfield
 
             //Left side
@@ -52,27 +54,55 @@ namespace Game1.Minigames.FollowTheLeader
                 HitBox = new Rectangle(new Point(HitBox.X, PlayField.Height + PlayField.Y - HitBox.Height), new Point(HitBox.Width, HitBox.Height));
             }
 
-
             if (HitBox.X + HitBox.Width <= (PlayField.X + PlayField.Width) & HitBox.X >= PlayField.X)
             {
                 if (Keyboard.Check(Keys.Left))
                 {
-                    HitBox = new Rectangle(new Point(HitBox.X - MovementSpeed, HitBox.Y), new Point(HitBox.Width, HitBox.Height));
+                    if ((HitBox.X - MovementSpeed) >= PlayField.X)
+                    {
+                        HitBox = new Rectangle(new Point((HitBox.X - MovementSpeed), HitBox.Y), new Point(HitBox.Width, HitBox.Height));
+                    }
+                    else
+                    {
+                        HitBox = new Rectangle(new Point((PlayField.X), HitBox.Y), new Point(HitBox.Width, HitBox.Height));
+                    }
                 }
                 if (Keyboard.Check(Keys.Right))
                 {
-                    HitBox = new Rectangle(new Point((HitBox.X) + MovementSpeed, HitBox.Y), new Point(HitBox.Width, HitBox.Height));
+                    if ((HitBox.X + MovementSpeed + HitBox.Width) <= (PlayField.X + PlayField.Width))
+                    {
+                        HitBox = new Rectangle(new Point((HitBox.X) + MovementSpeed, HitBox.Y), new Point(HitBox.Width, HitBox.Height));
+                    }
+                    else
+                    {
+                        HitBox = new Rectangle(new Point(PlayField.X+PlayField.Width-HitBox.Width, HitBox.Y), new Point(HitBox.Width, HitBox.Height));
+                    }
                 }
             }
+
             if (HitBox.Y + HitBox.Height <= (PlayField.Y + PlayField.Height) & HitBox.Y >= PlayField.Y)
             {
                 if (Keyboard.Check(Keys.Up))
                 {
-                    HitBox = new Rectangle(new Point(HitBox.X, HitBox.Y - MovementSpeed), new Point(HitBox.Width, HitBox.Height));
+                    if (HitBox.Y - MovementSpeed >= PlayField.Y)
+                    {
+                        HitBox = new Rectangle(new Point(HitBox.X, HitBox.Y - MovementSpeed), new Point(HitBox.Width, HitBox.Height));
+                    }
+                    else
+                    {
+                        HitBox = new Rectangle(new Point(HitBox.X, PlayField.Y), new Point(HitBox.Width, HitBox.Height));
+                    }
                 }
                 if (Keyboard.Check(Keys.Down))
                 {
-                    HitBox = new Rectangle(new Point(HitBox.X, HitBox.Y + MovementSpeed), new Point(HitBox.Width, HitBox.Height));
+                    if (HitBox.Y + HitBox.Height + MovementSpeed <= (PlayField.Y + PlayField.Height))
+                    {
+                        HitBox = new Rectangle(new Point(HitBox.X, HitBox.Y + MovementSpeed), new Point(HitBox.Width, HitBox.Height));
+                    }
+                    else
+                    {
+                        HitBox = new Rectangle(new Point(HitBox.X, (PlayField.Y + PlayField.Height - HitBox.Height)), new Point(HitBox.Width, HitBox.Height));
+                    }
                 }
             }
         }

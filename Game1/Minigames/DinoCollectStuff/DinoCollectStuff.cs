@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using StrangerCade.Framework;
+using StrangerCade.Framework.Multiplayer;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -27,19 +28,23 @@ namespace Game1.Minigames.DinoCollectStuff
         int maxgravity = 16;
         int yspeed = 0;
         int xspeed = 0;
+        long tick = 0;
+        SpriteFont Arial;
+
 
         Stopwatch stopwatch;
 
        
         public override void Initialize()
         {
+            Arial = Content.Load<SpriteFont>("arial16");
             position = new Vector2(20, 20);
             playersize = new Vector2(32, 64);
             collision.Add(new Rectangle(0, 1050, 1920, 30));    //onderplatform
             collision.Add(new Rectangle(525, 970, 950, 450));   // groot blok onderin
-            collision.Add(new Rectangle(140, 870, 300, 20));    //linker platform onderin
-            collision.Add(new Rectangle(0, 730, 300, 20));      // meest linkse platform
-            collision.Add(new Rectangle(1620, 630, 300, 20));   //meest rechtse platform
+            collision.Add(new Rectangle(140, 870, 300, 20));    //linker platform onderin   //dino
+            collision.Add(new Rectangle(0, 730, 300, 20));      // meest linkse platform   // dino
+            collision.Add(new Rectangle(1620, 630, 300, 20));   //meest rechtse platform  //dino
             collision.Add(new Rectangle(1550, 880, 300, 20));   //rechterblok onderin
             collision.Add(new Rectangle(1300, 755, 350, 20));   //  rechterblok midden
             collision.Add(new Rectangle(600, 820, 400, 20));   // onderste blok in het midden
@@ -48,13 +53,20 @@ namespace Game1.Minigames.DinoCollectStuff
             collision.Add(new Rectangle(850, 415, 300, 20));  // midden helemaal boven
 
             DinoSprite = new Sprite(Content.Load<Texture2D>("minigame/Dinozooi/Clown"));
-            Objects.Add(new Dino(new Vector2(20, 500), collision));
-            Objects.Add(new RozeDino(new Vector2(200, 150), 100, 300, -5));
+          //  Objects.Add(new Dino(new Vector2(20, 500), collision));  //chip placeholder atm
+            Objects.Add(new RozeDino(new Vector2(120, 800), 120, 410, -3));     // enemy
+            Objects.Add(new RozeDino(new Vector2(0, 660), -20 , 270 , -4));
+            Objects.Add(new RozeDino(new Vector2(1620, 560), 1600 , 1880, 4));
+            Objects.Add(new RozeDino(new Vector2(1550, 810), 1530 , 1810 , -2 ));
             stopwatch = Stopwatch.StartNew();
         }
    
         public override void Update()
         {
+            if (tick % 2 == 0)
+            {
+                SocketHandler.SendMessage(PacketTypes.MOUSE, position.X, position.Y, xspeed, yspeed);
+            }
             xspeed = 0;
             xspeed += Keyboard.Check(Keys.D) ? 4 : 0;
             xspeed -= Keyboard.Check(Keys.A) ? 4 : 0;
@@ -110,12 +122,19 @@ namespace Game1.Minigames.DinoCollectStuff
             {
                 position.X = 1920 - playersize.X;
             }
-   
+            tick++;
         }
 
         public override void Draw()
         {
-            View.DrawSetColor(Color.Brown);
+
+            List<Player> players = SocketHandler.GetPlayers();
+            foreach (Player player in players)
+            {
+                View.DrawText(Arial, player.Name, new Vector2(player.X, player.Y));
+            }
+
+            View.DrawSetColor(Color.Gray);
             foreach(Rectangle rect in collision)
             {
                 View.DrawRectangle(rect);

@@ -9,29 +9,31 @@ namespace StrangerCade.Framework.Multiplayer
 {
     class Player
     {
-        public float MouseX;
-        public float MouseY;
-        public Vector2 Mouse;
+        public float X;
+        public float Y;
+        public Vector2 Position;
 
-        public float MouseDX;
-        public float MouseDY;
-        public Vector2 MouseMovement;
+        public float XSpeed;
+        public float YSpeed;
+        public Vector2 Speed;
         
         public string Name;
+        public int Id;
 
         public int NumInRoom;
 
-        public Player(string name, float mousex, float mousey, float mousedx, float mousedy, int num)
+        public Player(int id, string name, float x, float y, float xSpeed, float ySpeed, int num)
         {
             Name = name;
+            Id = id;
 
-            MouseX = mousex;
-            MouseY = mousey;
-            Mouse = new Vector2(mousex, mousey);
+            X = x;
+            Y = y;
+            Position = new Vector2(x, y);
 
-            MouseDX = mousedx;
-            MouseDY = mousedy;
-            MouseMovement = new Vector2(mousedx, mousedy);
+            XSpeed = xSpeed;
+            YSpeed = ySpeed;
+            Speed = new Vector2(xSpeed, ySpeed);
 
             NumInRoom = num;
         }

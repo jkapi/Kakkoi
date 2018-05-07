@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Threading;
 using Lidgren.Network;
 using System.IO;
+using System.Net.Http;
 
 namespace StrangerCade.Framework.Multiplayer
 {
@@ -20,11 +21,16 @@ namespace StrangerCade.Framework.Multiplayer
         public static bool Connected { get {
                 if (client != null) return (client.ConnectionStatus == NetConnectionStatus.Connected);
                 else return false; } }
-        static string sessid = "";
+        static string Sessid = "";
         public static string PlayerName;
+        public static int UserId;
         static Dictionary<PacketTypes, Action<NetIncomingMessage>> handlers = new Dictionary<PacketTypes, Action<NetIncomingMessage>>();
+
+        public static HttpClient HttpClient = new HttpClient();
         public static void Connect(string sessid, string ip)
         {
+            Sessid = sessid;
+
             NetPeerConfiguration config = new NetPeerConfiguration("Kakoi");
             client = new NetClient(config);
             NetOutgoingMessage outmsg = client.CreateMessage();
@@ -83,49 +89,61 @@ namespace StrangerCade.Framework.Multiplayer
 
         public static void SendMessage(PacketTypes type, params float[] data)
         {
-            NetOutgoingMessage outmsg = client.CreateMessage();
-            outmsg.Write((short)type);
-            outmsg.Write((byte)DataTypes.FLOAT);
-            outmsg.Write((int)data.Length);
-            foreach (var obj in data)
+            if (Connected)
             {
-                outmsg.Write(obj);
+                NetOutgoingMessage outmsg = client.CreateMessage();
+                outmsg.Write((short)type);
+                outmsg.Write((byte)DataTypes.FLOAT);
+                outmsg.Write((int)data.Length);
+                foreach (var obj in data)
+                {
+                    outmsg.Write(obj);
+                }
+                client.SendMessage(outmsg, NetDeliveryMethod.ReliableOrdered);
             }
-            client.SendMessage(outmsg, NetDeliveryMethod.ReliableOrdered);
         }
 
         public static void SendMessage(PacketTypes type, params string[] data)
         {
-            NetOutgoingMessage outmsg = client.CreateMessage();
-            outmsg.Write((short)type);
-            outmsg.Write((byte)DataTypes.STRING);
-            outmsg.Write((int)data.Length);
-            foreach (var obj in data)
+            if (Connected)
             {
-                outmsg.Write(obj);
+                NetOutgoingMessage outmsg = client.CreateMessage();
+                outmsg.Write((short)type);
+                outmsg.Write((byte)DataTypes.STRING);
+                outmsg.Write((int)data.Length);
+                foreach (var obj in data)
+                {
+                    outmsg.Write(obj);
+                }
+                client.SendMessage(outmsg, NetDeliveryMethod.ReliableOrdered);
             }
-            client.SendMessage(outmsg, NetDeliveryMethod.ReliableOrdered);
         }
 
         public static void SendMessage(PacketTypes type, params int[] data)
         {
-            NetOutgoingMessage outmsg = client.CreateMessage();
-            outmsg.Write((short)type);
-            outmsg.Write((byte)DataTypes.INT);
-            outmsg.Write((int)data.Length);
-            foreach (var obj in data)
+            if (Connected)
             {
-                outmsg.Write(obj);
+                NetOutgoingMessage outmsg = client.CreateMessage();
+                outmsg.Write((short)type);
+                outmsg.Write((byte)DataTypes.INT);
+                outmsg.Write((int)data.Length);
+                foreach (var obj in data)
+                {
+                    outmsg.Write(obj);
+                }
+                client.SendMessage(outmsg, NetDeliveryMethod.ReliableOrdered);
             }
-            client.SendMessage(outmsg, NetDeliveryMethod.ReliableOrdered);
         }
 
         public static void SendMessage(PacketTypes type)
         {
-            NetOutgoingMessage outmsg = client.CreateMessage();
-            outmsg.Write((short)type);
-            outmsg.Write((byte)DataTypes.EMPTY);
-            client.SendMessage(outmsg, NetDeliveryMethod.ReliableOrdered);
+            if (Connected)
+            {
+                NetOutgoingMessage outmsg = client.CreateMessage();
+                outmsg.Write((short)type);
+                outmsg.Write((byte)DataTypes.EMPTY);
+                client.SendMessage(outmsg, NetDeliveryMethod.ReliableOrdered);
+            }
         }
 
         public static void SetHandler(PacketTypes name, Action<NetIncomingMessage> callback)
@@ -165,6 +183,7 @@ namespace StrangerCade.Framework.Multiplayer
                                     case MinigameTypes.MainGame: Room.GotoRoom(typeof(Game1.Rooms.MainBoard)); break;
                                     case MinigameTypes.FollowTheLeader: Room.GotoRoom(typeof(Game1.Minigames.FollowTheLeader.FollowTheLeader)); break;
                                     case MinigameTypes.ClimbTheMountain: Room.GotoRoom(typeof(Game1.Minigames.ClimbTheMountain.ClimbTheMountain)); break;
+                                    case MinigameTypes.DinoCollectStuff: Room.GotoRoom(typeof(Game1.Minigames.DinoCollectStuff.DinoCollectStuff)); break;
                                     default: Room.GotoRoom(typeof(Game1.Rooms.DebugRoom)); break;
                                 }
                             }
@@ -173,6 +192,7 @@ namespace StrangerCade.Framework.Multiplayer
                                 handlers[val].Invoke(incoming);
                             }
                             break;
+
                         default:
                             break;
                     }
@@ -190,11 +210,12 @@ namespace StrangerCade.Framework.Multiplayer
                 int playerCount = inc.ReadInt32();
                 for (int i = 0; i < playerCount; i++)
                 {
-                    GameStateList.Add(new Player(inc.ReadString(),
+                    GameStateList.Add(new Player(inc.ReadInt32(),
+                                                 inc.ReadString(),
                                                  inc.ReadFloat(),
                                                  inc.ReadFloat(),
                                                  inc.ReadFloat(),
-                                                 inc.ReadFloat(), i));
+                                                 inc.ReadFloat(), inc.ReadInt32()));
                 }
             }
             lock (DataLock)
@@ -225,20 +246,19 @@ namespace StrangerCade.Framework.Multiplayer
             IsRunning = false;
         }
     }
-
     enum PacketTypes
     {
-        LOGINUSERPASS, LOGINSESSID, JOINROOM, LEAVEROOM, GETROOM, ROOMLIST, CREATEROOM,
-        MINIGAME, SETMOVE, DOMOVE, MOUSE, PLAYER, TICK, SWAT
+        LOGINSESSID = 0, JOINROOM = 1, LEAVEROOM = 2, GETROOM = 3, ROOMLIST = 4, CREATEROOM = 5,
+        MINIGAME = 6, SETMOVE = 7, DOMOVE = 8, MOUSE = 9, PLAYER = 10, TICK = 11, SWAT = 12
     }
 
     enum DataTypes
     {
-        BYTE, FLOAT, STRING, INT, EMPTY
+        BYTE = 0, FLOAT = 1, STRING = 2, INT = 3, EMPTY = 4
     }
 
     enum MinigameTypes
     {
-        None, MainGame, FlySwat, ClimbTheMountain, DinoCollectStuff, FollowTheLeader
+        None = 0, MainGame = 1, FlySwat = 2, ClimbTheMountain = 3, DinoCollectStuff = 4, FollowTheLeader = 5
     }
 }

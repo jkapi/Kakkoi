@@ -67,32 +67,23 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'ShowDebugData|AnyCPU'">
+    <OutputPath>bin\ShowDebugData\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;SHOWDEBUG LINUX</DefineConstants>
+    <DocumentationFile>bin\ShowDebugData\Game1.xml</DocumentationFile>
+  </PropertyGroup>
   <ItemGroup>
+    <Compile Include="GameObjects\Chatbox.cs" />
+    <Compile Include="GameObjects\MovingBackground.cs" />
     <Compile Include="Minigames\ClimbTheMountain\Block.cs" />
     <Compile Include="Minigames\ClimbTheMountain\ClimbTheMountain.cs" />
     <Compile Include="Minigames\DinoCollectStuff\Dino.cs" />
     <Compile Include="Minigames\DinoCollectStuff\DinoCollectStuff.cs" />
     <Compile Include="Minigames\DinoCollectStuff\RozeDino.cs" />
-    <Compile Include="Minigames\DinoCollectStuff\Timer.cs" />
     <Compile Include="Minigames\DontTapWhite\Tile.cs" />
     <Compile Include="Minigames\FollowTheLeader\AI.cs" />
     <Compile Include="Minigames\FollowTheLeader\FollowTheLeader.cs" />
     <Compile Include="Minigames\FollowTheLeader\PlayerFTL.cs" />
-    <Compile Include="Minigames\Afvalrace_1\form1.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Minigames\Afvalrace_1\Form1.Designer.cs">
-      <DependentUpon>form1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Minigames\Afvalrace_1\Message.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Minigames\Afvalrace_1\Message.Designer.cs">
-      <DependentUpon>Message.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Minigames\Afvalrace_1\Sounds.cs" />
-    <Compile Include="Minigames\Afvalrace_1\Vraag.cs" />
-    <Compile Include="Minigames\Quiz\Quiz.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -104,10 +95,10 @@
     <Compile Include="Minigames\DontTapWhite\PlayerDTW.cs" />
     <Compile Include="Minigames\FlySwat\Fly.cs" />
     <Compile Include="Minigames\FlySwat\FlySwat.cs" />
-    <Compile Include="Minigames\Afvalrace_1\Quiz_Room.cs" />
-    <Compile Include="Minigames\Afvalrace_1\Test_object.cs" />
     <Compile Include="Rooms\LoginMenu.cs" />
+    <Compile Include="Rooms\Menu.cs" />
     <Compile Include="Rooms\RoomMenu.cs" />
+    <Compile Include="StrangerCade.Framework\Extensions.cs" />
     <Compile Include="StrangerCade.Framework\Keyboard.cs" />
     <Compile Include="StrangerCade.Framework\Logger.cs" />
     <Compile Include="StrangerCade.Framework\Mouse.cs" />
@@ -118,6 +109,7 @@
     <Compile Include="StrangerCade.Framework\Sprite.cs" />
     <Compile Include="StrangerCade.Framework\Tilesheet.cs" />
     <Compile Include="StrangerCade.Framework\UI\Button.cs" />
+    <Compile Include="StrangerCade.Framework\UI\TextBoxAdvanced.cs" />
     <Compile Include="StrangerCade.Framework\View.cs" />
     <Compile Include="StrangerCade.Framework\UI\TextBox.cs" />
     <Compile Include="Rooms\MainBoard.cs" />
@@ -140,6 +132,7 @@
     </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
@@ -214,8 +207,6 @@
     <None Include="Resources\deur.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Minigames\Afvalrace_1\Quiz_File.txt" />
-    <Content Include="Minigames\Quiz\Files\woonwijkAchtergrond.png" />
     <None Include="Resources\Deur3.png" />
     <None Include="Resources\deur1.jpg" />
   </ItemGroup>
