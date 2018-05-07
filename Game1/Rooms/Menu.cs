@@ -38,6 +38,13 @@ namespace Game1.Rooms
         private float targetOffsetQuit = 0;
         private float offsetQuit = 0;
 
+        private bool multiHovered = false;
+        private bool soloHovered = false;
+        private bool settingsHovered = false;
+        private bool quitHovered = false;
+
+        private float animationSpeed = 0.22222222F;
+        private float targetOffset = 30;
 
         public override void Initialize()
         {
@@ -52,15 +59,37 @@ namespace Game1.Rooms
 
         public override void Update()
         {
-            targetOffsetMulti = IsVector2InPolygon4(boundsMulti, Mouse.Position) ? 30 : 0;
-            targetOffsetSolo = IsVector2InPolygon4(boundsSolo, Mouse.Position) ? 30 : 0;
-            targetOffsetSettings = IsVector2InPolygon4(boundsSettings, Mouse.Position) ? 30 : 0;
-            targetOffsetQuit = IsVector2InPolygon4(boundsQuit, Mouse.Position) ? 30 : 0;
+            multiHovered = IsVector2InPolygon4(boundsMulti, Mouse.Position);
+            soloHovered = IsVector2InPolygon4(boundsSolo, Mouse.Position);
+            settingsHovered = IsVector2InPolygon4(boundsSettings, Mouse.Position);
+            quitHovered = IsVector2InPolygon4(boundsQuit, Mouse.Position);
 
-            if (offsetMulti != targetOffsetMulti) { offsetMulti += 0.333f * (targetOffsetMulti - offsetMulti); }
-            if (offsetSolo != targetOffsetSolo) { offsetSolo += 0.333f * (targetOffsetSolo - offsetSolo); }
-            if (offsetSettings != targetOffsetSettings) { offsetSettings += 0.333f * (targetOffsetSettings - offsetSettings); }
-            if (offsetQuit != targetOffsetQuit) { offsetQuit += 0.333f * (targetOffsetQuit - offsetQuit); }
+            targetOffsetMulti = multiHovered ? targetOffset : 0;
+            targetOffsetSolo = soloHovered ? targetOffset : 0;
+            targetOffsetSettings = settingsHovered ? targetOffset : 0;
+            targetOffsetQuit = quitHovered ? targetOffset : 0;
+
+            if (offsetMulti != targetOffsetMulti) { offsetMulti += animationSpeed * (targetOffsetMulti - offsetMulti); }
+            if (offsetSolo != targetOffsetSolo) { offsetSolo += animationSpeed * (targetOffsetSolo - offsetSolo); }
+            if (offsetSettings != targetOffsetSettings) { offsetSettings += animationSpeed * (targetOffsetSettings - offsetSettings); }
+            if (offsetQuit != targetOffsetQuit) { offsetQuit += animationSpeed * (targetOffsetQuit - offsetQuit); }
+
+            if (Mouse.CheckReleased(MouseButtons.Left))
+            {
+                if (multiHovered) { GotoRoom(typeof(Rooms.RoomMenu)); }
+                if (soloHovered) { throw new NotImplementedException(); }
+                if (settingsHovered) { throw new NotImplementedException(); }
+                if (quitHovered) { Game1.stopping = true; }
+            }
+
+            if (multiHovered | soloHovered | settingsHovered | quitHovered)
+            {
+                Mouse.Cursor = MouseCursor.Hand;
+            }
+            else
+            {
+                Mouse.Cursor = Mouse.DefaultCursor;
+            }
         }
 
         public override void Draw()
@@ -71,7 +100,14 @@ namespace Game1.Rooms
             View.DrawTexture(MenuSettings, new Vector2(itempos.X + offsetSettings, itempos.Y + 2*itemspacing));
             View.DrawTexture(MenuQuit, new Vector2(itempos.X + offsetQuit, itempos.Y + 3*itemspacing));
             View.DrawTexture(KakoiLogo, new Vector2(800, 540), null, 0, KakoiLogo.Bounds.Center.ToVector2());
-            View.DrawText(OpenSans, "Position: " + itempos + "\nSpacing: " + itemspacing + "\nMouse position: " + Mouse.Position, Vector2.One, Color.Lime);
+            View.DrawText(OpenSans, "Position: " + itempos +
+                                    "\nSpacing: " + itemspacing +
+                                    "\nMouse position: " + Mouse.Position +
+                                    "\nAnimation distance: " + targetOffset + "@" + animationSpeed +
+                                    "\nMulti: " + multiHovered + "|" + Math.Round(offsetMulti, 4) + "/" + targetOffsetMulti +
+                                    "\nSolo: " + soloHovered + "|" + Math.Round(offsetSolo, 4) + "/" + targetOffsetSolo +
+                                    "\nSettings: " + settingsHovered + "|" + Math.Round(offsetSettings, 4) + "/" + targetOffsetSettings +
+                                    "\nQuit: " + quitHovered + "|" + Math.Round(offsetQuit, 4) + "/" + targetOffsetQuit, Vector2.One, Color.Lime);
         }
 
         // Copied from https://stackoverflow.com/questions/4243042/c-sharp-point-in-polygonpublic 

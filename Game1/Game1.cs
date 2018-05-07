@@ -84,7 +84,7 @@ namespace Game1
         {
             Room.TryReinitializeIfNecessary();
             var kb = Keyboard.GetState();
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || kb.IsKeyDown(Keys.Escape))
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || kb.IsKeyDown(Keys.Escape) || stopping)
             {
                 Logger.WriteLine("Exiting");
                 SocketHandler.Stop();
