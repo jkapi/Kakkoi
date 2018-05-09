@@ -20,8 +20,8 @@ namespace Game1.Rooms
         private Texture2D MenuSettings;
         private Texture2D MenuQuit;
         private SpriteFont OpenSans;
-        private Vector2 itempos = new Vector2(1100, 375);
-        private float itemspacing = 80;
+        private Vector2 mainmenubuttonpos = new Vector2(1100, 375);
+        private float mainmenubuttonspacing = 80;
 
         // 1190    375    1200    435  |  1200     455    1190    515  |  1190    535    1170    595  |  1165    615    1135    675
         // 1535    375    1500    435  |  1485     455    1450    515  |  1440    535    1400    595  |  1390    615    1355    675
@@ -47,7 +47,27 @@ namespace Game1.Rooms
         private float animationSpeed = 0.22222222F;
         private float targetOffset = 30;
 
+        private bool menuEnabled = true;
+
         private bool multiEnabled = false;
+
+        private bool showMulti = false;
+        private bool showSettings = false;
+        private float settingsMenuWidth = 440;
+        private Vector2 targetOffsetMain { get {
+                if (showSettings && !showMulti)
+                    return new Vector2(settingsMenuWidth / 2 + 20, 0);
+                if (showMulti)
+                    return new Vector2(showSettings ? settingsMenuWidth / 2 + 20 : 0, -800);
+                else
+                    return Vector2.Zero;
+            } }
+        private Vector2 offsetMain = Vector2.Zero;
+        private Vector2 targetOffsetMenuSettings { get { return showSettings ? Vector2.Zero : new Vector2(-settingsMenuWidth, 0); } }
+        private Vector2 offsetMenuSettings = Vector2.Zero;
+
+        private RoomList roomList;
+        private Vector2 targetOffsetMenuMulti {  get { return showMulti ? Vector2.Zero : new Vector2(0, 1920); } }
 
         public override void Initialize()
         {
@@ -62,14 +82,17 @@ namespace Game1.Rooms
                 MenuMulti = Content.Load<Texture2D>("roomselect/menuonline");
             else
                 MenuMulti = Content.Load<Texture2D>("roomselect/menuonlinedisabled");
+            offsetMenuSettings = new Vector2(-settingsMenuWidth, 0);
+            roomList = new RoomList();
+            Objects.Add(roomList);
         }
 
         public override void Update()
         {
-            multiHovered = IsVector2InPolygon4(boundsMulti, Mouse.Position) && multiEnabled;
-            soloHovered = IsVector2InPolygon4(boundsSolo, Mouse.Position);
-            settingsHovered = IsVector2InPolygon4(boundsSettings, Mouse.Position);
-            quitHovered = IsVector2InPolygon4(boundsQuit, Mouse.Position);
+            multiHovered = IsVector2InPolygon4(boundsMulti, Mouse.Position - offsetMain) && multiEnabled && menuEnabled;
+            soloHovered = IsVector2InPolygon4(boundsSolo, Mouse.Position - offsetMain) && menuEnabled;
+            settingsHovered = IsVector2InPolygon4(boundsSettings, Mouse.Position - offsetMain) && menuEnabled;
+            quitHovered = IsVector2InPolygon4(boundsQuit, Mouse.Position - offsetMain) && menuEnabled;
 
             targetOffsetMulti = multiHovered ? targetOffset : 0;
             targetOffsetSolo = soloHovered ? targetOffset : 0;
@@ -80,41 +103,52 @@ namespace Game1.Rooms
             if (offsetSolo != targetOffsetSolo) { offsetSolo += animationSpeed * (targetOffsetSolo - offsetSolo); }
             if (offsetSettings != targetOffsetSettings) { offsetSettings += animationSpeed * (targetOffsetSettings - offsetSettings); }
             if (offsetQuit != targetOffsetQuit) { offsetQuit += animationSpeed * (targetOffsetQuit - offsetQuit); }
-
+            if (offsetMain != targetOffsetMain)
+            {
+                offsetMain += animationSpeed * (targetOffsetMain - offsetMain);
+                offsetMenuSettings += animationSpeed * (targetOffsetMenuSettings - offsetMenuSettings);
+            }
             if (Mouse.CheckReleased(MouseButtons.Left))
             {
-                if (multiHovered) { GotoRoom(typeof(Rooms.RoomMenu)); }
+                if (multiHovered) {
+                    showMulti = true;
+                    showSettings = false;
+                }
                 if (soloHovered) { throw new NotImplementedException(); }
-                if (settingsHovered) { throw new NotImplementedException(); }
+                if (settingsHovered) { showSettings = !showSettings; }
                 if (quitHovered) { Game1.stopping = true; }
             }
 
+            if (Keyboard.CheckReleased(Keys.Escape))
+            {
+                if (showMulti)
+                {
+                    showMulti = false;
+                }
+                else
+                {
+                    Game1.stopping = true;
+                }
+            }
+
             if (multiHovered | soloHovered | settingsHovered | quitHovered)
-            {
                 Mouse.Cursor = MouseCursor.Hand;
-            }
             else
-            {
                 Mouse.Cursor = Mouse.DefaultCursor;
-            }
+
+            MultiplayerAnimationHandler();
         }
 
         public override void Draw()
         {
             MovingBackground.Draw(this);
-            View.DrawTexture(MenuMulti, new Vector2(itempos.X + offsetMulti, itempos.Y));
-            View.DrawTexture(MenuSolo, new Vector2(itempos.X + offsetSolo, itempos.Y + itemspacing));
-            View.DrawTexture(MenuSettings, new Vector2(itempos.X + offsetSettings, itempos.Y + 2*itemspacing));
-            View.DrawTexture(MenuQuit, new Vector2(itempos.X + offsetQuit, itempos.Y + 3*itemspacing));
-            View.DrawTexture(KakoiLogo, new Vector2(800, 540), null, 0, KakoiLogo.Bounds.Center.ToVector2());
-            View.DrawText(OpenSans, "Position: " + itempos +
-                                    "\nSpacing: " + itemspacing +
-                                    "\nMouse position: " + Mouse.Position +
-                                    "\nAnimation distance: " + targetOffset + "@" + animationSpeed +
-                                    "\nMulti: " + multiHovered + "|" + Math.Round(offsetMulti, 4) + "/" + targetOffsetMulti +
-                                    "\nSolo: " + soloHovered + "|" + Math.Round(offsetSolo, 4) + "/" + targetOffsetSolo +
-                                    "\nSettings: " + settingsHovered + "|" + Math.Round(offsetSettings, 4) + "/" + targetOffsetSettings +
-                                    "\nQuit: " + quitHovered + "|" + Math.Round(offsetQuit, 4) + "/" + targetOffsetQuit, Vector2.One, Color.Lime);
+            View.DrawTexture(MenuMulti, new Vector2(mainmenubuttonpos.X + offsetMulti, mainmenubuttonpos.Y) + offsetMain);
+            View.DrawTexture(MenuSolo, new Vector2(mainmenubuttonpos.X + offsetSolo, mainmenubuttonpos.Y + mainmenubuttonspacing) + offsetMain);
+            View.DrawTexture(MenuSettings, new Vector2(mainmenubuttonpos.X + offsetSettings, mainmenubuttonpos.Y + 2*mainmenubuttonspacing) + offsetMain);
+            View.DrawTexture(MenuQuit, new Vector2(mainmenubuttonpos.X + offsetQuit, mainmenubuttonpos.Y + 3*mainmenubuttonspacing) + offsetMain);
+            View.DrawTexture(KakoiLogo, new Vector2(800, 540) + offsetMain, null, 0, KakoiLogo.Bounds.Center.ToVector2());
+            View.DrawRectangle(offsetMenuSettings, new Vector2(440, 1080), false, new Color(Color.Black, 0.3f));
+            View.DrawText(OpenSans, "There are no settings yet.", new Vector2(220 - OpenSans.MeasureString("There are no settings yet.").X / 2, 20) + offsetMenuSettings, Color.White);
         }
 
         // Copied from https://stackoverflow.com/questions/4243042/c-sharp-point-in-polygonpublic 
@@ -134,6 +168,11 @@ namespace Game1.Rooms
                 j = i;
             }
             return result;
+        }
+
+        private void MultiplayerAnimationHandler()
+        {
+            if (roomList.Position != targetOffsetMenuMulti) { roomList.Position += animationSpeed * (targetOffsetMenuMulti - roomList.Position); }
         }
     }
 }

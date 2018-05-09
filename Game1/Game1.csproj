@@ -75,6 +75,7 @@
   <ItemGroup>
     <Compile Include="GameObjects\Chatbox.cs" />
     <Compile Include="GameObjects\MovingBackground.cs" />
+    <Compile Include="GameObjects\RoomList.cs" />
     <Compile Include="Minigames\ClimbTheMountain\Block.cs" />
     <Compile Include="Minigames\ClimbTheMountain\ClimbTheMountain.cs" />
     <Compile Include="Minigames\DinoCollectStuff\Dino.cs" />
