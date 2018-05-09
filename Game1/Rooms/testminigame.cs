@@ -22,6 +22,8 @@ namespace Game1.Rooms
             btn.OnClick += gomain;
             Objects.Add(btn);
             Objects.Add(new TextBoxAdvanced(new Vector2(20, 80), new Vector2(300, 200), Arial, "Vul iets in", false, "", true));
+            Objects.Add(new CheckBox(new Vector2(400, 30), true));
+            Objects.Add(new CheckBox(new Vector2(400, 60), false));
         }
 
         private void gomain(object sender, EventArgs e)

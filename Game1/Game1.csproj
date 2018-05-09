@@ -98,7 +98,7 @@
     <Compile Include="Minigames\FlySwat\Fly.cs" />
     <Compile Include="Minigames\FlySwat\FlySwat.cs" />
     <Compile Include="Rooms\LoginMenu.cs" />
-    <Compile Include="Rooms\Menu.cs" />
+    <Compile Include="Rooms\MainMenu.cs" />
     <Compile Include="Rooms\RoomMenu.cs" />
     <Compile Include="StrangerCade.Framework\Extensions.cs" />
     <Compile Include="StrangerCade.Framework\Keyboard.cs" />
@@ -111,6 +111,7 @@
     <Compile Include="StrangerCade.Framework\Sprite.cs" />
     <Compile Include="StrangerCade.Framework\Tilesheet.cs" />
     <Compile Include="StrangerCade.Framework\UI\Button.cs" />
+    <Compile Include="StrangerCade.Framework\UI\CheckBox.cs" />
     <Compile Include="StrangerCade.Framework\UI\TextBoxAdvanced.cs" />
     <Compile Include="StrangerCade.Framework\View.cs" />
     <Compile Include="StrangerCade.Framework\UI\TextBox.cs" />
