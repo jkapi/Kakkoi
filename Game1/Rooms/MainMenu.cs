@@ -8,10 +8,11 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using StrangerCade.Framework.Multiplayer;
 
 namespace Game1.Rooms
 {
-    class Menu : Room
+    class MainMenu : Room
     {
         private Texture2D KakoiLogo;
         private Texture2D MenuSolo;
@@ -46,20 +47,26 @@ namespace Game1.Rooms
         private float animationSpeed = 0.22222222F;
         private float targetOffset = 30;
 
+        private bool multiEnabled = false;
+
         public override void Initialize()
         {
             MovingBackground.Init(Content);
             KakoiLogo = Content.Load<Texture2D>("roomselect/menukakoilogo");
             MenuSolo = Content.Load<Texture2D>("roomselect/menusolo");
-            MenuMulti = Content.Load<Texture2D>("roomselect/menuonline");
             MenuSettings = Content.Load<Texture2D>("roomselect/menusettings");
             MenuQuit = Content.Load<Texture2D>("roomselect/menuquit");
             OpenSans = Content.Load<SpriteFont>("opensans13");
+            multiEnabled = SocketHandler.Connected;
+            if (multiEnabled)
+                MenuMulti = Content.Load<Texture2D>("roomselect/menuonline");
+            else
+                MenuMulti = Content.Load<Texture2D>("roomselect/menuonlinedisabled");
         }
 
         public override void Update()
         {
-            multiHovered = IsVector2InPolygon4(boundsMulti, Mouse.Position);
+            multiHovered = IsVector2InPolygon4(boundsMulti, Mouse.Position) && multiEnabled;
             soloHovered = IsVector2InPolygon4(boundsSolo, Mouse.Position);
             settingsHovered = IsVector2InPolygon4(boundsSettings, Mouse.Position);
             quitHovered = IsVector2InPolygon4(boundsQuit, Mouse.Position);
