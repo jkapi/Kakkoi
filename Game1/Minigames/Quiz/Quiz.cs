@@ -5,6 +5,7 @@ using StrangerCade.Framework;
 using StrangerCade.Framework.UI;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -32,7 +33,7 @@ namespace Game1.Minigames.Quiz
         Button C;
         SpriteFont Arial;
         int timer_int;
-        int levens;
+        int levens = 3;
         int Score;
         string VraagA = "69";
         string VraagB = "21";
@@ -40,9 +41,14 @@ namespace Game1.Minigames.Quiz
         string Vraag = "Hoeveel is 1+1 ?";
         int Antwoord = 3;
         int Pressed = 0;
+        // public string filepath = @"C:\Users\Nickv\Desktop\HTML\HTML\sss\SITE\Nieuwe map\Websites\Proftaak S2\S1\Fuck friday\Kakoi\Game1\Minigames\Quiz\Quiz_File.txt";
+        public string filepath;
+        List<string> vragenlijst;
         public override void Initialize()
         {
-            base.Initialize();
+            filepath = @"Game1\Minigames\Quiz\Quiz_File.txt";
+            vragenlijst = File.ReadAllLines(filepath).ToList();
+            Console.WriteLine(vragenlijst[0]);
             boxVraag = new Rectangle(0,0,750,100);
             boxVraag.Location = new Point(Graphics.PreferredBackBufferWidth/2-boxVraag.Width/2, Graphics.PreferredBackBufferHeight / 4 - boxVraag.Height / 2);
 
@@ -57,8 +63,8 @@ namespace Game1.Minigames.Quiz
 
             Timer = new Rectangle(0, 0, 200, 40);
             Timer.Location = new Point(boxVraag.Location.X - 210, boxVraag.Y);
-
-            timer_int = 30;
+            // timer_lengte
+            timer_int = 20;
 
             _Progress = new Rectangle(0, 0, 225, 25);
             _Progress.Location = new Point(Graphics.PreferredBackBufferWidth / 2 - _Progress.Width / 2, boxVraag.Y -25);
@@ -121,7 +127,13 @@ namespace Game1.Minigames.Quiz
             
 
         }
-
+        public void Game_Over()
+        {
+            if (levens == 0)
+            {
+              //end game
+            }
+        }
         public void Vragen()
         {
             
@@ -151,7 +163,7 @@ namespace Game1.Minigames.Quiz
 
             View.DrawRectangle(Levens, false, Color.White);
             View.DrawRectangle(Levens, true, Color.Black);
-            View.DrawText(fontArial, "Levens: 0", new Vector2(Levens.Location.X + 4, Levens.Location.Y + 4));
+            View.DrawText(fontArial, "Levens: " + levens, new Vector2(Levens.Location.X + 4, Levens.Location.Y + 4));
 
             View.DrawRectangle(Timer, false, Color.White);
             View.DrawRectangle(Timer, true, Color.Black);
@@ -209,7 +221,11 @@ namespace Game1.Minigames.Quiz
                 }
                 else
                 {
-                    levens = levens - 1;
+                    if(levens > 0)
+                    {
+                        levens = levens - 1;
+                    }
+                   
                 }
                 timer.Stop();
                 A.Activated = false;
@@ -225,7 +241,10 @@ namespace Game1.Minigames.Quiz
                 }
                 else
                 {
-                    levens = levens - 1;
+                    if (levens > 0)
+                    {
+                        levens = levens - 1;
+                    }
                 }
                 timer.Stop();
                 A.Activated = false;
@@ -241,7 +260,10 @@ namespace Game1.Minigames.Quiz
                 }
                 else
                 {
-                    levens = levens - 1;
+                    if (levens > 0)
+                    {
+                        levens = levens - 1;
+                    }
                 }
                 timer.Stop();
                 A.Activated = false;
@@ -256,7 +278,7 @@ namespace Game1.Minigames.Quiz
                 B.Activated = true;
                 C.Activated = true;
 
-                timer_int = 30;
+                timer_int = 20;
                 timer.Start();
                 start.Activated = false;
 
