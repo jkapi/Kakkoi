@@ -71,12 +71,14 @@ namespace Game1.Rooms
             {
                 try
                 {
+                    if (!Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/Kakoi/"))
+                        Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/Kakoi/");
                     File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/Kakoi/token", sessid);
                 }
                 catch { }
                 SocketHandler.UserId = msg.ReadInt32();
                 SocketHandler.PlayerName = msg.ReadString();
-                GotoRoom(typeof(RoomMenu));
+                GotoRoom(typeof(MainMenu));
             }
         }
 
