@@ -43,7 +43,7 @@ namespace Game1.GameObjects
             if (BackTrianglesPosition.Y > 720) { BackTrianglesPosition.Y -= 720; }
             if (BackTrianglesPosition.Y < 0) { BackTrianglesPosition.Y += 720; }
 
-            room.View.DrawTexture(BackBlur, new Vector2(-(room.Mouse.Position.X / 20), -room.Mouse.Position.Y / 20));
+            room.View.DrawTexture(BackBlur, new Vector2(Math.Min(-(room.Mouse.Position.X / 20),0), Math.Min(-room.Mouse.Position.Y / 20,0)));
 
             Vector2 mouseOffset = new Vector2(-(room.Mouse.Position.X / 1000), -room.Mouse.Position.Y / 100);
 

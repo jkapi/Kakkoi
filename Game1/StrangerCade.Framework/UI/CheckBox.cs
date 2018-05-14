@@ -31,7 +31,7 @@ namespace StrangerCade.Framework.UI
 
         public override void Update()
         {
-            if (new Rectangle(Position.ToPoint(), new Point(20)).Contains(Mouse.Position))
+            if (new Rectangle((Position * View.Scale).ToPoint(), (new Vector2(20) * View.Scale).ToPoint()).Contains(Mouse.Position))
             {
                 if (Mouse.CheckReleased(MouseButtons.Left))
                     Checked = !Checked;

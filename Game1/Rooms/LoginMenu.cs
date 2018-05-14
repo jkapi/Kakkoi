@@ -92,11 +92,12 @@ namespace Game1.Rooms
 
         public override void Update()
         {
-            if (new Rectangle(960, 570, 190, 60).Contains(Mouse.Position) && Mouse.Check(MouseButtons.Left))
+            View.Scale = new Vector2(Graphics.PreferredBackBufferHeight / 1080f);
+            if (new Rectangle((int)(960 * View.Scale.X), (int)(570 * View.Scale.Y), (int)(190 * View.Scale.X), (int)(60 * View.Scale.Y)).Contains(Mouse.Position) && Mouse.Check(MouseButtons.Left))
             {
                 registerpage = true;
             }
-            else if (new Rectangle(770, 570, 190, 60).Contains(Mouse.Position) && Mouse.CheckPressed(MouseButtons.Left))
+            else if (new Rectangle((int)(770 * View.Scale.X), (int)(570 * View.Scale.Y), (int)(190 * View.Scale.X), (int)(60 * View.Scale.Y)).Contains(Mouse.Position) && Mouse.CheckPressed(MouseButtons.Left))
             {
                 registerpage = false;
             }
@@ -123,7 +124,7 @@ namespace Game1.Rooms
         public override void Draw()
         {
             MovingBackground.Draw(this);
-            View.DrawTexture(Logo, new Vector2(Graphics.PreferredBackBufferWidth / 2 - Logo.Width / 2, 75));
+            View.DrawTexture(Logo, new Vector2(960 - Logo.Width / 2, 75));
 
             if (registerpage)
             {

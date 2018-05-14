@@ -179,7 +179,7 @@ namespace Game1.GameObjects
 
         public void DrawRoom(Vector2 position, string name, int players, string owner, bool locked, int id)
         {
-            Rectangle bounds = new Rectangle(position.ToPoint() + new Point(0, 140) + Position.ToPoint(), new Point(1400, 100));
+            Rectangle bounds = new Rectangle(((position + new Vector2(0, 140) + Position) * View.DefaultScale).ToPoint(), (new Vector2(1400, 100) * View.DefaultScale).ToPoint());
 
             Color oldColor = View.DrawColor;
             View.DrawColor = bounds.Contains(Mouse.Position) && Mouse.Position.Y > 140 ? Color.White : Color.LightGray;

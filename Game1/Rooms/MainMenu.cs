@@ -99,10 +99,10 @@ namespace Game1.Rooms
         public override void Update()
         {
             Graphics.ApplyChanges();
-            multiHovered = IsVector2InPolygon4(boundsMulti, Mouse.Position - offsetMain) && multiEnabled && menuEnabled;
-            soloHovered = IsVector2InPolygon4(boundsSolo, Mouse.Position - offsetMain) && menuEnabled;
-            settingsHovered = IsVector2InPolygon4(boundsSettings, Mouse.Position - offsetMain) && menuEnabled;
-            quitHovered = IsVector2InPolygon4(boundsQuit, Mouse.Position - offsetMain) && menuEnabled;
+            multiHovered = IsVector2InPolygon4(ScaledPolygon(boundsMulti), Mouse.Position - offsetMain * View.Scale.X) && multiEnabled && menuEnabled;
+            soloHovered = IsVector2InPolygon4(ScaledPolygon(boundsSolo), Mouse.Position - offsetMain * View.Scale.X) && menuEnabled;
+            settingsHovered = IsVector2InPolygon4(ScaledPolygon(boundsSettings), Mouse.Position - offsetMain * View.Scale.X) && menuEnabled;
+            quitHovered = IsVector2InPolygon4(ScaledPolygon(boundsQuit), Mouse.Position - offsetMain * View.Scale.X) && menuEnabled;
 
             targetOffsetMulti = multiHovered ? targetOffset : 0;
             targetOffsetSolo = soloHovered ? targetOffset : 0;
@@ -162,7 +162,7 @@ namespace Game1.Rooms
 
         public override void Draw()
         {
-            View.Scale = new Vector2(Graphics.PreferredBackBufferWidth/1920f, Graphics.PreferredBackBufferHeight/1080f);
+            View.Scale = new Vector2(Graphics.PreferredBackBufferHeight/1080f);
             MovingBackground.Draw(this);
             View.DrawTexture(MenuMulti, new Vector2(mainmenubuttonpos.X + offsetMulti, mainmenubuttonpos.Y) + offsetMain);
             View.DrawTexture(MenuSolo, new Vector2(mainmenubuttonpos.X + offsetSolo, mainmenubuttonpos.Y + mainmenubuttonspacing) + offsetMain);
@@ -200,6 +200,18 @@ namespace Game1.Rooms
         private void MultiplayerAnimationHandler()
         {
             if (roomList.Position != targetOffsetMenuMulti) { roomList.Position += animationSpeed * (targetOffsetMenuMulti - roomList.Position); }
+        }
+
+        private Vector2[] ScaledPolygon(Vector2[] polygon)
+        {
+            Vector2[] newpoly = new Vector2[polygon.Length];
+
+            for(int i = 0; i < polygon.Length; i++)
+            {
+                newpoly[i] = polygon[i] * View.Scale;
+            }
+
+            return newpoly;
         }
     }
 }
