@@ -96,7 +96,7 @@ namespace Game1.Minigames.FlySwat
             View.DrawSprite(meppers, mynum, Mouse.Position);
             if (Timer < 5000)
             {
-                View.DrawText(Arial, 5 - Timer / 1000, new Vector2(960, 540) - Arial.MeasureString((5 - Timer / 10000).ToString()) * 0.5f);
+                View.DrawText(Arial, 5 - Timer / 1000, new Vector2(Graphics.PreferredBackBufferWidth / 2f, Graphics.PreferredBackBufferHeight / 2f) - Arial.MeasureString((5 - Timer / 10000).ToString()) * 0.5f);
             }
         }
     }
