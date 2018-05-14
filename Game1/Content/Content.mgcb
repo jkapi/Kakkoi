@@ -291,3 +291,9 @@
 /processorParam:TextureFormat=Color
 /build:RoomSelect/menuonlinedisabled.png
 
+#begin Shaders/blackwhite.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Shaders/blackwhite.fx
+

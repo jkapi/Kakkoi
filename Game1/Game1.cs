@@ -27,10 +27,8 @@ namespace Game1
             Logger.WriteLine("Starting GraphicsDevice");
             graphics = new GraphicsDeviceManager(this);
             graphics.IsFullScreen = false;
-            graphics.PreferredBackBufferHeight = 1080;
-            graphics.PreferredBackBufferWidth = 1920;
-            graphics.PreferMultiSampling = true;
-            graphics.GraphicsProfile = GraphicsProfile.HiDef;
+            graphics.PreferredBackBufferHeight = 768;
+            graphics.PreferredBackBufferWidth = 1280;
             IsMouseVisible = false;
             graphics.ApplyChanges();
             Content.RootDirectory = "Content";
@@ -103,6 +101,24 @@ namespace Game1
             Room.CurrentRoom.Update(gameTime);
 
             base.Update(gameTime);
+
+            if (kb.IsKeyDown(Keys.F9))
+            {
+                graphics.PreferredBackBufferHeight = 768;
+                graphics.PreferredBackBufferWidth = 1366;
+                graphics.GraphicsDevice.Viewport = new Viewport(0, 0, 1366, 768);
+                graphics.ApplyChanges();
+                Room.GotoRoom(Room.CurrentRoom.GetType());
+            }
+
+            if (kb.IsKeyDown(Keys.F10))
+            {
+                graphics.PreferredBackBufferHeight = 1080;
+                graphics.PreferredBackBufferWidth = 1920;
+                graphics.GraphicsDevice.Viewport = new Viewport(0, 0, 1920, 1080);
+                graphics.ApplyChanges();
+                Room.GotoRoom(Room.CurrentRoom.GetType());
+            }
         }
 
 

@@ -114,6 +114,7 @@
     <Compile Include="StrangerCade.Framework\UI\Button.cs" />
     <Compile Include="StrangerCade.Framework\UI\CheckBox.cs" />
     <Compile Include="StrangerCade.Framework\UI\TextBoxAdvanced.cs" />
+    <Compile Include="StrangerCade.Framework\UI\UIColorSet.cs" />
     <Compile Include="StrangerCade.Framework\View.cs" />
     <Compile Include="StrangerCade.Framework\UI\TextBox.cs" />
     <Compile Include="Rooms\MainBoard.cs" />
@@ -127,6 +128,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Visual Studio 2017\Projects\KakoiLGServer\KakoiLGServer\bin\Debug\Lidgren.Network.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="MonoGame.Framework">
       <HintPath>$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\DesktopGL\MonoGame.Framework.dll</HintPath>
     </Reference>
@@ -193,9 +195,10 @@
       <Link>libopenal.1.dylib</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\DesktopGL\MonoGame.Framework.dll.config">
+    <None Include="C:\Program Files (x86)\MonoGame\v3.0\Assemblies\DesktopGL\MonoGame.Framework.dll.config">
       <Link>MonoGame.Framework.dll.config</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </None>
     <None Include="app.manifest" />
   </ItemGroup>

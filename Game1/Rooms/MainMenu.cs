@@ -53,12 +53,20 @@ namespace Game1.Rooms
 
         private bool showMulti = false;
         private bool showSettings = false;
+        private bool showSolo = false;
         private float settingsMenuWidth = 440;
+
+        private int startopacity = 250;
+
+        private DisplayMode roomSize = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode;
+
         private Vector2 targetOffsetMain { get {
                 if (showSettings && !showMulti)
                     return new Vector2(settingsMenuWidth / 2 + 20, 0);
-                if (showMulti)
+                else if (showMulti)
                     return new Vector2(showSettings ? settingsMenuWidth / 2 + 20 : 0, -800);
+                else if (showSolo)
+                    return new Vector2(-1600, 0);
                 else
                     return Vector2.Zero;
             } }
@@ -85,10 +93,12 @@ namespace Game1.Rooms
             offsetMenuSettings = new Vector2(-settingsMenuWidth, 0);
             roomList = new RoomList();
             Objects.Add(roomList);
+            View.Scale = new Vector2(roomSize.Width / 1920f, roomSize.Height / 1080f);
         }
 
         public override void Update()
         {
+            Graphics.ApplyChanges();
             multiHovered = IsVector2InPolygon4(boundsMulti, Mouse.Position - offsetMain) && multiEnabled && menuEnabled;
             soloHovered = IsVector2InPolygon4(boundsSolo, Mouse.Position - offsetMain) && menuEnabled;
             settingsHovered = IsVector2InPolygon4(boundsSettings, Mouse.Position - offsetMain) && menuEnabled;
@@ -110,20 +120,25 @@ namespace Game1.Rooms
             }
             if (Mouse.CheckReleased(MouseButtons.Left))
             {
-                if (multiHovered) {
-                    showMulti = true;
-                    showSettings = false;
-                }
-                if (soloHovered) { throw new NotImplementedException(); }
+                if (multiHovered) { showMulti = true; showSettings = false; }
+                if (soloHovered) { showSolo = true; showSettings = false; }
                 if (settingsHovered) { showSettings = !showSettings; }
                 if (quitHovered) { Game1.stopping = true; }
             }
 
             if (Keyboard.CheckReleased(Keys.Escape))
             {
-                if (showMulti)
+                if (showSettings)
+                {
+                    showSettings = false;
+                }
+                else if (showMulti)
                 {
                     showMulti = false;
+                }
+                else if (showSolo)
+                {
+                    showSolo = false;
                 }
                 else
                 {
@@ -137,10 +152,17 @@ namespace Game1.Rooms
                 Mouse.Cursor = Mouse.DefaultCursor;
 
             MultiplayerAnimationHandler();
+
+            if (startopacity > 0)
+            {
+                startopacity -= 20;
+            }
         }
+        
 
         public override void Draw()
         {
+            View.Scale = new Vector2(Graphics.PreferredBackBufferWidth/1920f, Graphics.PreferredBackBufferHeight/1080f);
             MovingBackground.Draw(this);
             View.DrawTexture(MenuMulti, new Vector2(mainmenubuttonpos.X + offsetMulti, mainmenubuttonpos.Y) + offsetMain);
             View.DrawTexture(MenuSolo, new Vector2(mainmenubuttonpos.X + offsetSolo, mainmenubuttonpos.Y + mainmenubuttonspacing) + offsetMain);
@@ -149,6 +171,11 @@ namespace Game1.Rooms
             View.DrawTexture(KakoiLogo, new Vector2(800, 540) + offsetMain, null, 0, KakoiLogo.Bounds.Center.ToVector2());
             View.DrawRectangle(offsetMenuSettings, new Vector2(440, 1080), false, new Color(Color.Black, 0.3f));
             View.DrawText(OpenSans, "There are no settings yet.", new Vector2(220 - OpenSans.MeasureString("There are no settings yet.").X / 2, 20) + offsetMenuSettings, Color.White);
+        }
+
+        public override void PostDraw()
+        {
+            View.DrawRectangle(new Rectangle(0, 0, 1920, 1080), false, new Color(0, 0, 0, startopacity));
         }
 
         // Copied from https://stackoverflow.com/questions/4243042/c-sharp-point-in-polygonpublic 

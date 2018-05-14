@@ -25,7 +25,7 @@ namespace Game1.GameObjects
         private SpriteFont Arial24;
         private RenderTarget2D roomListRenderTarget;
         private TextBox SearchBox;
-
+        private CheckBox CheckboxFriends;
         double lastRefresh = 0;
 
         float ListYOffsetTarget = 0;
@@ -34,6 +34,8 @@ namespace Game1.GameObjects
 
         float logoPosition = 0;
         float targetLogoPosition = 0;
+        private CheckBox CheckboxPrivate;
+        private CheckBox CheckboxFull;
 
         public RoomList() : base(Vector2.Zero)
         {
@@ -71,7 +73,11 @@ namespace Game1.GameObjects
                 ColorTextUnfocussed = Color.LightGray,
                 ColorSelect = new Color(0, 0, 0, 64)
             };
-            Room.Objects.Add(SearchBox);
+            CheckboxFriends = new CheckBox(new Vector2(600, 90) + Position) { ColorBackground = Color.Transparent, ColorBorder = Color.DimGray, Text = "Show Friends", ColorText = Color.LightGray };
+            CheckboxPrivate = new CheckBox(new Vector2(800, 90) + Position, true) { ColorBackground = Color.Transparent, ColorBorder = Color.DimGray, Text = "Show Private", ColorText = Color.LightGray };
+            CheckboxFull = new CheckBox(new Vector2(1000, 90) + Position, true) { ColorBackground = Color.Transparent, ColorBorder = Color.DimGray, Text = "Show Full", ColorText = Color.LightGray };
+
+            Room.Objects.AddRange(new GameObject[]{ CheckboxFriends, CheckboxPrivate, CheckboxFull, SearchBox});
 
             SocketHandler.SetHandler(PacketTypes.ROOMLIST, ParseRoomList);
             SocketHandler.SendMessage(PacketTypes.ROOMLIST);
@@ -80,6 +86,9 @@ namespace Game1.GameObjects
         public override void Update()
         {
             SearchBox.Position = new Vector2(600 , 56) + Position;
+            CheckboxFriends.Position = new Vector2(600, 90) + Position;
+            CheckboxPrivate.Position = new Vector2(800, 90) + Position;
+            CheckboxFull.Position = new Vector2(1000, 90) + Position;
 
             // Can't get gametime or mouse in Initialize :/
             if (lastRefresh == 0)
@@ -159,10 +168,13 @@ namespace Game1.GameObjects
 
             View.DrawTexture(Logo, new Vector2(-450 + logoPosition, 20) + Position, new Vector2(0.33f, 0.33f));
 
-            //DrawPlaceholderRadioBox(new Vector2(600, 90), "Show Friends");
-            //DrawPlaceholderRadioBox(new Vector2(800, 90), "Show Private");
-            //DrawPlaceholderRadioBox(new Vector2(1000, 90), "Show Full");
             View.DrawRenderTarget(roomListRenderTarget, new Vector2(0, 140) + Position);
+        }
+        public void DrawPlaceholderRadioBox(Vector2 position, string text)
+        {
+            View.DrawRectangle(new Rectangle((int)position.X, (int)position.Y, 17, 17), true);
+
+            View.DrawText(Arial12, text, new Vector2(position.X + 20, position.Y - 3), Color.LightGray);
         }
 
         public void DrawRoom(Vector2 position, string name, int players, string owner, bool locked, int id)

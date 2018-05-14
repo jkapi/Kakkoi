@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
@@ -10,8 +11,19 @@ namespace StrangerCade.Framework.UI
 {
     class CheckBox : GameObject
     {
-        bool Checked;
-        bool Hovered = false;
+        public Color ColorBackground = Color.White;
+        public Color ColorBorder = Color.Black;
+        public Color ColorTick = Color.DeepSkyBlue;
+        public Color ColorTickHover = Color.SkyBlue;
+        public Color ColorText = Color.Black;
+
+        public bool Checked;
+        public bool Hovered = false;
+
+        public string Text;
+
+        private SpriteFont font;
+
         public CheckBox(Vector2 position, bool @checked = false) : base(position)
         {
             Checked = @checked;
@@ -34,15 +46,27 @@ namespace StrangerCade.Framework.UI
                 }
                 Hovered = false;
             }
+            font = Room.Content.Load<SpriteFont>("opensans13");
         }
 
         public override void Draw()
         {
-            View.DrawRectangle(Position, new Vector2(20), false, Color.White);
-            View.DrawRectangle(Position, new Vector2(20), true, Color.Black);
-            Color crossColor = Hovered ? Checked ? Color.DarkGray : Color.LightGray : Checked ? Color.Blue : Color.White;
-            View.DrawLine(Position + new Vector2(3), Position + new Vector2(17), 2, crossColor);
-            View.DrawLine(Position + new Vector2(3, 17), Position + new Vector2(17, 3), 2, crossColor);
+            View.DrawRectangle(Position, new Vector2(20), false, ColorBackground);
+            View.DrawRectangle(Position, new Vector2(20), true, ColorBorder);
+            if (Checked)
+            {
+                View.DrawLine(Position + new Vector2(3), Position + new Vector2(17), 2, ColorTick);
+                View.DrawLine(Position + new Vector2(3, 17), Position + new Vector2(17, 3), 2, ColorTick);
+            }
+            else if (Hovered)
+            {
+                View.DrawLine(Position + new Vector2(3), Position + new Vector2(17), 2, ColorTickHover);
+                View.DrawLine(Position + new Vector2(3, 17), Position + new Vector2(17, 3), 2, ColorTickHover);
+            }
+            if (Text != "")
+            {
+                View.DrawText(font, Text, new Vector2(Position.X + 22, Position.Y - 3), ColorText);
+            }
         }
     }
 }

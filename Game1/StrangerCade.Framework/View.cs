@@ -195,7 +195,7 @@ namespace StrangerCade.Framework
             return degrees * (float)Math.PI / 180.0f;
         }
 
-        public void SwitchToRenderTarget(RenderTarget2D target, bool clear = false, Color? clearColor = null)
+        public void SwitchToRenderTarget(RenderTarget2D target, bool clear = false, Color? clearColor = null, Effect effect = null)
         {
             _spriteBatch.End();
             graphics.SetRenderTarget(target);
@@ -207,7 +207,8 @@ namespace StrangerCade.Framework
                 }
             }
 
-            _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, DepthStencilState.Default);
+            _spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, DepthStencilState.Default,
+                RasterizerState.CullNone, effect);
         }
     }
 }

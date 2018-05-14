@@ -163,7 +163,6 @@ namespace Game1.Rooms
             DrawPlaceholderRadioBox(new Vector2(800, 90), "Show Private");
             DrawPlaceholderRadioBox(new Vector2(1000, 90), "Show Full");
             View.DrawRenderTarget(roomListRenderTarget, new Vector2(0, 140));
-
         }
 
         public void DrawPlaceholderRadioBox(Vector2 position, string text)

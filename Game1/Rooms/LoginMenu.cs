@@ -30,6 +30,7 @@ namespace Game1.Rooms
         private TextBox MailBox;
 
         private Button LoginButton;
+        
 
         bool registerpage = false;
 

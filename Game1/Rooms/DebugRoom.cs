@@ -24,11 +24,11 @@ namespace Game1.Rooms
         string mplog = "";
         public override void Initialize()
         {
-            Graphics.PreferredBackBufferWidth = 1920;
-            Graphics.PreferredBackBufferHeight = 1080;
-            Graphics.IsFullScreen = false;
-            Graphics.ApplyChanges();
-            Mouse.Cursor = Mouse.DefaultCursor;
+            //Graphics.PreferredBackBufferWidth = 1920;
+            //Graphics.PreferredBackBufferHeight = 1080;
+            //Graphics.IsFullScreen = false;
+            //Graphics.ApplyChanges();
+            //Mouse.Cursor = Mouse.DefaultCursor;
             var rooms = GetAllRooms();
             for (int i = 0; i < rooms.Count; i++)
             {
@@ -64,7 +64,7 @@ namespace Game1.Rooms
 
         public override void Update()
         {
-
+            Graphics.ApplyChanges();
         }
 
         public void LoginOk(string sessid)
@@ -86,6 +86,7 @@ namespace Game1.Rooms
             View.DrawText(Arial, "Multiplayer", new Vector2(1290, 10), null, 0, null, 0, new Vector2(2));
             View.DrawText(Arial, "Login: ", new Vector2(1290, 50));
             View.DrawText(Arial, mplog, new Vector2(1290, 200));
+            View.DrawText(Arial, GraphicsDevice.Viewport, new Vector2(650, 10));
         }
 
         public List<Type> GetAllRooms()
