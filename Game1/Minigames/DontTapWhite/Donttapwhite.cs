@@ -13,6 +13,8 @@ namespace Game1.Minigames.DontTapWhite
 {
     class Donttapwhite : Room 
     {
+        Texture2D bg;
+        Color colorWhiteTiles;
         //----DESIGN RELATED----//
         int[,] grid;
         public int gridDimensionLengthX { get; private set; }
@@ -43,6 +45,8 @@ namespace Game1.Minigames.DontTapWhite
         //----CONSTRUCTORS+METHODS----//
         public override void Initialize()
         {
+            colorWhiteTiles = new Color(0, 0, 0, 60);
+            bg = Content.Load<Texture2D>("minigame/donttapwhite/backgrond");
             stateOfGame = 0;
             if (stateOfGame == 0)
             {
@@ -110,7 +114,7 @@ namespace Game1.Minigames.DontTapWhite
                 {
                     if (GetMouseLeftClickedPos().X > aTile.position.X & GetMouseLeftClickedPos().X < aTile.position.X + aTile.tile.Width & GetMouseLeftClickedPos().Y > aTile.position.Y & GetMouseLeftClickedPos().Y < aTile.position.Y + aTile.tile.Height)
                     {
-                        if (aTile.color == Color.Gray)
+                        if (aTile.color == colorWhiteTiles)
                         {
                             ThePlayer.PlayerDead();
                             //yet to make player life = 0;
@@ -118,8 +122,8 @@ namespace Game1.Minigames.DontTapWhite
                         if (aTile.color == Color.Black)
                         {
                             ThePlayer.ResetTimerLeftToClick();
-                            aTile.color = Color.Gray;
-                            aTile.outline = true;
+                            aTile.color = colorWhiteTiles;
+                            aTile.outline = false;
                             ThePlayer.ScoreIncrement();
                         }
                     }
@@ -136,6 +140,7 @@ namespace Game1.Minigames.DontTapWhite
         }
         public override void Draw()
         {
+            View.DrawTextureStretched(bg, new Vector2(0, 0), new Vector2(Graphics.PreferredBackBufferWidth, Graphics.PreferredBackBufferHeight));
             // Timer
             View.DrawText(Arial, "Time left: "+ThePlayer.time, new Vector2(20, 40));
             View.DrawText(Arial, "Time left to click: " + ThePlayer.timeLeftToClick, new Vector2(20, 70));
@@ -154,7 +159,7 @@ namespace Game1.Minigames.DontTapWhite
                 {
                     foreach (Tile aTile in Tile.totalTiles)
                     {
-                        if (aTile.color == Color.Gray)
+                        if (aTile.color == colorWhiteTiles)
                         {
                             whiteTiles.Add(aTile);
                         }
@@ -216,7 +221,7 @@ namespace Game1.Minigames.DontTapWhite
             {
                 Vector2 startPos = new Vector2((widthLengthTile * countX) + rec.X, (heightLengthTile * countY) + rec.Y);
                 Rectangle tileRec = new Rectangle(Convert.ToInt32(startPos.X), Convert.ToInt32(startPos.Y), widthLengthTile, heightLengthTile);
-                Tile currentTile = new Tile(tileRec, Color.Gray, true, startPos, i);
+                Tile currentTile = new Tile(tileRec, colorWhiteTiles, false, startPos, i);
 
                 if (countX < grid.GetLength(0) - 1)
                 {
