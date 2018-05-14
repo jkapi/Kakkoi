@@ -303,3 +303,15 @@
 /processorParam:TextureFormat=Color
 /build:RoomSelect/menuonlinedisabled.png
 
+#begin minigame/donttapwhite/backgrond.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:minigame/donttapwhite/backgrond.png
+
