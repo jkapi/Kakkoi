@@ -49,7 +49,7 @@ namespace Game1.Minigames.FlySwat
                     {
                         try
                         {
-                            positions.Add(data.ReadInt32(), new Vector2(data.ReadSingle(), data.ReadSingle()));
+                            positions.Add(data.ReadInt32(), new Vector2(data.ReadSingle() * Graphics.PreferredBackBufferWidth / 1920, data.ReadSingle() * Graphics.PreferredBackBufferHeight / 1080));
                         }
                         catch
                         { }
