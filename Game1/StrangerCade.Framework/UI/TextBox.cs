@@ -93,6 +93,7 @@ namespace StrangerCade.Framework.UI
 
         public override void Update()
         {
+            bounds = new Rectangle(Position.ToPoint(), new Point(Width, (int)Font.MeasureString("A").Y + 3));
             // only catch keys if focussed
             if (Focussed)
             {
