@@ -19,6 +19,7 @@ namespace Game1.Rooms
     class LoginMenu : Room
     {
         private Texture2D Logo;
+        private Texture2D StrangerCadeLogo;
 
         private SpriteFont Arial12;
         private SpriteFont Arial16;
@@ -28,6 +29,7 @@ namespace Game1.Rooms
         private TextBox UserBox;
         private TextBox PassBox;
         private TextBox MailBox;
+
 
         private Button LoginButton;
         
@@ -50,6 +52,7 @@ namespace Game1.Rooms
                 { }
             }
             Logo = Content.Load<Texture2D>("LogoBeta1_0");
+            StrangerCadeLogo = Content.Load<Texture2D>("strangercade");
 
             Arial12 = Content.Load<SpriteFont>("opensans13");
             Arial16 = Content.Load<SpriteFont>("arial16");
@@ -139,6 +142,7 @@ namespace Game1.Rooms
             View.DrawRectangle(new Rectangle(960, 570, 190, 60), false, new Color(255, 225, 177));
             View.DrawText(Arial24, "Login", new Vector2(860, 600), Color.Black, 0, Arial24.MeasureString("Login") / 2);
             View.DrawText(Arial24, "Register", new Vector2(1060, 600), Color.Black, 0, Arial24.MeasureString("Register") / 2);
+            View.DrawTexture(StrangerCadeLogo, new Vector2(1900 - StrangerCadeLogo.Width, 1070 - StrangerCadeLogo.Height));
         }
     }
 }

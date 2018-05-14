@@ -15,6 +15,7 @@ namespace Game1.Rooms
     class MainMenu : Room
     {
         private Texture2D KakoiLogo;
+        private Texture2D StrangerCadeLogo;
         private Texture2D MenuSolo;
         private Texture2D MenuMulti;
         private Texture2D MenuSettings;
@@ -64,7 +65,7 @@ namespace Game1.Rooms
                 if (showSettings && !showMulti)
                     return new Vector2(settingsMenuWidth / 2 + 20, 0);
                 else if (showMulti)
-                    return new Vector2(showSettings ? settingsMenuWidth / 2 + 20 : 0, -800);
+                    return new Vector2(showSettings ? settingsMenuWidth / 2 + 20 : 0, -1080);
                 else if (showSolo)
                     return new Vector2(-1600, 0);
                 else
@@ -81,6 +82,7 @@ namespace Game1.Rooms
         {
             MovingBackground.Init(Content);
             KakoiLogo = Content.Load<Texture2D>("roomselect/menukakoilogo");
+            StrangerCadeLogo = Content.Load<Texture2D>("strangercade");
             MenuSolo = Content.Load<Texture2D>("roomselect/menusolo");
             MenuSettings = Content.Load<Texture2D>("roomselect/menusettings");
             MenuQuit = Content.Load<Texture2D>("roomselect/menuquit");
@@ -168,6 +170,7 @@ namespace Game1.Rooms
             View.DrawTexture(MenuSolo, new Vector2(mainmenubuttonpos.X + offsetSolo, mainmenubuttonpos.Y + mainmenubuttonspacing) + offsetMain);
             View.DrawTexture(MenuSettings, new Vector2(mainmenubuttonpos.X + offsetSettings, mainmenubuttonpos.Y + 2*mainmenubuttonspacing) + offsetMain);
             View.DrawTexture(MenuQuit, new Vector2(mainmenubuttonpos.X + offsetQuit, mainmenubuttonpos.Y + 3*mainmenubuttonspacing) + offsetMain);
+            //View.DrawTexture(StrangerCadeLogo, new Vector2(1920 - StrangerCadeLogo.Width, 1080 - StrangerCadeLogo.Height) + offsetMain);
             View.DrawTexture(KakoiLogo, new Vector2(800, 540) + offsetMain, null, 0, KakoiLogo.Bounds.Center.ToVector2());
             View.DrawRectangle(offsetMenuSettings, new Vector2(440, 1080), false, new Color(Color.Black, 0.3f));
             View.DrawText(OpenSans, "There are no settings yet.", new Vector2(220 - OpenSans.MeasureString("There are no settings yet.").X / 2, 20) + offsetMenuSettings, Color.White);
