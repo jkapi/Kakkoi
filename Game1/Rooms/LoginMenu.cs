@@ -40,16 +40,26 @@ namespace Game1.Rooms
 
         public override void Initialize()
         {
-            SocketHandler.SetHandler(PacketTypes.LOGINSESSID, LoggedIn);
-            if (File.Exists(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/Kakoi/token"))
+            if (SocketHandler.Connected == false)
             {
-                try
+                SocketHandler.SetHandler(PacketTypes.LOGINSESSID, LoggedIn);
+                if (File.Exists(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/Kakoi/token"))
                 {
-                    sessid = File.ReadAllText(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/Kakoi/token");
-                    SocketHandler.Connect(sessid, "127.0.0.1");
+                    try
+                    {
+                        sessid = File.ReadAllText(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/Kakoi/token");
+                        if (sessid.Length == 32)
+                        {
+                            SocketHandler.Connect(sessid, "127.0.0.1");
+                        }
+                    }
+                    catch
+                    { }
                 }
-                catch
-                { }
+            }
+            else
+            {
+                GotoRoom(typeof(MainMenu));
             }
             Logo = Content.Load<Texture2D>("LogoBeta1_0");
             StrangerCadeLogo = Content.Load<Texture2D>("strangercade");
@@ -88,6 +98,7 @@ namespace Game1.Rooms
 
         private async void LoginButton_OnClick(object sender, EventArgs e)
         {
+            System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls12;
             var response = await SocketHandler.HttpClient.PostAsync("https://kakoi.ml/login.php?getsessid", new FormUrlEncodedContent(new Dictionary<string, string>() { { "user", UserBox.Text }, { "pass", PassBox.Text } }));
             sessid = await response.Content.ReadAsStringAsync();
             SocketHandler.Connect(sessid, "127.0.0.1");

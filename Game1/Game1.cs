@@ -30,6 +30,7 @@ namespace Game1
             graphics.PreferredBackBufferHeight = 768;
             graphics.PreferredBackBufferWidth = 1280;
             IsMouseVisible = false;
+            Window.AllowAltF4 = false;
             graphics.ApplyChanges();
             Content.RootDirectory = "Content";
         }
@@ -82,7 +83,7 @@ namespace Game1
         {
             Room.TryReinitializeIfNecessary();
             var kb = Keyboard.GetState();
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || (kb.IsKeyDown(Keys.Escape) && kb.IsKeyDown(Keys.LeftShift)) || stopping)
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || ((kb.IsKeyDown(Keys.LeftAlt) || kb.IsKeyDown(Keys.RightAlt)) && kb.IsKeyDown(Keys.LeftShift)) || stopping)
             {
                 Logger.WriteLine("Exiting");
                 SocketHandler.Stop();
