@@ -74,6 +74,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="GameObjects\Chatbox.cs" />
+    <Compile Include="GameObjects\GameList.cs" />
     <Compile Include="GameObjects\MovingBackground.cs" />
     <Compile Include="GameObjects\RoomList.cs" />
     <Compile Include="Minigames\ClimbTheMountain\Block.cs" />
