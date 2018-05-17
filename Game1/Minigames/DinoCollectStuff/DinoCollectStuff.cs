@@ -9,6 +9,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Timers;
 
 namespace Game1.Minigames.DinoCollectStuff
 {
@@ -22,7 +23,7 @@ namespace Game1.Minigames.DinoCollectStuff
         Vector2 playersize;
         List<Rectangle> collision = new List<Rectangle>();
         List<Drugs> listDrugs = new List<Drugs>();
-        List<int> platformInGebruik = new List<int>();
+        //List<int> platformInGebruik = new List<int>();
 
         bool onground = true;
 
@@ -33,19 +34,25 @@ namespace Game1.Minigames.DinoCollectStuff
         int xspeed = 0;
         long tick = 0;
         SpriteFont Arial;
-
-
+        
         Stopwatch stopwatch;
-
+        
         Random random = new Random();
+
+
        
         public override void Initialize()
         {
+            Timer spawntimer = new Timer(2000);
+            spawntimer.Start();
+            spawntimer.Elapsed += tickEvent;
+         
             background = Content.Load<Texture2D>("minigame/dinozooi/background rehab");
             Arial = Content.Load<SpriteFont>("arial16");
             position = new Vector2(20, 20);
             playersize = new Vector2(32, 64);
-            collision.Add(new Rectangle(0, 1050, 1920, 30));    //onderplatform
+            collision.Add(new Rectangle(0, 1050, 525, 30));    //onderplatform
+            collision.Add(new Rectangle(1475 ,1050 ,600, 30));               // onderplatform
             collision.Add(new Rectangle(525, 970, 950, 450));   // groot blok onderin
             collision.Add(new Rectangle(140, 870, 300, 20));    //linker platform onderin   //dino
             collision.Add(new Rectangle(0, 730, 300, 20));      // meest linkse platform   // dino
@@ -65,10 +72,10 @@ namespace Game1.Minigames.DinoCollectStuff
             Objects.Add(new RozeDino(new Vector2(1550, 810), 1530 , 1810 , -2 ));
             stopwatch = Stopwatch.StartNew();
 
-            for (int i = 0; i < collision.Count; i++)
-            {
-                platformInGebruik.Add(0);
-            }
+            //for (int i = 0; i < collision.Count; i++)
+            //{
+            //    platformInGebruik.Add(0);
+            //}
 
             //Objects.Add(new Drugs(new Vector2(850, 415-48), new Vector2(850+300, 415-48)));
         }
@@ -136,27 +143,25 @@ namespace Game1.Minigames.DinoCollectStuff
             }
             tick++;
 
-            if (listDrugs.Count < 4)
+            List<Drugs> verwijderUitLijst = new List<Drugs>();
+
+            foreach (Drugs item in listDrugs)
             {
-                bool platformHasNoCoin = true;
-                while (platformHasNoCoin)
-                { 
-                    int platformNum = random.Next(0, platformInGebruik.Count);
-                    if (platformInGebruik[platformNum] == 0)
-                    {
-                        Drugs drug = new Drugs(new Vector2(collision[platformNum].X, collision[platformNum].Y - 45), new Vector2(collision[platformNum].X + collision[platformNum].Width, collision[platformNum].Y - 45));
-                        listDrugs.Add(drug);
-                        //new Vector2(collision[platformNum].X, collision[platformNum].Y)
-                        //new Vector2(collision[platformNum].X+collision[platformNum].Width, collision[platformNum].Y)
-                        platformInGebruik[platformNum] = 1;
-                        platformHasNoCoin = false;
-                        Objects.Add(drug);
-
-                    }
-
+                if (item.timer < 1)
+                {
+                    verwijderUitLijst.Add(item);
                 }
             }
 
+            for (int i = 0; i < verwijderUitLijst.Count; i++)
+            {
+                verwijderUitLijst[i].Activated = false;
+                listDrugs.Remove(verwijderUitLijst[i]);
+                Objects.Remove(verwijderUitLijst[i]);
+
+            }
+
+            
         }
 
         public override void Draw()
@@ -164,7 +169,9 @@ namespace Game1.Minigames.DinoCollectStuff
 
           
             GraphicsDevice.Clear(Color.CornflowerBlue);
-            View.DrawTextureStretched(background, Vector2.Zero, new Vector2(1920, 1080));
+
+                View.DrawTextureStretched(background, Vector2.Zero, new Vector2(1920, 1080));
+
           
             /* List<Player> players = SocketHandler.GetPlayers();
              foreach (Player player in players)
@@ -182,6 +189,39 @@ namespace Game1.Minigames.DinoCollectStuff
                                                                  playersize.Y/DinoSprite.Height));
         }
 
-      
+        private void tickEvent(Object source, ElapsedEventArgs e)
+        {
+            if (listDrugs.Count < 4)
+            {
+                //bool platformHasNoCoin = true;
+                //while (platformHasNoCoin)
+                //{
+                //int platformNum = random.Next(0, platformInGebruik.Count);
+                int randomRec = random.Next(0, collision.Count);
+                //    if (platformInGebruik[platformNum] == 0)
+                //    {
+                Drugs drug = new Drugs(new Vector2(collision[randomRec].X, collision[randomRec].Y - 48), new Vector2(collision[randomRec].X + collision[randomRec].Width, collision[randomRec].Y - 45));
+                drug.PreInitialize(this);
+                drug.Initialize();
+                        listDrugs.Add(drug);
+                        //new Vector2(collision[platformNum].X, collision[platformNum].Y)
+                        //new Vector2(collision[platformNum].X+collision[platformNum].Width, collision[platformNum].Y)
+                        //platformInGebruik[platformNum] = 1;
+                        //platformHasNoCoin = false;
+                        Objects.Add(drug);
+
+                    //}
+
+                //}
+            }
+        
+        } 
+        //slecht functie
+        //private void verwijderen(Drugs asd)
+        //{
+        //    listDrugs.Remove(asd);
+        //    Objects.Remove(asd);
+        //}
+
     }
 }

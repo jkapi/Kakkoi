@@ -38,8 +38,9 @@ namespace StrangerCade.Framework
 
         internal static void Exception(object sender, UnhandledExceptionEventArgs e)
         {
+            Exception ex = ((Exception)(e.ExceptionObject));
             Handler = LogType.File | LogType.Console;
-            WriteLine("Unhandled Exception: " + e.ToString(), LogLevel.FATAL);
+            WriteLine("Unhandled Exception: " + e.ExceptionObject.GetType() + " " + ex.Message + " " + sender.GetType(), LogLevel.FATAL);
             Environment.Exit(1);
         }
 

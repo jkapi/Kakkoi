@@ -15,7 +15,7 @@ namespace Game1
         [STAThread]
         static void Main()
         {
-            //AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(StrangerCade.Framework.Logger.Exception);
+            //AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(Logger.Exception);
             Logger.Handler = Logger.LogType.Console | Logger.LogType.File;
 #if NICKSSHIZZLE
             Application.Run(new Minigames.QuizAfvalRace.Form1());
