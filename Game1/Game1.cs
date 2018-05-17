@@ -63,6 +63,21 @@ namespace Game1
 #else
             Room.LoadRoom(typeof(Rooms.LoginMenu), Content, graphics, spriteBatch);
 #endif
+            System.Windows.Forms.Form f = System.Windows.Forms.Control.FromHandle(Window.Handle) as System.Windows.Forms.Form;
+            if (f != null)
+            {
+                f.FormClosing += F_FormClosing;
+            }
+
+            base.LoadContent();
+        }
+
+        private void F_FormClosing(object sender, System.Windows.Forms.FormClosingEventArgs e)
+        {
+            e.Cancel = true;
+            Logger.WriteLine("Exiting");
+            SocketHandler.Stop();
+            Exit();
         }
 
         /// <summary>
