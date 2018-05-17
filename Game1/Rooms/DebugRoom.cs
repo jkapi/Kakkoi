@@ -12,23 +12,26 @@ using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Lidgren.Network;
 
 namespace Game1.Rooms
 {
     class DebugRoom : Room
     {
         SpriteFont Arial;
-        TextBox TextBoxPassword;
-        TextBox TextBoxUsername;
+        static TextBox TextBoxIP;
+        static TextBox TextBoxUUID;
         Button LoginButton;
-        string mplog = "";
+        static string mplog = "";
+        bool triedlogin = false;
+
         public override void Initialize()
         {
-            Graphics.PreferredBackBufferWidth = 1920;
-            Graphics.PreferredBackBufferHeight = 1080;
-            Graphics.IsFullScreen = false;
-            Graphics.ApplyChanges();
-            Mouse.Cursor = Mouse.DefaultCursor;
+            //Graphics.PreferredBackBufferWidth = 1920;
+            //Graphics.PreferredBackBufferHeight = 1080;
+            //Graphics.IsFullScreen = false;
+            //Graphics.ApplyChanges();
+            //Mouse.Cursor = Mouse.DefaultCursor;
             var rooms = GetAllRooms();
             for (int i = 0; i < rooms.Count; i++)
             {
@@ -37,20 +40,40 @@ namespace Game1.Rooms
                 btn.OnClick += RoomButtonHandler;
                 Objects.Add(btn);
             }
-            TextBoxUsername = new TextBox(new Vector2(1290, 75), 400, Arial, "Username/UUID");
-            TextBoxPassword = new TextBox(new Vector2(1290, 105), 400, Arial, "IP Address", text: "127.0.0.1");
-            Objects.Add(TextBoxUsername);
-            Objects.Add(TextBoxPassword);
+            if (TextBoxUUID == null)
+            {
+                TextBoxUUID = new TextBox(new Vector2(1290, 75), 400, Arial, "UUID");
+                TextBoxIP = new TextBox(new Vector2(1290, 105), 400, Arial, "IP Address", text: "127.0.0.1");
+            }
+            Objects.Add(TextBoxUUID);
+            Objects.Add(TextBoxIP);
             LoginButton = new Button(new Rectangle(1700, 105, 150, 27), Arial, "Connect");
             LoginButton.OnClick += LoginButton_OnClick;
             Objects.Add(LoginButton);
-            //new Thread(SocketIOHandler.Connect).Start();
+        }
+
+        private void LoggedIn(NetIncomingMessage msg)
+        {
+            if (msg.ReadByte() == 1)
+            {
+                try
+                {
+                    if (!Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/Kakoi/"))
+                        Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/Kakoi/");
+                    File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/Kakoi/token", TextBoxUUID.Text);
+                }
+                catch { }
+                SocketHandler.UserId = msg.ReadInt32();
+                SocketHandler.PlayerName = msg.ReadString();
+                LoginButton.Activated = false;
+                mplog += "Ingelogd als " + SocketHandler.PlayerName +"\n";
+            }
         }
 
         private void LoginButton_OnClick(object sender, EventArgs e)
         {
             LoginButton.Position.Y = (LoginButton.Position.Y == 75) ? 105 : 75;
-            new Thread(() => { SocketHandler.Connect(TextBoxUsername.Text, TextBoxPassword.Text); }).Start();
+            new Thread(() => { SocketHandler.Connect(TextBoxUUID.Text, TextBoxIP.Text); }).Start();
         }
 
         private void RoomButtonHandler(object sender, EventArgs e)
@@ -64,18 +87,29 @@ namespace Game1.Rooms
 
         public override void Update()
         {
+            Graphics.ApplyChanges();
 
-        }
-
-        public void LoginOk(string sessid)
-        {
-            LoginButton.Activated = false;
-            mplog += "Ingelogd met sessid: " + sessid + "\n";
-        }
-
-        public void LoginError()
-        {
-            mplog += "Kon niet inloggen\n";
+            if (triedlogin == false)
+            {
+                SocketHandler.SetHandler(PacketTypes.LOGINSESSID, LoggedIn);
+                if (!SocketHandler.Connected)
+                {
+                    if (File.Exists(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/Kakoi/token"))
+                    {
+                        try
+                        {
+                            TextBoxUUID.Text = File.ReadAllText(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/Kakoi/token");
+                            if (TextBoxUUID.Text.Length == 32)
+                            {
+                                SocketHandler.Connect(TextBoxUUID.Text, TextBoxIP.Text);
+                            }
+                        }
+                        catch (IOException)
+                        { mplog += "Kon sessid bestand niet uitlezen!\n"; }
+                    }
+                }
+                triedlogin = true;
+            }
         }
 
         public override void Draw()
@@ -86,6 +120,7 @@ namespace Game1.Rooms
             View.DrawText(Arial, "Multiplayer", new Vector2(1290, 10), null, 0, null, 0, new Vector2(2));
             View.DrawText(Arial, "Login: ", new Vector2(1290, 50));
             View.DrawText(Arial, mplog, new Vector2(1290, 200));
+            View.DrawText(Arial, GraphicsDevice.Viewport, new Vector2(650, 10));
         }
 
         public List<Type> GetAllRooms()

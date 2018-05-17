@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Game1.Minigames.QuizAfvalRace
+namespace Game1.StrangerCade.Framework.UI
 {
-    class Vragen
+    class UIColorSet
     {
     }
 }

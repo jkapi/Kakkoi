@@ -19,6 +19,7 @@ namespace Game1.Rooms
     class LoginMenu : Room
     {
         private Texture2D Logo;
+        private Texture2D StrangerCadeLogo;
 
         private SpriteFont Arial12;
         private SpriteFont Arial16;
@@ -29,7 +30,9 @@ namespace Game1.Rooms
         private TextBox PassBox;
         private TextBox MailBox;
 
+
         private Button LoginButton;
+        
 
         bool registerpage = false;
 
@@ -37,20 +40,31 @@ namespace Game1.Rooms
 
         public override void Initialize()
         {
-            SocketHandler.SetHandler(PacketTypes.LOGINSESSID, LoggedIn);
-            if (File.Exists(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/Kakoi/token"))
+            if (SocketHandler.Connected == false)
             {
-                try
+                SocketHandler.SetHandler(PacketTypes.LOGINSESSID, LoggedIn);
+                if (File.Exists(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/Kakoi/token"))
                 {
-                    sessid = File.ReadAllText(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/Kakoi/token");
-                    SocketHandler.Connect(sessid, "127.0.0.1");
+                    try
+                    {
+                        sessid = File.ReadAllText(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/Kakoi/token");
+                        if (sessid.Length == 32)
+                        {
+                            SocketHandler.Connect(sessid, "127.0.0.1");
+                        }
+                    }
+                    catch
+                    { }
                 }
-                catch
-                { }
+            }
+            else
+            {
+                GotoRoom(typeof(MainMenu));
             }
             Logo = Content.Load<Texture2D>("LogoBeta1_0");
+            StrangerCadeLogo = Content.Load<Texture2D>("strangercade");
 
-            Arial12 = Content.Load<SpriteFont>("arial12");
+            Arial12 = Content.Load<SpriteFont>("opensans13");
             Arial16 = Content.Load<SpriteFont>("arial16");
             Arial24 = Content.Load<SpriteFont>("arial24");
             
@@ -71,17 +85,20 @@ namespace Game1.Rooms
             {
                 try
                 {
+                    if (!Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/Kakoi/"))
+                        Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/Kakoi/");
                     File.WriteAllText(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/Kakoi/token", sessid);
                 }
                 catch { }
                 SocketHandler.UserId = msg.ReadInt32();
                 SocketHandler.PlayerName = msg.ReadString();
-                GotoRoom(typeof(RoomMenu));
+                GotoRoom(typeof(MainMenu));
             }
         }
 
         private async void LoginButton_OnClick(object sender, EventArgs e)
         {
+            System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls12;
             var response = await SocketHandler.HttpClient.PostAsync("https://kakoi.ml/login.php?getsessid", new FormUrlEncodedContent(new Dictionary<string, string>() { { "user", UserBox.Text }, { "pass", PassBox.Text } }));
             sessid = await response.Content.ReadAsStringAsync();
             SocketHandler.Connect(sessid, "127.0.0.1");
@@ -89,11 +106,12 @@ namespace Game1.Rooms
 
         public override void Update()
         {
-            if (new Rectangle(960, 570, 190, 60).Contains(Mouse.Position) && Mouse.Check(MouseButtons.Left))
+            View.Scale = new Vector2(Graphics.PreferredBackBufferHeight / 1080f);
+            if (new Rectangle((int)(960 * View.Scale.X), (int)(570 * View.Scale.Y), (int)(190 * View.Scale.X), (int)(60 * View.Scale.Y)).Contains(Mouse.Position) && Mouse.Check(MouseButtons.Left))
             {
                 registerpage = true;
             }
-            else if (new Rectangle(770, 570, 190, 60).Contains(Mouse.Position) && Mouse.CheckPressed(MouseButtons.Left))
+            else if (new Rectangle((int)(770 * View.Scale.X), (int)(570 * View.Scale.Y), (int)(190 * View.Scale.X), (int)(60 * View.Scale.Y)).Contains(Mouse.Position) && Mouse.CheckPressed(MouseButtons.Left))
             {
                 registerpage = false;
             }
@@ -120,7 +138,7 @@ namespace Game1.Rooms
         public override void Draw()
         {
             MovingBackground.Draw(this);
-            View.DrawTexture(Logo, new Vector2(Graphics.PreferredBackBufferWidth / 2 - Logo.Width / 2, 75));
+            View.DrawTexture(Logo, new Vector2(960 - Logo.Width / 2, 75));
 
             if (registerpage)
             {
@@ -135,6 +153,7 @@ namespace Game1.Rooms
             View.DrawRectangle(new Rectangle(960, 570, 190, 60), false, new Color(255, 225, 177));
             View.DrawText(Arial24, "Login", new Vector2(860, 600), Color.Black, 0, Arial24.MeasureString("Login") / 2);
             View.DrawText(Arial24, "Register", new Vector2(1060, 600), Color.Black, 0, Arial24.MeasureString("Register") / 2);
+            View.DrawTexture(StrangerCadeLogo, new Vector2(1900 - StrangerCadeLogo.Width, 1070 - StrangerCadeLogo.Height));
         }
     }
 }

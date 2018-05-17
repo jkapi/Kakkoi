@@ -74,7 +74,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="GameObjects\Chatbox.cs" />
+    <Compile Include="GameObjects\GameList.cs" />
     <Compile Include="GameObjects\MovingBackground.cs" />
+    <Compile Include="GameObjects\RoomList.cs" />
     <Compile Include="Minigames\ClimbTheMountain\Block.cs" />
     <Compile Include="Minigames\ClimbTheMountain\ClimbTheMountain.cs" />
     <Compile Include="Minigames\DinoCollectStuff\Dino.cs" />
@@ -85,11 +87,7 @@
     <Compile Include="Minigames\FollowTheLeader\AI.cs" />
     <Compile Include="Minigames\FollowTheLeader\FollowTheLeader.cs" />
     <Compile Include="Minigames\FollowTheLeader\PlayerFTL.cs" />
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
+    <Compile Include="Minigames\Quiz\Quiz.cs" />
     <Compile Include="Rooms\DebugRoom.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="Minigames\DontTapWhite\Donttapwhite.cs" />
@@ -97,7 +95,7 @@
     <Compile Include="Minigames\FlySwat\Fly.cs" />
     <Compile Include="Minigames\FlySwat\FlySwat.cs" />
     <Compile Include="Rooms\LoginMenu.cs" />
-    <Compile Include="Rooms\Menu.cs" />
+    <Compile Include="Rooms\MainMenu.cs" />
     <Compile Include="Rooms\RoomMenu.cs" />
     <Compile Include="StrangerCade.Framework\Extensions.cs" />
     <Compile Include="StrangerCade.Framework\Keyboard.cs" />
@@ -110,7 +108,9 @@
     <Compile Include="StrangerCade.Framework\Sprite.cs" />
     <Compile Include="StrangerCade.Framework\Tilesheet.cs" />
     <Compile Include="StrangerCade.Framework\UI\Button.cs" />
+    <Compile Include="StrangerCade.Framework\UI\CheckBox.cs" />
     <Compile Include="StrangerCade.Framework\UI\TextBoxAdvanced.cs" />
+    <Compile Include="StrangerCade.Framework\UI\UIColorSet.cs" />
     <Compile Include="StrangerCade.Framework\View.cs" />
     <Compile Include="StrangerCade.Framework\UI\TextBox.cs" />
     <Compile Include="Rooms\MainBoard.cs" />
@@ -124,8 +124,12 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Visual Studio 2017\Projects\KakoiLGServer\KakoiLGServer\bin\Debug\Lidgren.Network.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="MonoGame.Framework">
       <HintPath>$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\DesktopGL\MonoGame.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Collections.Immutable, Version=1.2.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
@@ -140,10 +144,6 @@
   <ItemGroup>
     <EmbeddedResource Include="Icon.ico" />
     <EmbeddedResource Include="Icon.bmp" />
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <MonoGameContentReference Include="Content\Content.mgcb" />
@@ -187,9 +187,11 @@
       <Link>libopenal.1.dylib</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\DesktopGL\MonoGame.Framework.dll.config">
+    <None Include="app.config" />
+    <None Include="C:\Program Files (x86)\MonoGame\v3.0\Assemblies\DesktopGL\MonoGame.Framework.dll.config">
       <Link>MonoGame.Framework.dll.config</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </None>
     <None Include="app.manifest" />
   </ItemGroup>
@@ -212,6 +214,10 @@
     <None Include="Resources\deur1.jpg" />
   </ItemGroup>
   <ItemGroup />
+  <ItemGroup>
+    <Content Include="Minigames\Quiz\Files\woonwijkAchtergrond.png" />
+    <Content Include="Minigames\Quiz\Quiz_File.txt" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

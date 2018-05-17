@@ -20,6 +20,7 @@ namespace Game1.Minigames.ClimbTheMountain
 
         //--GAME--//
         //public List<string> queueOfLetters { get; private set; }
+        public int score { get; private set; }
 
         public override void Initialize()
         {
@@ -93,6 +94,7 @@ namespace Game1.Minigames.ClimbTheMountain
                         //***This line of code can be a problem***
                         Block.totalBlocks[Block.totalBlocks.Length - 1].letter = Block.listOfLetters[Block.randomNum.Next(0, Block.listOfLetters.Count - 1)];
                         Keyboard.String = "";
+                        score++;
                     }
                 }
                 else
@@ -109,6 +111,7 @@ namespace Game1.Minigames.ClimbTheMountain
         }
         public override void Draw()
         {
+            View.DrawText(Block.Arial, "Score: " + score, new Vector2(20, 40));
             View.DrawRectangle(playField, true, Color.Black);
             View.DrawRectangle(letterField, true, Color.Black);
             //foreach (Block block in Block.totalBlocks)

@@ -93,6 +93,7 @@ namespace StrangerCade.Framework.UI
 
         public override void Update()
         {
+            bounds = new Rectangle(Position.ToPoint(), new Point(Width, (int)Font.MeasureString("A").Y + 3));
             // only catch keys if focussed
             if (Focussed)
             {
@@ -210,7 +211,7 @@ namespace StrangerCade.Framework.UI
         private void HandleMouse()
         {
             bool wasHovered = Hover;
-            Hover = bounds.Contains(Mouse.Position);
+            Hover = new Rectangle((int)(bounds.X * View.Scale.X), (int)(bounds.Y * View.Scale.Y), (int)(bounds.Width * View.Scale.X), (int)(bounds.Height * View.Scale.Y)).Contains(Mouse.Position);
 
             if (Hover)
             {

@@ -38,6 +38,7 @@ namespace StrangerCade.Framework.UI
         public bool Hover = false;
 
         public Rectangle Bounds { get { return new Rectangle(Position.ToPoint(), Size.ToPoint()); } set { this.Position = value.Location.ToVector2(); this.Size = value.Size.ToVector2(); } }
+        public Rectangle mBounds { get { return new Rectangle((int)(Bounds.X * View.Scale.X), (int)(Bounds.Y * View.Scale.Y), (int)(Bounds.Width * View.Scale.X), (int)(Bounds.Height * View.Scale.Y)); } }
 
         public Button(Vector2 position, Vector2 size, SpriteFont font, string text) : base(position)
         {

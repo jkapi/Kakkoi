@@ -14,6 +14,7 @@ namespace StrangerCade.Framework
         private MouseState state;
         private MouseState oldState;
         public Vector2 Position { get { return state.Position.ToVector2(); } set { Mouse.SetPosition((int)value.X, (int)value.Y); } }
+        public Vector2 LastPosition { get { return oldState.Position.ToVector2(); }}
         public MouseCursor DefaultCursor = MouseCursor.Arrow;
         public int ScrollWheelValue { get; private set; }
 

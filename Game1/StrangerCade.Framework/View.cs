@@ -12,10 +12,38 @@ namespace StrangerCade.Framework
     {
         private SpriteBatch _spriteBatch;
         public Vector2 Location;
-        public Vector2 Scale;
+        public Vector2 Scale
+        {
+            get
+            {
+                if (Target == null) { return DefaultScale; }
+                if (!_scale.ContainsKey(Target))
+                {
+                    _scale.Add(Target, Vector2.One);
+                }
+                return _scale[Target];
+            }
+            set
+            {
+                if (Target == null) { DefaultScale = value; return; }
+                if (_scale.ContainsKey(Target))
+                {
+                    _scale[Target] = value;
+                }
+                else
+                {
+                    _scale.Add(Target, value);
+                }
+            }
+        }
         public GameObject FollowObject;
         public Viewport Viewport;
         private GraphicsDevice graphics;
+
+        RenderTarget2D Target = null;
+
+        Dictionary<RenderTarget2D, Vector2> _scale = new Dictionary<RenderTarget2D, Vector2>();
+        public Vector2 DefaultScale = Vector2.One;
 
         public Rectangle TranslatedViewport { get { return new Rectangle((Location).ToPoint(), ((Viewport.Bounds.Size.ToVector2() * Scale)).ToPoint()); } }
 
@@ -200,7 +228,7 @@ namespace StrangerCade.Framework
             return degrees * (float)Math.PI / 180.0f;
         }
 
-        public void SwitchToRenderTarget(RenderTarget2D target, bool clear = false, Color? clearColor = null)
+        public void SwitchToRenderTarget(RenderTarget2D target, bool clear = false, Color? clearColor = null, Effect effect = null)
         {
             _spriteBatch.End();
             graphics.SetRenderTarget(target);
@@ -212,7 +240,10 @@ namespace StrangerCade.Framework
                 }
             }
 
-            _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, DepthStencilState.Default);
+            Target = target;
+
+            _spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, DepthStencilState.Default,
+                RasterizerState.CullNone, effect);
         }
     }
 }

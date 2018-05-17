@@ -93,6 +93,7 @@ namespace StrangerCade.Framework
             View.Initialize(sb, GraphicsDevice);
             Keyboard = new GMKeyboard();
             Mouse = new GMMouse();
+            Mouse.Cursor = Mouse.DefaultCursor;
             Initialize();
             Initialized = true;
         }
