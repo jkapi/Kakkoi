@@ -18,22 +18,27 @@ namespace Game1.Minigames.DinoCollectStuff
 
         Texture2D background;
         Sprite DinoSprite;
-       
+        Sprite Drugssprite;
         Vector2 position;
         Vector2 playersize;
         List<Rectangle> collision = new List<Rectangle>();
         List<Drugs> listDrugs = new List<Drugs>();
+        List<RozeDino> listRozeDinos = new List<RozeDino>();
         //List<int> platformInGebruik = new List<int>();
 
-        bool onground = true;
 
+        SpriteFont Arial;
+
+        bool onground = true;
+        int TotalScore;
         int jumpSpeed = 24;
         int gravity = 2;
         int maxgravity = 16;
         int yspeed = 0;
         int xspeed = 0;
         long tick = 0;
-        SpriteFont Arial;
+
+        Timer spawntimer;
         
         Stopwatch stopwatch;
         
@@ -63,13 +68,20 @@ namespace Game1.Minigames.DinoCollectStuff
             collision.Add(new Rectangle(850, 685, 370, 20));   // midden midden
             collision.Add(new Rectangle(700, 550, 200, 20));   // midden boven
             collision.Add(new Rectangle(850, 415, 300, 20));  // midden helemaal boven
+           // Drugssprite = new Sprite(Content.Load<Texture2D>("minigame/Dinozooi/Clown"));
    
             DinoSprite = new Sprite(Content.Load<Texture2D>("minigame/Dinozooi/Clown"));
-       
-            Objects.Add(new RozeDino(new Vector2(120, 800), 120, 410, -3));     // enemy
-            Objects.Add(new RozeDino(new Vector2(0, 660), -20 , 270 , -4));
-            Objects.Add(new RozeDino(new Vector2(1620, 560), 1600 , 1880, 4));
-            Objects.Add(new RozeDino(new Vector2(1550, 810), 1530 , 1810 , -2 ));
+
+            listRozeDinos.Add(new RozeDino(new Vector2(120, 800), 120, 410, -3));     // enemy
+            listRozeDinos.Add(new RozeDino(new Vector2(0, 660), -20 , 270 , -4));
+            listRozeDinos.Add(new RozeDino(new Vector2(1620, 560), 1600 , 1880, 4));
+            listRozeDinos.Add(new RozeDino(new Vector2(1550, 810), 1530 , 1810 , -2 ));
+
+            foreach (RozeDino RozeDino in listRozeDinos)
+            {
+                Objects.Add(RozeDino);
+            }
+
             stopwatch = Stopwatch.StartNew();
 
             //for (int i = 0; i < collision.Count; i++)
@@ -82,6 +94,19 @@ namespace Game1.Minigames.DinoCollectStuff
    
         public override void Update()
         {
+            foreach (RozeDino RozeDino in listRozeDinos)
+            {
+                RozeDino.Bounds.Intersects(new Rectangle((int)position.X, (int)position.Y, (int)playersize.X, (int)playersize.Y));
+            }
+         
+
+
+            
+
+             
+            {
+                
+            }
          /*  if (tick % 2 == 0)
             {
                 SocketHandler.SendMessage(PacketTypes.MOUSE, position.X, position.Y, xspeed, yspeed);
@@ -167,10 +192,9 @@ namespace Game1.Minigames.DinoCollectStuff
         public override void Draw()
         {
 
-          
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-                View.DrawTextureStretched(background, Vector2.Zero, new Vector2(1920, 1080));
+           // View.DrawTextureStretched(background, Vector2.Zero, new Vector2(1920, 1080));
 
           
             /* List<Player> players = SocketHandler.GetPlayers();
@@ -187,6 +211,16 @@ namespace Game1.Minigames.DinoCollectStuff
           
             View.DrawSprite(DinoSprite, 0, position, new Vector2(playersize.X/DinoSprite.Width,
                                                                  playersize.Y/DinoSprite.Height));
+
+            foreach (RozeDino RozeDino in listRozeDinos)
+            {
+                if (RozeDino.Bounds.Intersects(new Rectangle((int)position.X, (int)position.Y, (int)playersize.X, (int)playersize.Y)))
+                {
+                    View.DrawText(Arial, "true", new Vector2(500, 40));
+                    return;
+                }
+            }
+   
         }
 
         private void tickEvent(Object source, ElapsedEventArgs e)
@@ -216,12 +250,11 @@ namespace Game1.Minigames.DinoCollectStuff
             }
         
         } 
-        //slecht functie
-        //private void verwijderen(Drugs asd)
-        //{
-        //    listDrugs.Remove(asd);
-        //    Objects.Remove(asd);
-        //}
+        public int IncreaseScore()
+        {
+            TotalScore = TotalScore + 5;
+            return TotalScore;
+        }
 
     }
 }

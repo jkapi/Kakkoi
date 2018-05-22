@@ -20,7 +20,9 @@ namespace Game1.Minigames.DinoCollectStuff
         public Random random;
         public int timer;
         public Timer elkeSeconde;
+        public Rectangle Bounds { get { return new Rectangle(Position.ToPoint(), Drugssprite.Size.ToPoint()); } }
         public override void Initialize()
+
         {
             Drugssprite = new Sprite(Room.Content.Load<Texture2D>("minigame/dinozooi/reptile"));
         }

@@ -108,6 +108,8 @@ namespace Game1
                 graphics.PreferredBackBufferHeight = 768;
                 graphics.PreferredBackBufferWidth = 1366;
                 graphics.GraphicsDevice.Viewport = new Viewport(0, 0, 1366, 768);
+                graphics.IsFullScreen = false;
+                Window.IsBorderless = false;
                 graphics.ApplyChanges();
                 Room.GotoRoom(Room.CurrentRoom.GetType());
             }
@@ -117,6 +119,8 @@ namespace Game1
                 graphics.PreferredBackBufferHeight = 1080;
                 graphics.PreferredBackBufferWidth = 1920;
                 graphics.GraphicsDevice.Viewport = new Viewport(0, 0, 1920, 1080);
+                graphics.IsFullScreen = false;
+                Window.IsBorderless = true;
                 graphics.ApplyChanges();
                 Room.GotoRoom(Room.CurrentRoom.GetType());
             }
