@@ -13,6 +13,7 @@ using System.Net;
 using System.IO;
 using System.Net.Http;
 using Game1.Helpers;
+using System.Diagnostics;
 
 namespace Game1.Rooms
 {
@@ -21,7 +22,7 @@ namespace Game1.Rooms
         SpriteFont Arial;
         Button btn;
         public Task<HttpResponseMessage> haalvraagop;
-        private Texture2D texture;
+        private Sprite covers;
         D3D d3d;
 
         public override void Initialize()
@@ -36,7 +37,7 @@ namespace Game1.Rooms
             Objects.Add(new CheckBox(new Vector2(400, 30), true) { Text = "Jeej" });
             Objects.Add(new CheckBox(new Vector2(400, 60), false));
             haalvraagop = new HttpClient().GetAsync("http://kakoi.ml/quiz.php");
-            texture = Content.Load<Texture2D>("roomselect/gamecovers");
+            covers = new Sprite(Content.Load<Texture2D>("roomselect/gamecovers"), 4);
         }
 
         private void gomain(object sender, EventArgs e)
@@ -75,10 +76,13 @@ namespace Game1.Rooms
 
         void DrawGround()
         {
+            Stopwatch s = Stopwatch.StartNew();
             d3d.Begin();
-            Matrix translate = Matrix.CreateRotationX(MathHelper.ToRadians(45)) *
-                                 Matrix.CreateTranslation(new Vector3(0, 150, 0));
-            d3d.DrawTexture(texture, new Vector2(1920, 720), translate);
+            Matrix translate = Matrix.CreateFromYawPitchRoll(-0.5f,0.1f,0.2f);
+            d3d.DrawSprite(covers, 1, translate);
+            d3d.End();
+            s.Stop();
+            Debug.WriteLine(s.ElapsedMilliseconds);
         }
     }
 }

@@ -10,6 +10,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
+using System.Net.Http;
+using Newtonsoft.Json.Linq;
 
 namespace Game1.Minigames.Quiz
 {
@@ -41,14 +43,19 @@ namespace Game1.Minigames.Quiz
         string Vraag = "Hoeveel is 1+1 ?";
         int Antwoord = 3;
         int Pressed = 0;
+        public Task<HttpResponseMessage> haalvraagop;
         // public string filepath = @"C:\Users\Nickv\Desktop\HTML\HTML\sss\SITE\Nieuwe map\Websites\Proftaak S2\S1\Fuck friday\Kakoi\Game1\Minigames\Quiz\Quiz_File.txt";
         public string filepath;
         List<string> vragenlijst;
+        dynamic vraag;
         public override void Initialize()
         {
-            filepath = @"Game1\Minigames\Quiz\Quiz_File.txt";
-            vragenlijst = File.ReadAllLines(filepath).ToList();
-            Console.WriteLine(vragenlijst[0]);
+            //filepath = @"Game1\Minigames\Quiz\Quiz_File.txt";
+            //vragenlijst = File.ReadAllLines(filepath).ToList();
+            // Console.WriteLine(vragenlijst[0]);
+            haalvraagop = new HttpClient().GetAsync("http://kakoi.ml/quiz.php");
+
+
             boxVraag = new Rectangle(0,0,750,100);
             boxVraag.Location = new Point(Graphics.PreferredBackBufferWidth/2-boxVraag.Width/2, Graphics.PreferredBackBufferHeight / 4 - boxVraag.Height / 2);
 
@@ -131,17 +138,32 @@ namespace Game1.Minigames.Quiz
         {
             if (levens == 0)
             {
-              //end game
+              
             }
         }
-        public void Vragen()
+        public void GetVragen()
         {
-            
+            if (haalvraagop.Status == TaskStatus.RanToCompletion)
+            {
+                var s = haalvraagop.Result.Content.ReadAsStringAsync();
+                s.Wait();
+                vraag = JObject.Parse(s.Result);
+                // Console.WriteLine(vraag);
+                //f
+            }
         }
         public override void Update()
         {
             base.Update();
             Mouse.Cursor = Mouse.DefaultCursor;
+
+            if (haalvraagop.Status == TaskStatus.RanToCompletion)
+            {
+                var s = haalvraagop.Result.Content.ReadAsStringAsync();
+                s.Wait();
+                vraag = JObject.Parse(s.Result);
+                // Console.WriteLine(vraag);
+            }
         }
         public override void Draw()
         {
@@ -153,7 +175,8 @@ namespace Game1.Minigames.Quiz
             View.DrawRectangle(boxVraag, false, Color.White);
            
             //vraag
-            View.DrawText(fontArial,Vraag,new Vector2(boxVraag.Location.X + 4, boxVraag.Location.Y+4));
+            if (vraag != null)
+                View.DrawText(fontArial, vraag.Vraag, new Vector2(boxVraag.Location.X + 4, boxVraag.Location.Y+4));
 
             // Informatie
 
@@ -189,18 +212,21 @@ namespace Game1.Minigames.Quiz
 
             
             View.DrawRectangle(BoxA, false, Color.Orange);
-            View.DrawText(fontArial, VraagA, new Vector2(BoxA.Location.X + 35, BoxA.Location.Y));
+            if (vraag != null)
+                View.DrawText(fontArial, vraag.AntwoordA, new Vector2(BoxA.Location.X + 35, BoxA.Location.Y));
             View.DrawText(fontArial, "A", new Vector2(BoxA.Location.X + 5, BoxA.Location.Y));
 
 
           
 
             View.DrawRectangle(BoxB, false, Color.Orange);
-            View.DrawText(fontArial, VraagB, new Vector2(BoxB.Location.X + 35, BoxB.Location.Y));
+            if (vraag != null)
+                View.DrawText(fontArial, vraag.AntwoordB, new Vector2(BoxB.Location.X + 35, BoxB.Location.Y));
             View.DrawText(fontArial, "B", new Vector2(BoxB.Location.X + 5, BoxB.Location.Y));
 
             View.DrawRectangle(BoxC, false, Color.Orange);
-            View.DrawText(fontArial, VraagC, new Vector2(BoxC.Location.X + 35, BoxC.Location.Y));
+            if (vraag != null)
+                View.DrawText(fontArial, vraag.AntwoordC, new Vector2(BoxC.Location.X + 35, BoxC.Location.Y));
             View.DrawText(fontArial, "C", new Vector2(BoxC.Location.X + 5, BoxC.Location.Y));
 
           
@@ -274,14 +300,27 @@ namespace Game1.Minigames.Quiz
 
             if (start.Clicked)
             {
-                A.Activated = true;
-                B.Activated = true;
-                C.Activated = true;
+                if (levens > 0)
+                {
+                    GetVragen();
+                    Console.WriteLine(vraag.ID);
+                    haalvraagop = new HttpClient().GetAsync("http://kakoi.ml/quiz.php");
 
-                timer_int = 20;
-                timer.Start();
-                start.Activated = false;
+                    A.Activated = true;
+                    B.Activated = true;
+                    C.Activated = true;
 
+                    timer_int = 20;
+                    timer.Start();
+                    start.Activated = false;
+                }
+                if(levens == 0)
+                {
+                    start.Activated = false;
+                    timer_int = 0;
+                    Vraag = "Game Over";
+                }
+           
             }
         }
     }
