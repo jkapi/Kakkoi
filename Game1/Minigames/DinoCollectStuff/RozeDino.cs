@@ -16,6 +16,7 @@ namespace Game1.Minigames.DinoCollectStuff
         float xleft;
         float xright;
         float xspeed;
+        public Rectangle Bounds { get { return new Rectangle(Position.ToPoint(), DinoSprite.Size.ToPoint()); } }
 
         public RozeDino(Vector2 position, float xleft, float xright, float startspeed) : base(position)
         {

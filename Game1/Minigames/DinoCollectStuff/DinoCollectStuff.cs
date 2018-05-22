@@ -9,6 +9,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Timers;
 
 namespace Game1.Minigames.DinoCollectStuff
 {
@@ -17,35 +18,46 @@ namespace Game1.Minigames.DinoCollectStuff
 
         Texture2D background;
         Sprite DinoSprite;
-       
+        Sprite Drugssprite;
         Vector2 position;
         Vector2 playersize;
         List<Rectangle> collision = new List<Rectangle>();
         List<Drugs> listDrugs = new List<Drugs>();
-        List<int> platformInGebruik = new List<int>();
+        List<RozeDino> listRozeDinos = new List<RozeDino>();
+        //List<int> platformInGebruik = new List<int>();
+
+
+        SpriteFont Arial;
 
         bool onground = true;
-
+        int TotalScore;
         int jumpSpeed = 24;
         int gravity = 2;
         int maxgravity = 16;
         int yspeed = 0;
         int xspeed = 0;
         long tick = 0;
-        SpriteFont Arial;
 
-
+        Timer spawntimer;
+        
         Stopwatch stopwatch;
-
+        
         Random random = new Random();
+
+
        
         public override void Initialize()
         {
+            Timer spawntimer = new Timer(2000);
+            spawntimer.Start();
+            spawntimer.Elapsed += tickEvent;
+         
             background = Content.Load<Texture2D>("minigame/dinozooi/background rehab");
             Arial = Content.Load<SpriteFont>("arial16");
             position = new Vector2(20, 20);
             playersize = new Vector2(32, 64);
-            collision.Add(new Rectangle(0, 1050, 1920, 30));    //onderplatform
+            collision.Add(new Rectangle(0, 1050, 525, 30));    //onderplatform
+            collision.Add(new Rectangle(1475 ,1050 ,600, 30));               // onderplatform
             collision.Add(new Rectangle(525, 970, 950, 450));   // groot blok onderin
             collision.Add(new Rectangle(140, 870, 300, 20));    //linker platform onderin   //dino
             collision.Add(new Rectangle(0, 730, 300, 20));      // meest linkse platform   // dino
@@ -56,25 +68,45 @@ namespace Game1.Minigames.DinoCollectStuff
             collision.Add(new Rectangle(850, 685, 370, 20));   // midden midden
             collision.Add(new Rectangle(700, 550, 200, 20));   // midden boven
             collision.Add(new Rectangle(850, 415, 300, 20));  // midden helemaal boven
+           // Drugssprite = new Sprite(Content.Load<Texture2D>("minigame/Dinozooi/Clown"));
    
             DinoSprite = new Sprite(Content.Load<Texture2D>("minigame/Dinozooi/Clown"));
-       
-            Objects.Add(new RozeDino(new Vector2(120, 800), 120, 410, -3));     // enemy
-            Objects.Add(new RozeDino(new Vector2(0, 660), -20 , 270 , -4));
-            Objects.Add(new RozeDino(new Vector2(1620, 560), 1600 , 1880, 4));
-            Objects.Add(new RozeDino(new Vector2(1550, 810), 1530 , 1810 , -2 ));
+
+            listRozeDinos.Add(new RozeDino(new Vector2(120, 800), 120, 410, -3));     // enemy
+            listRozeDinos.Add(new RozeDino(new Vector2(0, 660), -20 , 270 , -4));
+            listRozeDinos.Add(new RozeDino(new Vector2(1620, 560), 1600 , 1880, 4));
+            listRozeDinos.Add(new RozeDino(new Vector2(1550, 810), 1530 , 1810 , -2 ));
+
+            foreach (RozeDino RozeDino in listRozeDinos)
+            {
+                Objects.Add(RozeDino);
+            }
+
             stopwatch = Stopwatch.StartNew();
 
-            for (int i = 0; i < collision.Count; i++)
-            {
-                platformInGebruik.Add(0);
-            }
+            //for (int i = 0; i < collision.Count; i++)
+            //{
+            //    platformInGebruik.Add(0);
+            //}
 
             //Objects.Add(new Drugs(new Vector2(850, 415-48), new Vector2(850+300, 415-48)));
         }
    
         public override void Update()
         {
+            foreach (RozeDino RozeDino in listRozeDinos)
+            {
+                RozeDino.Bounds.Intersects(new Rectangle((int)position.X, (int)position.Y, (int)playersize.X, (int)playersize.Y));
+            }
+         
+
+
+            
+
+             
+            {
+                
+            }
          /*  if (tick % 2 == 0)
             {
                 SocketHandler.SendMessage(PacketTypes.MOUSE, position.X, position.Y, xspeed, yspeed);
@@ -136,35 +168,34 @@ namespace Game1.Minigames.DinoCollectStuff
             }
             tick++;
 
-            if (listDrugs.Count < 4)
+            List<Drugs> verwijderUitLijst = new List<Drugs>();
+
+            foreach (Drugs item in listDrugs)
             {
-                bool platformHasNoCoin = true;
-                while (platformHasNoCoin)
-                { 
-                    int platformNum = random.Next(0, platformInGebruik.Count);
-                    if (platformInGebruik[platformNum] == 0)
-                    {
-                        Drugs drug = new Drugs(new Vector2(collision[platformNum].X, collision[platformNum].Y - 45), new Vector2(collision[platformNum].X + collision[platformNum].Width, collision[platformNum].Y - 45));
-                        listDrugs.Add(drug);
-                        //new Vector2(collision[platformNum].X, collision[platformNum].Y)
-                        //new Vector2(collision[platformNum].X+collision[platformNum].Width, collision[platformNum].Y)
-                        platformInGebruik[platformNum] = 1;
-                        platformHasNoCoin = false;
-                        Objects.Add(drug);
-
-                    }
-
+                if (item.timer < 1)
+                {
+                    verwijderUitLijst.Add(item);
                 }
             }
 
+            for (int i = 0; i < verwijderUitLijst.Count; i++)
+            {
+                verwijderUitLijst[i].Activated = false;
+                listDrugs.Remove(verwijderUitLijst[i]);
+                Objects.Remove(verwijderUitLijst[i]);
+
+            }
+
+            
         }
 
         public override void Draw()
         {
 
-          
             GraphicsDevice.Clear(Color.CornflowerBlue);
+
             View.DrawTextureStretched(background, Vector2.Zero, new Vector2(1920, 1080));
+
           
             /* List<Player> players = SocketHandler.GetPlayers();
              foreach (Player player in players)
@@ -180,8 +211,50 @@ namespace Game1.Minigames.DinoCollectStuff
           
             View.DrawSprite(DinoSprite, 0, position, new Vector2(playersize.X/DinoSprite.Width,
                                                                  playersize.Y/DinoSprite.Height));
+
+            foreach (RozeDino RozeDino in listRozeDinos)
+            {
+                if (RozeDino.Bounds.Intersects(new Rectangle((int)position.X, (int)position.Y, (int)playersize.X, (int)playersize.Y)))
+                {
+                    View.DrawText(Arial, "true", new Vector2(500, 40));
+                    return;
+                }
+            }
+   
         }
 
-      
+        private void tickEvent(Object source, ElapsedEventArgs e)
+        {
+            if (listDrugs.Count < 4)
+            {
+                //bool platformHasNoCoin = true;
+                //while (platformHasNoCoin)
+                //{
+                //int platformNum = random.Next(0, platformInGebruik.Count);
+                int randomRec = random.Next(0, collision.Count);
+                //    if (platformInGebruik[platformNum] == 0)
+                //    {
+                Drugs drug = new Drugs(new Vector2(collision[randomRec].X, collision[randomRec].Y - 48), new Vector2(collision[randomRec].X + collision[randomRec].Width, collision[randomRec].Y - 45));
+                drug.PreInitialize(this);
+                drug.Initialize();
+                        listDrugs.Add(drug);
+                        //new Vector2(collision[platformNum].X, collision[platformNum].Y)
+                        //new Vector2(collision[platformNum].X+collision[platformNum].Width, collision[platformNum].Y)
+                        //platformInGebruik[platformNum] = 1;
+                        //platformHasNoCoin = false;
+                        Objects.Add(drug);
+
+                    //}
+
+                //}
+            }
+        
+        } 
+        public int IncreaseScore()
+        {
+            TotalScore = TotalScore + 5;
+            return TotalScore;
+        }
+
     }
 }

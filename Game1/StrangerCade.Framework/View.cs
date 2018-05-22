@@ -91,6 +91,10 @@ namespace StrangerCade.Framework
         public void DrawSpriteStretched(Sprite sprite, int subimg, Vector2 position, Vector2 size, float rotation = 0f, Vector2? origin = null, float depth = 0f, Color? color = null, SpriteEffects spriteEffect = SpriteEffects.None)
         {
             Color _color = color ?? Color.White;
+            if (sprite == null)
+            {
+                Logger.WriteLine("WTF1 sprite is null! stacktrace: " + Environment.StackTrace, LogLevel.ERROR);
+            }
             Vector2 _scale = size / sprite.Size;
             _scale *= Scale;
             if (RotationMode == RotationType.Degrees)
@@ -100,6 +104,7 @@ namespace StrangerCade.Framework
             Vector2 _origin = origin ?? Vector2.Zero;
             subimg = Math.Min(Math.Max(subimg, 0), sprite.SubImages.Count - 1);
             _spriteBatch.Draw(sprite.Texture, (position * Scale) - Location, sprite.SubImages[subimg], _color, rotation, _origin, _scale, spriteEffect, depth);
+            
         }
 
         public void DrawTexture(Texture2D texture, Vector2 position, Vector2? scale = null, float rotation = 0f, Vector2? origin = null, float depth = 0f, Color? color = null, SpriteEffects spriteEffect = SpriteEffects.None)

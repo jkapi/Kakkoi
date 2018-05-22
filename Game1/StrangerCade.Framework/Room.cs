@@ -211,6 +211,8 @@ namespace StrangerCade.Framework
             {
                 GameTime = gameTime;
 
+                PreDraw();
+
                 foreach (GameObject obj in Objects)
                 {
                     if (obj.Activated)
@@ -266,6 +268,14 @@ namespace StrangerCade.Framework
         /// </summary>
         public virtual void DrawGui()
         { }
+
+        /// <summary>
+        /// Draw function intended for stuff that needs to be on the background, or for different targets.
+        /// </summary>
+        public virtual void PreDraw()
+        {
+
+        }
 
         public static Room CurrentRoom;
 

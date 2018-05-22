@@ -63,6 +63,21 @@ namespace Game1
 #else
             Room.LoadRoom(typeof(Rooms.LoginMenu), Content, graphics, spriteBatch);
 #endif
+            System.Windows.Forms.Form f = System.Windows.Forms.Control.FromHandle(Window.Handle) as System.Windows.Forms.Form;
+            if (f != null)
+            {
+                f.FormClosing += F_FormClosing;
+            }
+
+            base.LoadContent();
+        }
+
+        private void F_FormClosing(object sender, System.Windows.Forms.FormClosingEventArgs e)
+        {
+            e.Cancel = true;
+            Logger.WriteLine("Exiting");
+            SocketHandler.Stop();
+            Exit();
         }
 
         /// <summary>
@@ -108,6 +123,8 @@ namespace Game1
                 graphics.PreferredBackBufferHeight = 768;
                 graphics.PreferredBackBufferWidth = 1366;
                 graphics.GraphicsDevice.Viewport = new Viewport(0, 0, 1366, 768);
+                graphics.IsFullScreen = false;
+                Window.IsBorderless = false;
                 graphics.ApplyChanges();
                 Room.GotoRoom(Room.CurrentRoom.GetType());
             }
@@ -117,6 +134,8 @@ namespace Game1
                 graphics.PreferredBackBufferHeight = 1080;
                 graphics.PreferredBackBufferWidth = 1920;
                 graphics.GraphicsDevice.Viewport = new Viewport(0, 0, 1920, 1080);
+                graphics.IsFullScreen = false;
+                Window.IsBorderless = true;
                 graphics.ApplyChanges();
                 Room.GotoRoom(Room.CurrentRoom.GetType());
             }

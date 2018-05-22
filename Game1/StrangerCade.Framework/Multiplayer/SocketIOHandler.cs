@@ -244,6 +244,7 @@ namespace StrangerCade.Framework.Multiplayer
         public static void Stop()
         {
             IsRunning = false;
+            client.Disconnect("Cya");
         }
     }
     enum PacketTypes
