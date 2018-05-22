@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using StrangerCade.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,6 +26,7 @@ namespace Game1.Helpers
 
         private GraphicsDeviceManager g;
         private GraphicsDevice gd;
+        private BasicEffect effect;
 
         public D3D(GraphicsDeviceManager graphics, RenderTarget2D target, Color? clearColor = null)
         {
@@ -43,12 +45,24 @@ namespace Game1.Helpers
             CameraFarClipPlane = target.Height + target.Width;
 
             EnableLighting = false;
+
         }
 
         public void Begin()
         {
             gd.SetRenderTarget(RenderTarget);
             gd.Clear(Color.Transparent);
+            //gd.SamplerStates[0] = SamplerState.PointClamp;
+
+            effect = new BasicEffect(gd)
+            {
+                View = Matrix.CreateLookAt(
+                CameraPosition, CameraLookAtVector, CameraUpVector),
+                Projection = Matrix.CreatePerspectiveFieldOfView(
+                CameraFOV, CameraAspectRatio, CameraNearClipPlane, CameraFarClipPlane),
+                TextureEnabled = true,
+                LightingEnabled = EnableLighting
+            };
         }
 
         public void End()
@@ -73,9 +87,14 @@ namespace Game1.Helpers
 
         public void DrawTexture(Texture2D texture, Matrix transformation)
         {
-            DrawTexture(texture, texture.Bounds.Size.ToVector2(), transformation);
+            DrawTexturePart(texture, Vector2.Zero, Vector2.One, texture.Bounds.Size.ToVector2(), transformation);
         }
         public void DrawTexture(Texture2D texture, Vector2 size, Matrix transformation)
+        {
+            DrawTexturePart(texture, Vector2.Zero, Vector2.One, size, transformation);
+        }
+
+        private void DrawTexturePart(Texture2D texture, Vector2 topleft, Vector2 bottomright, Vector2 size, Matrix transformation)
         {
             VertexPositionTexture[] verts = new VertexPositionTexture[6];
             verts[0].Position = new Vector3(0, 0, 0);
@@ -85,25 +104,17 @@ namespace Game1.Helpers
             verts[3].Position = verts[1].Position;
             verts[4].Position = new Vector3(size.X, size.Y, 0);
             verts[5].Position = verts[2].Position;
-            
 
-            verts[0].TextureCoordinate = new Vector2(0, 0);
-            verts[1].TextureCoordinate = new Vector2(0, 1);
-            verts[2].TextureCoordinate = new Vector2(1, 0);
+
+            verts[0].TextureCoordinate = topleft;
+            verts[1].TextureCoordinate = new Vector2(topleft.X, bottomright.Y);
+            verts[2].TextureCoordinate = new Vector2(bottomright.X, topleft.Y);
 
             verts[3].TextureCoordinate = verts[1].TextureCoordinate;
-            verts[4].TextureCoordinate = new Vector2(1, 1);
+            verts[4].TextureCoordinate = bottomright;
             verts[5].TextureCoordinate = verts[2].TextureCoordinate;
 
-            BasicEffect effect = new BasicEffect(gd);
-            effect.View = Matrix.CreateLookAt(
-                CameraPosition, CameraLookAtVector, CameraUpVector);
-            effect.Projection = Matrix.CreatePerspectiveFieldOfView(
-                CameraFOV, CameraAspectRatio, CameraNearClipPlane, CameraFarClipPlane);
-
             effect.World = transformation;
-
-            effect.TextureEnabled = true;
             effect.Texture = texture;
 
             foreach (var pass in effect.CurrentTechnique.Passes)
@@ -116,7 +127,28 @@ namespace Game1.Helpers
                     0,
                     2);
             }
+        }
 
+        public void DrawSprite(Sprite sprite, int subimage, Matrix transformation)
+        {
+            Vector2 subLocation = sprite.SubImages[subimage].Location.ToVector2();
+            Vector2 subSize = sprite.SubImages[subimage].Size.ToVector2();
+            Vector2 totalSize = sprite.Texture.Bounds.Size.ToVector2();
+
+            Vector2 topLeft = subLocation / totalSize;
+            Vector2 bottomRight = (subLocation + subSize) / totalSize;
+            DrawTexturePart(sprite.Texture, topLeft, bottomRight, sprite.Size, transformation);
+        }
+
+        public void DrawSprite(Sprite sprite, int subimage, Vector2 size, Matrix transformation)
+        {
+            Vector2 subLocation = sprite.SubImages[subimage].Location.ToVector2();
+            Vector2 subSize = sprite.SubImages[subimage].Size.ToVector2();
+            Vector2 totalSize = sprite.Texture.Bounds.Size.ToVector2();
+
+            Vector2 topLeft = subLocation / totalSize;
+            Vector2 bottomRight = (subLocation + subSize) / totalSize;
+            DrawTexturePart(sprite.Texture, topLeft, bottomRight, size, transformation);
         }
     }
 }
