@@ -194,7 +194,7 @@ namespace Game1.Minigames.DinoCollectStuff
 
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-           // View.DrawTextureStretched(background, Vector2.Zero, new Vector2(1920, 1080));
+            View.DrawTextureStretched(background, Vector2.Zero, new Vector2(1920, 1080));
 
           
             /* List<Player> players = SocketHandler.GetPlayers();
