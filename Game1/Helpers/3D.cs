@@ -37,12 +37,20 @@ namespace Game1.Helpers
             g = graphics;
             gd = graphics.GraphicsDevice;
             ClearColor = clearColor ?? Color.Transparent;
-
-            CameraPosition = new Vector3(target.Width / 2, target.Height / 2, -target.Height / 2);
-            CameraLookAtVector = new Vector3(target.Width / 2, target.Height / 2, 0);
+            if (target == null)
+            {
+                CameraPosition = new Vector3(graphics.PreferredBackBufferWidth / 2f, graphics.PreferredBackBufferHeight / 2f, -graphics.PreferredBackBufferHeight / 2f);
+                CameraLookAtVector = new Vector3(graphics.PreferredBackBufferWidth / 2f, graphics.PreferredBackBufferHeight / 2f, 0);
+                CameraAspectRatio = (float)graphics.PreferredBackBufferWidth / (float)graphics.PreferredBackBufferHeight;
+            }
+            else
+            {
+                CameraPosition = new Vector3(target.Width / 2, target.Height / 2, -target.Height / 2);
+                CameraLookAtVector = new Vector3(target.Width / 2, target.Height / 2, 0);
+                CameraAspectRatio = (float)target.Width / (float)target.Height;
+            }
             CameraUpVector = Vector3.Down;
 
-            CameraAspectRatio = (float)target.Width / (float)target.Height;
             CameraFOV = MathHelper.PiOver2;
             CameraNearClipPlane = 0.0001f;
             CameraFarClipPlane = 10000f;
