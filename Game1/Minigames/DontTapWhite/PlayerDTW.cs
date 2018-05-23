@@ -66,7 +66,7 @@ namespace Game1.Minigames.DontTapWhite
 
         private void OnTimedEvent(Object source, ElapsedEventArgs e)
         {
-            if (time < 31 & time > -1 & stateOfGame == 1)
+            if (time < 31 & time > 0 & stateOfGame == 1)
             {
                 time -= 1;
             }
@@ -78,7 +78,7 @@ namespace Game1.Minigames.DontTapWhite
                 }
             }
 
-            if (timeLeftToClick > -1 & timeLeftToClick < 11 & stateOfGame == 1)
+            if (timeLeftToClick > 0 & timeLeftToClick < 11 & stateOfGame == 1)
             {
                 timeLeftToClick -= 1;
             }

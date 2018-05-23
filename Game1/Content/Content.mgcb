@@ -333,7 +333,11 @@
 /processorParam:TextureFormat=Compressed
 /build:RoomSelect/GameCovers.png
 
+
+#begin minigame/Dinozooi/Spuit.png
+
 #begin lipsumtest.png
+
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -343,6 +347,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
+
+/build:minigame/Dinozooi/Spuit.png
+
 /build:lipsumtest.png
 
 #begin random/chickenV2.obj
@@ -363,4 +370,3 @@
 /processorParam:SwapWindingOrder=False
 /processorParam:TextureFormat=Compressed
 /build:random/chickenV2.obj
-

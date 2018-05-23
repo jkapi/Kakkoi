@@ -24,7 +24,7 @@ namespace Game1.Minigames.DinoCollectStuff
         public override void Initialize()
 
         {
-            Drugssprite = new Sprite(Room.Content.Load<Texture2D>("minigame/dinozooi/reptile"));
+            Drugssprite = new Sprite(Room.Content.Load<Texture2D>("minigame/dinozooi/Spuit"));
         }
 
         public Drugs(Vector2 LeftSide, Vector2 RightSide) : base(Vector2.Zero)
