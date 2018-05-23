@@ -7,13 +7,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
 using Microsoft.Xna.Framework.Graphics;
+using StrangerCade.Framework;
 
 namespace Game1.Minigames.ClimbTheMountain
 {
-    class Wolk
+    class Wolk : GameObject
     {
         public Texture2D picture { get; set; }
-        public Vector2 position { get; private set; }
         public Vector2 widthLength { get; private set; }
         public int speed { get; private set; }
         public Vector2 resolution { get; private set; }
@@ -22,40 +22,29 @@ namespace Game1.Minigames.ClimbTheMountain
         public string switchSide { get; private set; }
         static public Random random { get; private set; } = new Random();
 
-        public Wolk(Texture2D Picture, Vector2 Position, Vector2 WidthLength, Vector2 Resolution)
+        public Wolk(Texture2D Picture, Vector2 Position, Vector2 WidthLength, Vector2 Resolution) : base(Position)
         {
             picture = Picture;
-            position = Position;
             widthLength = WidthLength;
             resolution = Resolution;
-            switchSide = "NaarLinks";
-            speed = random.Next(1,5);
-            timer = new Timer(75);
-            timer.Elapsed += OnTick;
-            timer.Enabled = true;
+            speed = random.Next(5,20);
             
         }
 
-        private void OnTick(Object source, ElapsedEventArgs e)
+        public override void Update()
         {
             Vector2 oldPos = new Vector2(0, 0);
-            oldPos = position;
-            if (switchSide == "NaarLinks")
+            oldPos = Position;
+            Position.X += speed * (float)GameTime.ElapsedGameTime.TotalSeconds;
+            if (Position.X > resolution.X || Position.X < - picture.Width)
             {
-                position = new Vector2(oldPos.X + speed, oldPos.Y);
-                if (position.X > resolution.X)
-                {
-                    switchSide = "NaarRechts";
-                }
+                speed = -speed;
             }
-            if (switchSide == "NaarRechts")
-            {
-                position = new Vector2(oldPos.X - speed, oldPos.Y);
-                if (position.X < 0)
-                {
-                    switchSide = "NaarLinks";
-                }
-            }
+        }
+
+        public override void Draw()
+        {
+            View.DrawTexture(picture, Position);
         }
 
     }

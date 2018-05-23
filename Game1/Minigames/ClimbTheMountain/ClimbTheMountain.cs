@@ -34,12 +34,11 @@ namespace Game1.Minigames.ClimbTheMountain
             wolk1 = Content.Load<Texture2D>("minigame/climbthemountain/Wolk1");
             wolk2 = Content.Load<Texture2D>("minigame/climbthemountain/Wolk2");
             wolk3 = Content.Load<Texture2D>("minigame/climbthemountain/Wolk3");
+            
 
-            listWolkjes = new List<Wolk>();
-
-            listWolkjes.Add(new Wolk(wolk1, new Vector2(Graphics.PreferredBackBufferHeight / 4, 0), new Vector2(250, 100),new Vector2(Graphics.PreferredBackBufferWidth, Graphics.PreferredBackBufferHeight)));
-            listWolkjes.Add(new Wolk(wolk2, new Vector2(Graphics.PreferredBackBufferHeight / 4, 150), new Vector2(250, 100), new Vector2(Graphics.PreferredBackBufferWidth, Graphics.PreferredBackBufferHeight)));
-            listWolkjes.Add(new Wolk(wolk3, new Vector2(Graphics.PreferredBackBufferHeight / 4, 300), new Vector2(250, 100), new Vector2(Graphics.PreferredBackBufferWidth, Graphics.PreferredBackBufferHeight)));
+            Objects.Add(new Wolk(wolk1, new Vector2(Graphics.PreferredBackBufferHeight / 4, 0), new Vector2(250, 100),new Vector2(Graphics.PreferredBackBufferWidth, Graphics.PreferredBackBufferHeight)));
+            Objects.Add(new Wolk(wolk2, new Vector2(Graphics.PreferredBackBufferHeight / 4, 150), new Vector2(250, 100), new Vector2(Graphics.PreferredBackBufferWidth, Graphics.PreferredBackBufferHeight)));
+            Objects.Add(new Wolk(wolk3, new Vector2(Graphics.PreferredBackBufferHeight / 4, 300), new Vector2(250, 100), new Vector2(Graphics.PreferredBackBufferWidth, Graphics.PreferredBackBufferHeight)));
 
             Block.Arial = Content.Load<SpriteFont>("arial16"); 
 
@@ -131,10 +130,6 @@ namespace Game1.Minigames.ClimbTheMountain
             // View.DrawTexture(bg, new Vector2(0, 0), new Vector2(Graphics.PreferredBackBufferWidth, Graphics.PreferredBackBufferHeight));
             // View.DrawTexture(bg, new Vector2(0, 0), new Vector2(Graphics.PreferredBackBufferWidth, Graphics.PreferredBackBufferHeight));
             //-wolkjes-
-            foreach (Wolk wolk in listWolkjes)
-            {
-                View.DrawTexture(wolk.picture, wolk.position);
-            }
             //--end design--
 
             View.DrawText(Block.Arial, "Score: " + score, new Vector2(20, 40));
