@@ -27,6 +27,9 @@ namespace Game1.Helpers
         private GraphicsDeviceManager g;
         private GraphicsDevice gd;
         private BasicEffect effect;
+        private bool UseDepthStencil;
+
+        private DepthStencilState oldDepthStencil;
 
         public D3D(GraphicsDeviceManager graphics, RenderTarget2D target, Color? clearColor = null)
         {
@@ -41,17 +44,18 @@ namespace Game1.Helpers
 
             CameraAspectRatio = (float)target.Width / (float)target.Height;
             CameraFOV = MathHelper.PiOver2;
-            CameraNearClipPlane = 1;
-            CameraFarClipPlane = target.Height + target.Width;
+            CameraNearClipPlane = 0.0001f;
+            CameraFarClipPlane = 10000f;
 
             EnableLighting = false;
 
+            UseDepthStencil = true;
         }
 
         public void Begin()
         {
             gd.SetRenderTarget(RenderTarget);
-            gd.Clear(Color.Transparent);
+            gd.Clear(ClearOptions.DepthBuffer | ClearOptions.Target, Color.Transparent, 1.0f, 0);
             //gd.SamplerStates[0] = SamplerState.PointClamp;
 
             effect = new BasicEffect(gd)
@@ -63,38 +67,50 @@ namespace Game1.Helpers
                 TextureEnabled = true,
                 LightingEnabled = EnableLighting
             };
+            oldDepthStencil = gd.DepthStencilState;
+            if (UseDepthStencil)
+            {
+                var depthState = new DepthStencilState();
+                depthState.DepthBufferEnable = true; /* Enable the depth buffer */
+                depthState.DepthBufferWriteEnable = true; /* When drawing to the screen, write to the depth buffer */
+
+                gd.DepthStencilState = depthState;
+            }
         }
 
         public void End()
         {
+            gd.DepthStencilState = oldDepthStencil;
             gd.SetRenderTarget(null);
         }
 
-        public void DrawModel(Model model, Matrix world, Matrix view, Matrix projection)
+        public void DrawModel(Model model, Matrix translation)
         {
             foreach (ModelMesh mesh in model.Meshes)
             {
                 foreach (BasicEffect effect in mesh.Effects)
                 {
-                    effect.World = world;
-                    effect.View = view;
-                    effect.Projection = projection;
+                    effect.World = translation;
+                    effect.View = effect.View;
+                    effect.Projection = effect.Projection;
+                    effect.LightingEnabled = true;
+                    effect.EnableDefaultLighting();
                 }
 
                 mesh.Draw();
             }
         }
 
-        public void DrawTexture(Texture2D texture, Matrix transformation)
+        public void DrawTexture(Texture2D texture, Matrix translation)
         {
-            DrawTexturePart(texture, Vector2.Zero, Vector2.One, texture.Bounds.Size.ToVector2(), transformation);
+            DrawTexturePart(texture, Vector2.Zero, Vector2.One, texture.Bounds.Size.ToVector2(), translation);
         }
-        public void DrawTexture(Texture2D texture, Vector2 size, Matrix transformation)
+        public void DrawTexture(Texture2D texture, Vector2 size, Matrix translation)
         {
-            DrawTexturePart(texture, Vector2.Zero, Vector2.One, size, transformation);
+            DrawTexturePart(texture, Vector2.Zero, Vector2.One, size, translation);
         }
 
-        private void DrawTexturePart(Texture2D texture, Vector2 topleft, Vector2 bottomright, Vector2 size, Matrix transformation)
+        private void DrawTexturePart(Texture2D texture, Vector2 topleft, Vector2 bottomright, Vector2 size, Matrix translation)
         {
             VertexPositionTexture[] verts = new VertexPositionTexture[6];
             verts[0].Position = new Vector3(0, 0, 0);
@@ -114,7 +130,7 @@ namespace Game1.Helpers
             verts[4].TextureCoordinate = bottomright;
             verts[5].TextureCoordinate = verts[2].TextureCoordinate;
 
-            effect.World = transformation;
+            effect.World = translation;
             effect.Texture = texture;
 
             foreach (var pass in effect.CurrentTechnique.Passes)
@@ -129,7 +145,7 @@ namespace Game1.Helpers
             }
         }
 
-        public void DrawSprite(Sprite sprite, int subimage, Matrix transformation)
+        public void DrawSprite(Sprite sprite, int subimage, Matrix translation)
         {
             Vector2 subLocation = sprite.SubImages[subimage].Location.ToVector2();
             Vector2 subSize = sprite.SubImages[subimage].Size.ToVector2();
@@ -137,10 +153,10 @@ namespace Game1.Helpers
 
             Vector2 topLeft = subLocation / totalSize;
             Vector2 bottomRight = (subLocation + subSize) / totalSize;
-            DrawTexturePart(sprite.Texture, topLeft, bottomRight, sprite.Size, transformation);
+            DrawTexturePart(sprite.Texture, topLeft, bottomRight, sprite.Size, translation);
         }
 
-        public void DrawSprite(Sprite sprite, int subimage, Vector2 size, Matrix transformation)
+        public void DrawSprite(Sprite sprite, int subimage, Vector2 size, Matrix translation)
         {
             Vector2 subLocation = sprite.SubImages[subimage].Location.ToVector2();
             Vector2 subSize = sprite.SubImages[subimage].Size.ToVector2();
@@ -148,7 +164,7 @@ namespace Game1.Helpers
 
             Vector2 topLeft = subLocation / totalSize;
             Vector2 bottomRight = (subLocation + subSize) / totalSize;
-            DrawTexturePart(sprite.Texture, topLeft, bottomRight, size, transformation);
+            DrawTexturePart(sprite.Texture, topLeft, bottomRight, size, translation);
         }
     }
 }
