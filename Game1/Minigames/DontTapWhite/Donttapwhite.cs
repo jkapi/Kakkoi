@@ -208,6 +208,7 @@ namespace Game1.Minigames.DontTapWhite
             }
             return new Vector2(-1, -1);
         }
+
         //Init the tiles, but isnt drawn yet
         public void InitPlayground()
         {
