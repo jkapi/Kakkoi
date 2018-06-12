@@ -435,3 +435,10 @@
 /processorParam:SwapWindingOrder=False
 /processorParam:TextureFormat=Compressed
 /build:random/chickenV2.obj
+
+#begin Audio/flyswat_swat.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/flyswat_swat.wav
+
