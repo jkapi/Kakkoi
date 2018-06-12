@@ -2,11 +2,14 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StrangerCade.Framework;
+using StrangerCade.Framework.Multiplayer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Lidgren.Network;
+using System.IO;
 
 namespace Game1.GameObjects
 {
@@ -18,23 +21,14 @@ namespace Game1.GameObjects
 
         public override void Initialize()
         {
-            messages.Add(new Message("joeykapi", "Dit is een berichtje die ik ooit heb gestuurd", 0));
-            messages.Add(new Message("joeykapi", "nog een", 0));
-            messages.Add(new Message("CrazyCreeper", "Dit gaat je zo erg irriteren omdat deze tekst veelste breed is. Omdat deze tekst veelste breed is gaat hij niet passen. Dit is om te testen of het past, ik hoop van wel. Maar je weet natuurlijk maar nooit." +
-                " Het is zelfs zo lang dat het in code niet past in een regel. Bij lange na niet. Ach, ik weet niets meer. Lorem ipsum dolor sit amet constnogwat tekst. Weet ik veel. Bacon bacon brisket french fries. En het gaat maar door en door en door en door" +
-                " en door en door en door en door en door en door en door en door en door en door en door en door en door en door en door en door en door en door en door en door en door en door en door en door en door en door en door en door en door en door en door" +
-                " en door en door en door en door en door en door en door en door en door en door en door en door en door en door en door en door en door en door en door en door en door en door en door en door en door en door en door en door en door en door en door" + 
-                " en pa's wijze lynx bezag vroom over het fikse aquaduct4", 2));
-            messages.Add(new Message("PiemelMan", "Pls stop", 3));
-            messages.Add(new Message("CrazyCreeper", "okidokidokidokidokidokidokidokidokidokidokidokidokidokidokidokidokidokidokidokidokidokidokidokidokidokidokidokidokidokidokidokidokidokidokidokidokidokidokidokidokidokidokidokidokidokidokidokidokidokidokidokidokidokidokidokidokidokidokidokidokidokidokidokidokidokidokidokidokidokidokidokidokidokidokidokidokidokidokidokidokidokidokidokidokidokidokidokidokidokidokidokidokidokidokidokidokidokidokidokidokidokidokidokido", 2));
-            messages.Add(new Message("xXx_PussySlayer69_xXx", "ik neuk jullie allemaal de moeder", 1));
-            messages.Add(new Message("CrazyCreeper", "je moeder", 2));
-            messages.Add(new Message("PiemelMan", "gvd, ga je nog iets doen?", 3));
-            messages.Add(new Message("joeykapi", "nee", 0));
-            messages.Add(new Message("joeykapi", "dit is maar een voorbeeld", 0));
-            messages.Add(new Message("PiemelMan", "ok :(", 1));
+            SocketHandler.SetHandler(PacketTypes.CHAT, addMessage);
 
             font = Room.Content.Load<SpriteFont>("OpenSans13");
+        }
+
+        private void addMessage(NetIncomingMessage message)
+        {
+            messages.Add(new Message(message.ReadString(), message.ReadString(), message.ReadInt32()));
         }
 
         public override void Update()
@@ -44,9 +38,18 @@ namespace Game1.GameObjects
                 if (!message.Handled)
                 {
                     message.Text = font.WrapText(message.Text, 1890 - font.MeasureString(message.Sender).X).Trim();
-                    if (message.Text[0] =='\n') { message.Text = message.Text.Substring(1); }
+                    if (message.Text.Length > 0)
+                        if (message.Text[0] =='\n') { message.Text = message.Text.Substring(1); }
                     message.Handled = true;
                 }
+            }
+            if (Keyboard.CheckPressed(Microsoft.Xna.Framework.Input.Keys.A))
+            {
+                var s = new MemoryStream();
+                var m = new StreamWriter(s);
+                m.Write(SocketHandler.PlayerName);
+                m.Write("Hallo allemaal");
+                SocketHandler.SendMessage(PacketTypes.CHAT, s.ToArray());
             }
         }
 

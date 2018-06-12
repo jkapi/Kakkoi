@@ -180,7 +180,7 @@ namespace StrangerCade.Framework.Multiplayer
                                 switch (minigame)
                                 {
                                     case MinigameTypes.FlySwat: Room.GotoRoom(typeof(Game1.Minigames.FlySwat.FlySwat)); break;
-                                    case MinigameTypes.MainGame: Room.GotoRoom(typeof(Game1.Rooms.MainBoard)); break;
+                                    case MinigameTypes.MainGame: Room.GotoRoom(typeof(Game1.Rooms.Room1)); break;
                                     case MinigameTypes.FollowTheLeader: Room.GotoRoom(typeof(Game1.Minigames.FollowTheLeader.FollowTheLeader)); break;
                                     case MinigameTypes.ClimbTheMountain: Room.GotoRoom(typeof(Game1.Minigames.ClimbTheMountain.ClimbTheMountain)); break;
                                     case MinigameTypes.DinoCollectStuff: Room.GotoRoom(typeof(Game1.Minigames.DinoCollectStuff.DinoCollectStuff)); break;

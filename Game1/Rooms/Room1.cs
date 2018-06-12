@@ -10,6 +10,7 @@ using StrangerCade.Framework;
 using Microsoft.Xna.Framework.Input;
 using System.Threading;
 using Game1.GameObjects;
+using StrangerCade.Framework.Multiplayer;
 
 namespace Game1.Rooms
 {
@@ -49,19 +50,13 @@ namespace Game1.Rooms
         {
             Rotations[Board.CurrentPlayer]++;
             if (Rotations[Board.CurrentPlayer] > 360) { Rotations[Board.CurrentPlayer] -= 360; }
-            if (Keyboard.Check(Keys.A))
-            {
-                overlayOpacity += 0.05f;
-            }
             if (overlayOpacity > 1) { overlayOpacity = 1; }
-            if (Keyboard.Check(Keys.B))
-            {
-                overlayOpacity = 0;
-            }
         }
 
         public override void Draw()
         {
+            var players = SocketHandler.GetPlayers();
+
             MovingBackground.Draw(this);
             View.DrawRectangle(new Rectangle(600, 32, 640, 640), false, new Color(240, 240, 240));
 
@@ -75,10 +70,13 @@ namespace Game1.Rooms
             View.DrawSpriteStretched(Heads, 1, new Vector2(76, 76 + 320), new Vector2(40));
             View.DrawSpriteStretched(Heads, 2, new Vector2(76, 76 + 480), new Vector2(40));
 
-            DrawTextOutlined(Arial24, "joeykapi", new Vector2(180, 96), Color.White, Color.Black);
-            DrawTextOutlined(Arial24, "xXx_[nope]SLAYER69_xXx", new Vector2(180, 256), Color.White, Color.Black);
-            DrawTextOutlined(Arial24, "CrazyCreeper", new Vector2(180, 416), Color.White, Color.Black);
-            DrawTextOutlined(Arial24, "[nope]Man", new Vector2(180, 576), Color.White, Color.Black);
+            DrawTextOutlined(Arial24, players[0].Name, new Vector2(180, 96), Color.White, Color.Black);
+            if (players.Count > 1)
+                DrawTextOutlined(Arial24, players[1].Name, new Vector2(180, 256), Color.White, Color.Black);
+            if (players.Count > 2)
+                DrawTextOutlined(Arial24, players[2].Name, new Vector2(180, 416), Color.White, Color.Black);
+            if (players.Count > 3)
+                DrawTextOutlined(Arial24, players[3].Name, new Vector2(180, 576), Color.White, Color.Black);
 
             Vector2 MouseMovement = Mouse.AverageMovement();
             if (Math.Abs(Mouse.LastMovement.X + Mouse.LastMovement.Y) > 0.1)
