@@ -148,7 +148,6 @@
     <EmbeddedResource Include="Icon.bmp" />
   </ItemGroup>
   <ItemGroup>
-    <MonoGameContentReference Include="Content\Content.mgcb" />
     <None Include="$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\DesktopGL\x86\SDL2.dll">
       <Link>x86\SDL2.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -205,6 +204,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <MonoGameContentReference Include="Content\Content.mgcb" />
     <None Include="Content\Score.spritefont" />
     <None Include="packages.config" />
     <None Include="Resources\93407604_a0e4ae527d_m.jpg" />

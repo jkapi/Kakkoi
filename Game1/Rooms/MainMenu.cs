@@ -61,18 +61,21 @@ namespace Game1.Rooms
 
         private DisplayMode roomSize = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode;
 
+        private GameList gameList;
+
         private Vector2 targetOffsetMain { get {
                 if (showSettings && !showMulti)
                     return new Vector2(settingsMenuWidth / 2 + 20, 0);
                 else if (showMulti)
                     return new Vector2(showSettings ? settingsMenuWidth / 2 + 20 : 0, -1080);
                 else if (showSolo)
-                    return new Vector2(-1600, 0);
+                    return new Vector2(-1900, 0);
                 else
                     return Vector2.Zero;
             } }
         private Vector2 offsetMain = Vector2.Zero;
         private Vector2 targetOffsetMenuSettings { get { return showSettings ? Vector2.Zero : new Vector2(-settingsMenuWidth, 0); } }
+        private Vector2 targetOffsetSoloList { get { return showSolo ? Vector2.Zero : new Vector2(1900, 0); } }
         private Vector2 offsetMenuSettings = Vector2.Zero;
 
         private RoomList roomList;
@@ -94,7 +97,9 @@ namespace Game1.Rooms
                 MenuMulti = Content.Load<Texture2D>("roomselect/menuonlinedisabled");
             offsetMenuSettings = new Vector2(-settingsMenuWidth, 0);
             roomList = new RoomList();
+            gameList = new GameList(new Vector2(1900, 0), 6, false);
             Objects.Add(roomList);
+            Objects.Add(gameList);
             View.Scale = new Vector2(roomSize.Width / 1920f, roomSize.Height / 1080f);
         }
 
@@ -203,6 +208,7 @@ namespace Game1.Rooms
         private void MultiplayerAnimationHandler()
         {
             if (roomList.Position != targetOffsetMenuMulti) { roomList.Position += animationSpeed * (targetOffsetMenuMulti - roomList.Position); }
+            if (gameList.Position != targetOffsetSoloList) { gameList.Position += animationSpeed * (targetOffsetSoloList - gameList.Position); }
         }
 
         private Vector2[] ScaledPolygon(Vector2[] polygon)
