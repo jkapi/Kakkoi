@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using StrangerCade.Framework;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ namespace Game1.Minigames.DontTapWhite
 {
     class Tile : GameObject
     {
-
+        public Texture2D sprite;
         public Rectangle tile { get; private set; }
         public Color color { get; set; }
         public bool outline { get; set; }
@@ -88,6 +89,14 @@ namespace Game1.Minigames.DontTapWhite
                 {
                     aTile.positionTile = NewPosition;
                 }
+            }
+        }
+
+        public override void Draw()
+        {
+            if (sprite != null)
+            {
+                View.DrawTexture(sprite, new Vector2(tile.X, tile.Y));
             }
         }
     }

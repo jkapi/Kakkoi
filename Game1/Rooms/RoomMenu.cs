@@ -12,6 +12,7 @@ using Lidgren.Network;
 using System.Threading;
 using Microsoft.Xna.Framework.Input;
 using Game1.GameObjects;
+using Game1.Helpers;
 
 namespace Game1.Rooms
 {
@@ -36,6 +37,8 @@ namespace Game1.Rooms
         int ScrollWheelOffset = 0;
 
         RenderTarget2D roomListRenderTarget;
+        RenderTarget2D r3d;
+        D3D d3d;
 
         public override void Initialize()
         {
@@ -70,6 +73,9 @@ namespace Game1.Rooms
                 SocketHandler.SetHandler(PacketTypes.ROOMLIST, ParseRoomList);
                 SocketHandler.SendMessage(PacketTypes.ROOMLIST);
             }
+
+            d3d = new D3D(Graphics, null);
+            r3d = new RenderTarget2D(GraphicsDevice, 1920, 1080, false, SurfaceFormat.Color, DepthFormat.Depth24Stencil8, 0, RenderTargetUsage.DiscardContents);
         }
 
         private void ParseRoomList(NetIncomingMessage inc)
@@ -152,7 +158,7 @@ namespace Game1.Rooms
             {
                 View.DrawText(Arial24, "You are not connected to the server.", new Vector2(960 - Arial24.MeasureString("You are not connected to the server.").X / 2, 200), Color.LightGray);
             }
-            View.SwitchToRenderTarget(null);
+            View.SwitchToRenderTarget(r3d);
             MovingBackground.Draw(this);
 
             View.DrawRectangle(new Rectangle(0, 140, 1920, 1080), false, new Color(Color.Black, 0.1f));
@@ -163,6 +169,10 @@ namespace Game1.Rooms
             DrawPlaceholderRadioBox(new Vector2(800, 90), "Show Private");
             DrawPlaceholderRadioBox(new Vector2(1000, 90), "Show Full");
             View.DrawRenderTarget(roomListRenderTarget, new Vector2(0, 140));
+            View.SwitchToRenderTarget(null);
+            d3d.Begin();
+            d3d.DrawTexture((Texture2D)r3d, Matrix.CreateFromYawPitchRoll(-0.4f,0,0));
+            d3d.End();
         }
 
         public void DrawPlaceholderRadioBox(Vector2 position, string text)

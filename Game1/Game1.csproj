@@ -80,6 +80,7 @@
     <Compile Include="Helpers\3D.cs" />
     <Compile Include="Minigames\ClimbTheMountain\Block.cs" />
     <Compile Include="Minigames\ClimbTheMountain\ClimbTheMountain.cs" />
+    <Compile Include="Minigames\ClimbTheMountain\Wolk.cs" />
     <Compile Include="Minigames\DinoCollectStuff\Dino.cs" />
     <Compile Include="Minigames\DinoCollectStuff\DinoCollectStuff.cs" />
     <Compile Include="Minigames\DinoCollectStuff\Drugs.cs" />

@@ -23,11 +23,12 @@ namespace Game1.Rooms
         Button btn;
         public Task<HttpResponseMessage> haalvraagop;
         private Sprite covers;
+        private Model kip;
         D3D d3d;
 
         public override void Initialize()
         {
-            d3d = new D3D(Graphics, new RenderTarget2D(GraphicsDevice, Graphics.PreferredBackBufferWidth, Graphics.PreferredBackBufferHeight));
+            d3d = new D3D(Graphics, new RenderTarget2D(GraphicsDevice, Graphics.PreferredBackBufferWidth, Graphics.PreferredBackBufferHeight, false, SurfaceFormat.Color, DepthFormat.Depth24Stencil8, 0, RenderTargetUsage.DiscardContents));
             Arial = Content.Load<SpriteFont>("arial16");
             Objects.Add(new GameObjects.GameList(Vector2.Zero));
             btn = new Button(new Vector2(20, 20), new Vector2(200, 30), Arial, "Ga naar room1");
@@ -38,6 +39,7 @@ namespace Game1.Rooms
             Objects.Add(new CheckBox(new Vector2(400, 60), false));
             haalvraagop = new HttpClient().GetAsync("http://kakoi.ml/quiz.php");
             covers = new Sprite(Content.Load<Texture2D>("roomselect/gamecovers"), 4);
+            kip = Content.Load<Model>("random/chickenV2");
         }
 
         private void gomain(object sender, EventArgs e)
@@ -78,11 +80,13 @@ namespace Game1.Rooms
         {
             Stopwatch s = Stopwatch.StartNew();
             d3d.Begin();
-            Matrix translate = Matrix.CreateFromYawPitchRoll(-0.5f,0.1f,0.2f);
+            Matrix translate = Matrix.CreateTranslation(500f, 200f, 0f) + Matrix.CreateFromYawPitchRoll((float)-Math.Cos(GameTime.TotalGameTime.TotalSeconds), (float)Math.Sin(GameTime.TotalGameTime.TotalSeconds / 2), (float)-Math.Cos(GameTime.TotalGameTime.TotalSeconds / 3));
             d3d.DrawSprite(covers, 1, translate);
+            //translate = Matrix.CreateTranslation(0, 0, 10f) * Matrix.CreateScale(0.05f) * Matrix.CreateRotationY((float)(GameTime.TotalGameTime.TotalSeconds) / 2f);
+            translate = Matrix.CreateScale(0.05f) * Matrix.CreateFromYawPitchRoll((float)GameTime.TotalGameTime.TotalSeconds, (float)Math.Sin(GameTime.TotalGameTime.TotalSeconds / 4) / 2, 0) * Matrix.CreateTranslation(new Vector3(0,0,0.5f));
+            d3d.DrawModel(kip, translate);
             d3d.End();
             s.Stop();
-            Debug.WriteLine(s.ElapsedMilliseconds);
         }
     }
 }

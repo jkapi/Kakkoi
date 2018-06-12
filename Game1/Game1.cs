@@ -27,10 +27,11 @@ namespace Game1
             Logger.WriteLine("Starting GraphicsDevice");
             graphics = new GraphicsDeviceManager(this);
             graphics.IsFullScreen = false;
-            graphics.PreferredBackBufferHeight = 768;
-            graphics.PreferredBackBufferWidth = 1280;
+            graphics.PreferredBackBufferHeight = 1080;
+            graphics.PreferredBackBufferWidth = 1920;
             IsMouseVisible = false;
             Window.AllowAltF4 = false;
+            Window.IsBorderless = true;
             graphics.ApplyChanges();
             Content.RootDirectory = "Content";
         }
@@ -98,7 +99,8 @@ namespace Game1
         {
             Room.TryReinitializeIfNecessary();
             var kb = Keyboard.GetState();
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || ((kb.IsKeyDown(Keys.LeftAlt) || kb.IsKeyDown(Keys.RightAlt)) && kb.IsKeyDown(Keys.LeftShift)) || stopping)
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || ((kb.IsKeyDown(Keys.LeftAlt) || kb.IsKeyDown(Keys.RightAlt)) && kb.IsKeyDown(Keys.F4)) || 
+                ((kb.IsKeyDown(Keys.LeftShift) || kb.IsKeyDown(Keys.RightShift)) && kb.IsKeyDown(Keys.Escape)) || stopping)
             {
                 Logger.WriteLine("Exiting");
                 SocketHandler.Stop();

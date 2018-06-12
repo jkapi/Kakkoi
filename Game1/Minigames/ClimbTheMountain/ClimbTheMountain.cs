@@ -13,6 +13,11 @@ namespace Game1.Minigames.ClimbTheMountain
     class ClimbTheMountain : Room
     {
         //--DESIGN--//
+        Texture2D bg;
+        Texture2D wolk1;
+        Texture2D wolk2;
+        Texture2D wolk3;
+        public List<Wolk> listWolkjes { get; private set; }
         public Rectangle playField { get; private set; }
         public Rectangle letterField { get; private set; }
         public int widthLengthBlock { get; private set; }
@@ -25,6 +30,15 @@ namespace Game1.Minigames.ClimbTheMountain
         public override void Initialize()
         {
             //queueOfLetters = new List<string>();
+            bg = Content.Load<Texture2D>("minigame/climbthemountain/bgmountain");
+            wolk1 = Content.Load<Texture2D>("minigame/climbthemountain/Wolk1");
+            wolk2 = Content.Load<Texture2D>("minigame/climbthemountain/Wolk2");
+            wolk3 = Content.Load<Texture2D>("minigame/climbthemountain/Wolk3");
+            
+
+            Objects.Add(new Wolk(wolk1, new Vector2(Graphics.PreferredBackBufferHeight / 4, 0), new Vector2(250, 100),new Vector2(Graphics.PreferredBackBufferWidth, Graphics.PreferredBackBufferHeight)));
+            Objects.Add(new Wolk(wolk2, new Vector2(Graphics.PreferredBackBufferHeight / 4, 150), new Vector2(250, 100), new Vector2(Graphics.PreferredBackBufferWidth, Graphics.PreferredBackBufferHeight)));
+            Objects.Add(new Wolk(wolk3, new Vector2(Graphics.PreferredBackBufferHeight / 4, 300), new Vector2(250, 100), new Vector2(Graphics.PreferredBackBufferWidth, Graphics.PreferredBackBufferHeight)));
 
             Block.Arial = Content.Load<SpriteFont>("arial16"); 
 
@@ -111,6 +125,13 @@ namespace Game1.Minigames.ClimbTheMountain
         }
         public override void Draw()
         {
+            //--design--
+            View.DrawTextureStretched(bg, new Vector2(0, 0), new Vector2(Graphics.PreferredBackBufferWidth, Graphics.PreferredBackBufferHeight));
+            // View.DrawTexture(bg, new Vector2(0, 0), new Vector2(Graphics.PreferredBackBufferWidth, Graphics.PreferredBackBufferHeight));
+            // View.DrawTexture(bg, new Vector2(0, 0), new Vector2(Graphics.PreferredBackBufferWidth, Graphics.PreferredBackBufferHeight));
+            //-wolkjes-
+            //--end design--
+
             View.DrawText(Block.Arial, "Score: " + score, new Vector2(20, 40));
             View.DrawRectangle(playField, true, Color.Black);
             View.DrawRectangle(letterField, true, Color.Black);
