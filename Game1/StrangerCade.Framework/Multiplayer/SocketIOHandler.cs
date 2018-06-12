@@ -250,7 +250,7 @@ namespace StrangerCade.Framework.Multiplayer
     enum PacketTypes
     {
         LOGINSESSID = 0, JOINROOM = 1, LEAVEROOM = 2, GETROOM = 3, ROOMLIST = 4, CREATEROOM = 5,
-        MINIGAME = 6, SETMOVE = 7, DOMOVE = 8, MOUSE = 9, PLAYER = 10, TICK = 11, SWAT = 12
+        MINIGAME = 6, SETMOVE = 7, DOMOVE = 8, MOUSE = 9, PLAYER = 10, TICK = 11, SWAT = 12, CHAT = 13
     }
 
     enum DataTypes
