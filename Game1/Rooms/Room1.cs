@@ -70,14 +70,20 @@ namespace Game1.Rooms
             View.DrawSpriteStretched(Heads, 1, new Vector2(76, 76 + 320), new Vector2(40));
             View.DrawSpriteStretched(Heads, 2, new Vector2(76, 76 + 480), new Vector2(40));
 
-            DrawTextOutlined(Arial24, players[0].Name, new Vector2(180, 96), Color.White, Color.Black);
-            if (players.Count > 1)
-                DrawTextOutlined(Arial24, players[1].Name, new Vector2(180, 256), Color.White, Color.Black);
-            if (players.Count > 2)
-                DrawTextOutlined(Arial24, players[2].Name, new Vector2(180, 416), Color.White, Color.Black);
-            if (players.Count > 3)
-                DrawTextOutlined(Arial24, players[3].Name, new Vector2(180, 576), Color.White, Color.Black);
-
+            try
+            {
+                DrawTextOutlined(Arial24, players[0].Name, new Vector2(180, 96), Color.White, Color.Black);
+                if (players.Count > 1)
+                    DrawTextOutlined(Arial24, players[1].Name, new Vector2(180, 256), Color.White, Color.Black);
+                if (players.Count > 2)
+                    DrawTextOutlined(Arial24, players[2].Name, new Vector2(180, 416), Color.White, Color.Black);
+                if (players.Count > 3)
+                    DrawTextOutlined(Arial24, players[3].Name, new Vector2(180, 576), Color.White, Color.Black);
+            }
+            catch
+            {
+                // This isn't really something to worry about, can be caused because of a breakpoint in the tick function of the server
+            }
             Vector2 MouseMovement = Mouse.AverageMovement();
             if (Math.Abs(Mouse.LastMovement.X + Mouse.LastMovement.Y) > 0.1)
             {

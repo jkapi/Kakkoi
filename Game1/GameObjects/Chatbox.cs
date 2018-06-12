@@ -47,9 +47,9 @@ namespace Game1.GameObjects
             {
                 var s = new MemoryStream();
                 var m = new StreamWriter(s);
-                m.Write(SocketHandler.PlayerName);
-                m.Write("Hallo allemaal");
-                SocketHandler.SendMessage(PacketTypes.CHAT, s.ToArray());
+                m.Flush();
+                SocketHandler.SendMessage(PacketTypes.CHAT, "Hallo allemaal");
+                
             }
         }
 

@@ -98,6 +98,7 @@
     <Compile Include="Minigames\FlySwat\FlySwat.cs" />
     <Compile Include="Rooms\LoginMenu.cs" />
     <Compile Include="Rooms\MainMenu.cs" />
+    <Compile Include="Rooms\MultiRandomGame.cs" />
     <Compile Include="Rooms\RoomMenu.cs" />
     <Compile Include="StrangerCade.Framework\Extensions.cs" />
     <Compile Include="StrangerCade.Framework\Keyboard.cs" />

@@ -13,12 +13,14 @@ namespace Game1.GameObjects
     {
         Sprite Covers;
         int totalCovers;
-        float speed;
+        public float speed;
         float slowing;
         float tt = 0;
         float starttt;
         bool automove;
         Vector2 mousestartpos;
+
+        public int bottompanel;
 
         IOrderedEnumerable<KeyValuePair<int, Vector2>> sortedpositions;
 
@@ -46,6 +48,7 @@ namespace Game1.GameObjects
             }
 
             sortedpositions = from entry in positions orderby entry.Value.Y ascending select entry;
+            bottompanel = sortedpositions.Last().Key;
 
             if (!automove && Position.X < 10)
             {

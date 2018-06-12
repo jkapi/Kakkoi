@@ -78,6 +78,8 @@ namespace StrangerCade.Framework.Multiplayer
                     GameData.Position = 0;
                     MemoryStream temp = new MemoryStream((int)GameData.Length);
                     GameData.CopyTo(temp);
+                    temp.Flush();
+                    temp.Position = 0;
                     return new BinaryReader(temp);
                 }
                 else
@@ -184,6 +186,9 @@ namespace StrangerCade.Framework.Multiplayer
                                     case MinigameTypes.FollowTheLeader: Room.GotoRoom(typeof(Game1.Minigames.FollowTheLeader.FollowTheLeader)); break;
                                     case MinigameTypes.ClimbTheMountain: Room.GotoRoom(typeof(Game1.Minigames.ClimbTheMountain.ClimbTheMountain)); break;
                                     case MinigameTypes.DinoCollectStuff: Room.GotoRoom(typeof(Game1.Minigames.DinoCollectStuff.DinoCollectStuff)); break;
+                                    case MinigameTypes.GameSelect: Room.GotoRoom(typeof(Game1.Rooms.MultiRandomGame)); break;
+                                    case MinigameTypes.TapWhite: Room.GotoRoom(typeof(Game1.Minigames.DontTapWhite.Donttapwhite)); break;
+                                    case MinigameTypes.Quiz: Room.GotoRoom(typeof(Game1.Minigames.Quiz.Quiz)); break;
                                     default: Room.GotoRoom(typeof(Game1.Rooms.DebugRoom)); break;
                                 }
                             }
@@ -215,7 +220,9 @@ namespace StrangerCade.Framework.Multiplayer
                                                  inc.ReadFloat(),
                                                  inc.ReadFloat(),
                                                  inc.ReadFloat(),
-                                                 inc.ReadFloat(), inc.ReadInt32()));
+                                                 inc.ReadFloat(), 
+                                                 inc.ReadInt32(), 
+                                                 inc.ReadInt32()));
                 }
             }
             lock (DataLock)
@@ -260,6 +267,6 @@ namespace StrangerCade.Framework.Multiplayer
 
     enum MinigameTypes
     {
-        None = 0, MainGame = 1, FlySwat = 2, ClimbTheMountain = 3, DinoCollectStuff = 4, FollowTheLeader = 5
+        None = 0, MainGame = 1, FlySwat = 2, ClimbTheMountain = 3, DinoCollectStuff = 4, FollowTheLeader = 5, GameSelect = 6, TapWhite = 7, Quiz = 8
     }
 }

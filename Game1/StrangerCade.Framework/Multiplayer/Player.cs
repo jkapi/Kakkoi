@@ -22,7 +22,9 @@ namespace StrangerCade.Framework.Multiplayer
 
         public int NumInRoom;
 
-        public Player(int id, string name, float x, float y, float xSpeed, float ySpeed, int num)
+        public int Score;
+
+        public Player(int id, string name, float x, float y, float xSpeed, float ySpeed, int num, int score)
         {
             Name = name;
             Id = id;
@@ -36,6 +38,8 @@ namespace StrangerCade.Framework.Multiplayer
             Speed = new Vector2(xSpeed, ySpeed);
 
             NumInRoom = num;
+
+            Score = score;
         }
     }
 }

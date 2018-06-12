@@ -8,6 +8,8 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Diagnostics;
+using StrangerCade.Framework.Multiplayer;
+using System.IO;
 
 namespace Game1.Rooms
 {
@@ -47,6 +49,34 @@ namespace Game1.Rooms
 
         public override void Update()
         {
+            BinaryReader roomdata = null;
+            try {
+                roomdata = SocketHandler.GetData();
+            }
+            catch
+            {
+                // don't worry, we're probably single player
+            }
+            if (roomdata != null)
+            {
+                if(roomdata.BaseStream.Length == 66)
+                {
+                    for (int _x = 0; _x < 8; _x++)
+                        for (int _y = 0; _y < 8; _y++)
+                            board[_x, _y] = (int)roomdata.ReadByte() - 1;
+                    CurrentPlayer = roomdata.ReadByte();
+                }
+                else
+                {
+                    string datastring = "[";
+                    for (int i = 0; i < roomdata.BaseStream.Length; i++)
+                    {
+                        datastring += (int)roomdata.ReadByte() + ",";
+                    }
+                    datastring += "]";
+                    Logger.WriteLine("Got unexpected roomdata for mainboard: " + datastring, LogLevel.WARN);
+                }
+            }
             Position = Mouse.Position - boardPos - new Vector2(boxSize / 2);
             Position.X = (float)Math.Round(Math.Min(Math.Max(0,Position.X / boxSize),7)) * boxSize + boxSize * 0.5f;
             Position.Y = (float)Math.Round(Math.Min(Math.Max(0, Position.Y / boxSize), 7)) * boxSize + boxSize * 0.5f;
@@ -70,11 +100,27 @@ namespace Game1.Rooms
                         board[x, y] = CurrentPlayer;
                         DoMove(x, y, CurrentPlayer);
                         CurrentPlayer++;
+                        try
+                        {
+                            SocketHandler.SendMessage(PacketTypes.SETMOVE, (byte)x, (byte)y);
+                        }
+                        catch
+                        {
+                            Logger.WriteLine("Mainboard seems to see that you are not connected to a room", LogLevel.WARN);
+                        }
                     }
                 }
                 else
                 {
                     board[x, y] += 4;
+                    try
+                    {
+                        SocketHandler.SendMessage(PacketTypes.SETMOVE, (byte)x, (byte)y);
+                    }
+                    catch
+                    {
+                        Logger.WriteLine("Mainboard seems to see that you are not connected to a room", LogLevel.WARN);
+                    }
                     CurrentPlayer++;
                 }
                 if (CurrentPlayer == 4)
