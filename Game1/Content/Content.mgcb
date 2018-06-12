@@ -403,7 +403,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:minigame/Dinozooi/Spuit.png
+/build:minigame/climbthemountain/frontcover.jpg
 
 #begin lipsumtest.png
 /importer:TextureImporter
@@ -423,7 +423,6 @@
 /processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
 /build:Score.spritefont
-/build:minigame/climbthemountain/frontcover.jpg
 
 #begin minigame/climbthemountain/bgmountain.png
 /importer:TextureImporter
