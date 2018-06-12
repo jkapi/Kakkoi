@@ -14,6 +14,7 @@ namespace Game1.Minigames.DontTapWhite
     class Donttapwhite : Room 
     {
         Texture2D bg;
+        Texture2D hitcursor;
         Color colorWhiteTiles;
         //----DESIGN RELATED----//
         int[,] grid;
@@ -46,16 +47,20 @@ namespace Game1.Minigames.DontTapWhite
         public override void Initialize()
         {
             colorWhiteTiles = new Color(0, 0, 0, 60);
+            hitcursor = Content.Load<Texture2D>("minigame/donttapwhite/hitcursor");
+            Mouse.SetCursor(hitcursor, new Point(hitcursor.Width/2,hitcursor.Height/2));
             bg = Content.Load<Texture2D>("minigame/donttapwhite/backgrond");
+//mole = Content.Load<Texture2D>("minigame/donttapwhite/moletrans");
             stateOfGame = 0;
             if (stateOfGame == 0)
             {
                 Arial = Content.Load<SpriteFont>("arial16");
-               // testBtn = new Button(new Vector2(20, 80), new Vector2(200, 30), Arial, "Start");
+                // testBtn = new Button(new Vector2(20, 80), new Vector2(200, 30), Arial, "Start");
                 //testBtn.OnClick += startGame;
-              //  Objects.Add(testBtn);
+                //  Objects.Add(testBtn);
                 //
-                grid = new int[4,4];
+                // grid = new int[4,4];
+                grid = getRandomGrid();
                 gridDimensionLengthX = grid.GetLength(0);
                 gridDimensionLengthY = grid.GetLength(1);
                 rec = new Rectangle(Graphics.PreferredBackBufferWidth / 2 - Graphics.PreferredBackBufferWidth / 4, 0, Graphics.PreferredBackBufferWidth / 2, Graphics.PreferredBackBufferHeight);
@@ -130,6 +135,25 @@ namespace Game1.Minigames.DontTapWhite
 
                 }
             }
+
+            if (ThePlayer.stateOfGame == 1)
+            {
+                for (int i = 0; i < Tile.totalTiles.Length; i++)
+                {
+                    if (Tile.totalTiles[i].color != Color.Black)
+                    {
+                        return;
+                    }
+                    else
+                    {
+                        if (Tile.totalTiles.Length-1 == i)
+                        {
+                            ThePlayer.PlayerDead();
+                        }
+                    }
+                }
+            }
+
             if (ThePlayer.stateOfGame == 0)
             {
                 foreach (PlayerDTW player in currentPlayerList)
@@ -140,6 +164,7 @@ namespace Game1.Minigames.DontTapWhite
         }
         public override void Draw()
         {
+            View.DrawText(Arial, Mouse.Position.X+" , "+Mouse.Position.Y, new Vector2(20, 100));
             View.DrawTextureStretched(bg, new Vector2(0, 0), new Vector2(Graphics.PreferredBackBufferWidth, Graphics.PreferredBackBufferHeight));
             // Timer
             View.DrawText(Arial, "Time left: "+ThePlayer.time, new Vector2(20, 40));
@@ -147,11 +172,7 @@ namespace Game1.Minigames.DontTapWhite
             // Lives
             View.DrawText(Arial, "Lives:"+ThePlayer.life, new Vector2(20, 100));
             View.DrawText(Arial, "Score:" + ThePlayer.score, new Vector2(20, 130));
-            //draw the tiles on the field.
-            foreach (Tile aTile in Tile.totalTiles)
-            {
-                View.DrawRectangle(aTile.tile, aTile.outline, aTile.color);
-            }
+
             if (ThePlayer.stateOfGame == 1)
             {
                 //spawn the click tiles.
@@ -174,6 +195,8 @@ namespace Game1.Minigames.DontTapWhite
                             {
                                 aTile.outline = false;
                                 aTile.color = Color.Black;
+                                aTile.sprite = Content.Load<Texture2D>("minigame/donttapwhite/moletrans");
+                                View.DrawTexture(aTile.sprite, new Vector2(aTile.tile.X, aTile.tile.Y));
                             }
                         }
                     }
@@ -185,6 +208,21 @@ namespace Game1.Minigames.DontTapWhite
                 else
                 {
                     delay--;
+                }
+
+                //draw the tiles on the field.
+                foreach (Tile aTile in Tile.totalTiles)
+                {
+                    if (aTile.color == Color.Black)
+                    {
+                        aTile.sprite = Content.Load<Texture2D>("minigame/donttapwhite/moletrans");
+                        View.DrawTexture(aTile.sprite, new Vector2(aTile.tile.X, aTile.tile.Y));
+                    }
+                    else if (aTile.color == Color.Black)
+                    {
+                        View.DrawRectangle(aTile.tile, aTile.outline, aTile.color);
+                    }
+
                 }
             }
         }
