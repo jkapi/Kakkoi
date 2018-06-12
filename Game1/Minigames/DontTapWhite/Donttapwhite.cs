@@ -47,8 +47,8 @@ namespace Game1.Minigames.DontTapWhite
         public override void Initialize()
         {
             colorWhiteTiles = new Color(0, 0, 0, 60);
-            hitcursor = Content.Load<Texture2D>("minigame/donttapwhite/hitcursor");
-            Mouse.SetCursor(hitcursor, new Point(hitcursor.Width/2,hitcursor.Height/2));
+            hitcursor = Content.Load<Texture2D>("minigame/donttapwhite/Hammer");
+            Mouse.SetCursor(hitcursor, Point.Zero);
             bg = Content.Load<Texture2D>("minigame/donttapwhite/backgrond");
 //mole = Content.Load<Texture2D>("minigame/donttapwhite/moletrans");
             stateOfGame = 0;
@@ -195,7 +195,7 @@ namespace Game1.Minigames.DontTapWhite
                             {
                                 aTile.outline = false;
                                 aTile.color = Color.Black;
-                                aTile.sprite = Content.Load<Texture2D>("minigame/donttapwhite/moletrans");
+                                aTile.sprite = Content.Load<Texture2D>("minigame/donttapwhite/Criminal");
                                 View.DrawTexture(aTile.sprite, new Vector2(aTile.tile.X, aTile.tile.Y));
                             }
                         }
@@ -215,7 +215,7 @@ namespace Game1.Minigames.DontTapWhite
                 {
                     if (aTile.color == Color.Black)
                     {
-                        aTile.sprite = Content.Load<Texture2D>("minigame/donttapwhite/moletrans");
+                        aTile.sprite = Content.Load<Texture2D>("minigame/donttapwhite/Criminal");
                         View.DrawTexture(aTile.sprite, new Vector2(aTile.tile.X, aTile.tile.Y));
                     }
                     else if (aTile.color == Color.Black)

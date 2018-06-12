@@ -96,7 +96,8 @@ namespace Game1.Minigames.DontTapWhite
         {
             if (sprite != null)
             {
-                View.DrawTexture(sprite, new Vector2(tile.X, tile.Y));
+                View.DrawTextureStretched(sprite, new Vector2(tile.X, tile.Y), new Vector2(250,250));
+                
             }
         }
     }
