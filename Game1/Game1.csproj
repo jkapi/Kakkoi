@@ -205,6 +205,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Content\Score.spritefont" />
     <None Include="packages.config" />
     <None Include="Resources\93407604_a0e4ae527d_m.jpg" />
   </ItemGroup>
