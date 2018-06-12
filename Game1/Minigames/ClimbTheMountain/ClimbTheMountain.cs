@@ -30,7 +30,7 @@ namespace Game1.Minigames.ClimbTheMountain
         public override void Initialize()
         {
             //queueOfLetters = new List<string>();
-            bg = Content.Load<Texture2D>("minigame/climbthemountain/bgmountain");
+            bg = Content.Load<Texture2D>("minigame/climbthemountain/bgmountainNew");
             wolk1 = Content.Load<Texture2D>("minigame/climbthemountain/Wolk1");
             wolk2 = Content.Load<Texture2D>("minigame/climbthemountain/Wolk2");
             wolk3 = Content.Load<Texture2D>("minigame/climbthemountain/Wolk3");
