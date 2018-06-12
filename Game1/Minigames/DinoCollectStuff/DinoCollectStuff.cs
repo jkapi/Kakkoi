@@ -18,9 +18,11 @@ namespace Game1.Minigames.DinoCollectStuff
 
         Texture2D background;
         Sprite DinoSprite;
-        Sprite Drugssprite;
+  
         Vector2 position;
         Vector2 playersize;
+        bool isHit;
+        int hitticks;
         List<Rectangle> collision = new List<Rectangle>();
         List<Drugs> listDrugs = new List<Drugs>();
         List<RozeDino> listRozeDinos = new List<RozeDino>();
@@ -28,7 +30,7 @@ namespace Game1.Minigames.DinoCollectStuff
 
 
         SpriteFont Arial;
-
+        SpriteFont font;
         bool onground = true;
         int TotalScore;
         int jumpSpeed = 24;
@@ -38,7 +40,6 @@ namespace Game1.Minigames.DinoCollectStuff
         int xspeed = 0;
         long tick = 0;
 
-        Timer spawntimer;
         
         Stopwatch stopwatch;
         
@@ -48,10 +49,13 @@ namespace Game1.Minigames.DinoCollectStuff
        
         public override void Initialize()
         {
+            TotalScore = 0;
+            isHit = false;
+            hitticks = 0;
             Timer spawntimer = new Timer(2000);
             spawntimer.Start();
             spawntimer.Elapsed += tickEvent;
-         
+            font = Content.Load<SpriteFont>("Score");
             background = Content.Load<Texture2D>("minigame/dinozooi/background rehab");
             Arial = Content.Load<SpriteFont>("arial16");
             position = new Vector2(20, 20);
@@ -94,23 +98,25 @@ namespace Game1.Minigames.DinoCollectStuff
    
         public override void Update()
         {
-            foreach (RozeDino RozeDino in listRozeDinos)
+
+            if (hitticks == 1 & isHit)
             {
-                RozeDino.Bounds.Intersects(new Rectangle((int)position.X, (int)position.Y, (int)playersize.X, (int)playersize.Y));
+                TotalScore -= 10;
             }
-         
 
-
-            
-
-             
+            if(!isHit)
             {
-                
+                hitticks = 0;
             }
-         /*  if (tick % 2 == 0)
-            {
-                SocketHandler.SendMessage(PacketTypes.MOUSE, position.X, position.Y, xspeed, yspeed);
-            } */
+            //foreach (RozeDino RozeDino in listRozeDinos)
+            //{
+            //    RozeDino.Bounds.Intersects(new Rectangle((int)position.X, (int)position.Y, (int)playersize.X, (int)playersize.Y));
+            //}
+
+            /*  if (tick % 2 == 0)
+               {
+                   SocketHandler.SendMessage(PacketTypes.MOUSE, position.X, position.Y, xspeed, yspeed);
+               } */
             xspeed = 0;
             xspeed += Keyboard.Check(Keys.D) ? 4 : 0;
             xspeed -= Keyboard.Check(Keys.A) ? 4 : 0;
@@ -176,6 +182,13 @@ namespace Game1.Minigames.DinoCollectStuff
                 {
                     verwijderUitLijst.Add(item);
                 }
+                if (item.Bounds.Intersects(new Rectangle((int)position.X, (int)position.Y, (int)playersize.X, (int)playersize.Y)))
+                {
+                    TotalScore += 100;
+                    verwijderUitLijst.Add(item);
+                }
+
+                
             }
 
             for (int i = 0; i < verwijderUitLijst.Count; i++)
@@ -192,11 +205,25 @@ namespace Game1.Minigames.DinoCollectStuff
         public override void Draw()
         {
 
+            foreach (RozeDino RozeDino in listRozeDinos)
+            {
+                isHit = RozeDino.Bounds.Intersects(new Rectangle((int)position.X, (int)position.Y, (int)playersize.X, (int)playersize.Y));
+                if (isHit)
+                {
+                    hitticks++;
+                    break;
+                }
+            }
+
+
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             View.DrawTextureStretched(background, Vector2.Zero, new Vector2(1920, 1080));
 
-          
+            //score tovoegen
+            View.DrawText(Arial,"TotalScore: " + TotalScore, new Vector2(25, 25), Color.Red);
+            View.DrawText(Arial, "hit: " + isHit, new Vector2(25, 50), Color.Red);
+
             /* List<Player> players = SocketHandler.GetPlayers();
              foreach (Player player in players)
              {
@@ -212,14 +239,7 @@ namespace Game1.Minigames.DinoCollectStuff
             View.DrawSprite(DinoSprite, 0, position, new Vector2(playersize.X/DinoSprite.Width,
                                                                  playersize.Y/DinoSprite.Height));
 
-            foreach (RozeDino RozeDino in listRozeDinos)
-            {
-                if (RozeDino.Bounds.Intersects(new Rectangle((int)position.X, (int)position.Y, (int)playersize.X, (int)playersize.Y)))
-                {
-                    View.DrawText(Arial, "true", new Vector2(500, 40));
-                    return;
-                }
-            }
+          
    
         }
 
@@ -250,11 +270,7 @@ namespace Game1.Minigames.DinoCollectStuff
             }
         
         } 
-        public int IncreaseScore()
-        {
-            TotalScore = TotalScore + 5;
-            return TotalScore;
-        }
+      
 
     }
 }

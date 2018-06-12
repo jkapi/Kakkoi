@@ -20,7 +20,7 @@ namespace Game1.Minigames.DinoCollectStuff
         public Random random;
         public int timer;
         public Timer elkeSeconde;
-        public Rectangle Bounds { get { return new Rectangle(Position.ToPoint(), Drugssprite.Size.ToPoint()); } }
+        public Rectangle Bounds { get { return new Rectangle(Position.ToPoint(), new Point(50, 50)); } }
         public override void Initialize()
 
         {
