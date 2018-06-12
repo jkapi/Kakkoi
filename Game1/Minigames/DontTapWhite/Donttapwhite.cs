@@ -196,7 +196,7 @@ namespace Game1.Minigames.DontTapWhite
                                 aTile.outline = false;
                                 aTile.color = Color.Black;
                                 aTile.sprite = Content.Load<Texture2D>("minigame/donttapwhite/Criminal");
-                                View.DrawTexture(aTile.sprite, new Vector2(aTile.tile.X, aTile.tile.Y));
+                                View.DrawTextureStretched(aTile.sprite, new Vector2(aTile.tile.X, aTile.tile.Y),new Vector2(aTile.tile.Width,aTile.tile.Height));
                             }
                         }
                     }
@@ -216,7 +216,7 @@ namespace Game1.Minigames.DontTapWhite
                     if (aTile.color == Color.Black)
                     {
                         aTile.sprite = Content.Load<Texture2D>("minigame/donttapwhite/Criminal");
-                        View.DrawTexture(aTile.sprite, new Vector2(aTile.tile.X, aTile.tile.Y));
+                        View.DrawTextureStretched(aTile.sprite, new Vector2(aTile.tile.X, aTile.tile.Y), new Vector2(aTile.tile.Width, aTile.tile.Height));
                     }
                     else if (aTile.color == Color.Black)
                     {
