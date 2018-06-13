@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework;
 using StrangerCade.Framework;
 using Microsoft.Xna.Framework.Input;
 using StrangerCade.Framework.UI;
+using StrangerCade.Framework.Multiplayer;
 
 namespace Game1.Minigames.DontTapWhite
 {
@@ -130,6 +131,14 @@ namespace Game1.Minigames.DontTapWhite
                             aTile.color = colorWhiteTiles;
                             aTile.outline = false;
                             ThePlayer.ScoreIncrement();
+                            try
+                            {
+                                SocketHandler.SendMessage(PacketTypes.MOUSE, 1.0f, 0.0f, 0.0f, 0.0f);
+                            }
+                            catch
+                            {
+                                // not online dont bother
+                            }
                         }
                     }
 
